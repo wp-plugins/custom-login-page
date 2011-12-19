@@ -43,9 +43,9 @@ function clp_register_links($links, $file) {
 	
 	$base = plugin_basename(__FILE__);
 	if ($file == $base) {
-		$links[] = '<a href="'.admin_url().'plugins.php?page=clp-settings">'.__('Settings').'</a>';
-		$links[] = '<a href="http://wordpress.org/extend/plugins/custom-login-page/faq/" target="_blank">'.__('FAQ').'</a>';
-		$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA" target="_blank">'.__('Donate').'</a>';
+		$links[] = '<a href="'.admin_url().'plugins.php?page=clp-settings">'.__('Settings', 'custom-login-page').'</a>';
+		$links[] = '<a href="http://wordpress.org/extend/plugins/custom-login-page/faq/" target="_blank">'.__('FAQ', 'custom-login-page').'</a>';
+		$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA" target="_blank">'.__('Donate', 'custom-login-page').'</a>';
 	}
 	
 	return $links;
@@ -110,7 +110,7 @@ add_action('login_head', 'clp_login_head');
  * Importing language file
  *
  */
-load_plugin_textdomain('stw', false , basename(dirname(__FILE__)).'/languages');
+load_plugin_textdomain('custom-login-page', false , basename(dirname(__FILE__)).'/languages');
 
 
 /**
@@ -165,7 +165,7 @@ function clp_register_admin_extras() {
 	 wp_register_style('clp-admin', plugins_url('/css/clp-admin-css.css', __FILE__), false, $clp_options['version'], 'all');
 	 wp_register_script('clp-admin-script', plugins_url('/js/clp-admin.js', __FILE__), array('jquery'), $clp_options['version'], false);
 	 wp_register_script('clp-colorpicker', plugins_url('/js/jscolor/jscolor.js', __FILE__), false, '1.3.11', false);
-	 wp_register_script('clp-admin-tabs', plugins_url('/js/tabcontent.js', __FILE__), false, 'penis', false);
+	 wp_register_script('clp-admin-tabs', plugins_url('/js/tabcontent.js', __FILE__), false, '2.2', false);
 
 }
 add_action('admin_init', 'clp_register_admin_extras');
@@ -204,7 +204,7 @@ function clp_admin_js() {
 	
 	return array (
 		
-		'saving' => __('Saving...')
+		'saving' => __('Saving...', 'custom-login-page')
 		
 		);
 	
@@ -222,7 +222,7 @@ function clp_options_page() {
 	?>
 	
 <table width="100%" cellpadding="2" cellspacing="0"><tr><td valign="middle" width="380"><h2 style="margin:0 30px 0 0; padding: 5px 0 5px 0;">
-A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp;</td>
+A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td valign="middle">&nbsp;</td>
 </tr></table>
 
 <div class="wrap" style="margin: 0 10px 0 0">
@@ -232,11 +232,11 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
 <td valign="top" width="200">
 
 <ul id="clp-pagetabs">
-	<li><a href="#" id="main-tab" rel="main" class="selected"><?php _e('Body'); ?></a></li>
-	<li><a href="#" id="loginform-tab" rel="loginform"><?php _e('Login Form'); ?></a></li>
-    <li><a href="#" id="button-tab" rel="button"><?php _e('Button'); ?></a></li>
-    <li><a href="#" id="message-tab" rel="message"><?php _e('Messages and Input Fields'); ?></a></li>
-    <li><a href="#" id="link-tab" rel="link"><?php _e('Links'); ?></a></li>
+	<li><a href="#" id="main-tab" rel="main" class="selected"><?php _e('Body', 'custom-login-page'); ?></a></li>
+	<li><a href="#" id="loginform-tab" rel="loginform"><?php _e('Login Form', 'custom-login-page'); ?></a></li>
+    <li><a href="#" id="button-tab" rel="button"><?php _e('Button', 'custom-login-page'); ?></a></li>
+    <li><a href="#" id="message-tab" rel="message"><?php _e('Messages and Input Fields', 'custom-login-page'); ?></a></li>
+    <li><a href="#" id="link-tab" rel="link"><?php _e('Links', 'custom-login-page'); ?></a></li>
 </ul>
 
 </td>
@@ -246,55 +246,55 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
       <div class="clp-container">
         <div class="clp-container-left">
         <?php wp_nonce_field('save_main','mainnonce'); ?>
-        <label for="logo"><?php _e('Logo URL'); ?></label>
+        <label for="logo"><?php _e('Logo URL', 'custom-login-page'); ?></label>
         <input name="logo" id="logo" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['logo']; ?>" />
-        <label for="url"><?php _e('URL to link to'); ?></label>
+        <label for="url"><?php _e('URL to link to', 'custom-login-page'); ?></label>
         <input name="url" id="url" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['url']; ?>" />
-        <label for="title"><?php _e('Title tag of the logo'); ?></label>
+        <label for="title"><?php _e('Title tag of the logo', 'custom-login-page'); ?></label>
         <input name="title" id="title" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['title']; ?>" />
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Logo'); ?></h2>
+        <h2><?php _e('Logo', 'custom-login-page'); ?></h2>
         <div id="mainmsg"></div>
-        <p><?php _e('You can enter the url of the logo, that you want to have in place of the WP logo on the login screen. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here.'); ?></p>
-        <p><?php _e('In the URL field, you enter the URL to which the logo should link.'); ?></p>
-        <p><?php _e('Title refers to the title tag behind the logo.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <p><?php _e('You can enter the url of the logo, that you want to have in place of the WP logo on the login screen. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here.', 'custom-login-page'); ?></p>
+        <p><?php _e('In the URL field, you enter the URL to which the logo should link.', 'custom-login-page'); ?></p>
+        <p><?php _e('Title refers to the title tag behind the logo.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>
         <div style="clear: both;"></div>
 	  </div>
       <div class="clp-container">
         <div class="clp-container-left">
-        <label for="body_background"><?php _e('Background Picture'); ?></label>
+        <label for="body_background"><?php _e('Background Picture', 'custom-login-page'); ?></label>
         <input name="body_background" id="body_background" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['body_background']; ?>" />
-        <label for="body_img_repeat"><?php _e('Background Repeat'); ?></label>
+        <label for="body_img_repeat"><?php _e('Background Repeat', 'custom-login-page'); ?></label>
         <select name="body_img_repeat" id="body_img_repeat" style="width: 135px;">
-        <option value=""><?php _e('default'); ?></option>
+        <option value=""><?php _e('default', 'custom-login-page'); ?></option>
         <option value="no-repeat"<?php if ($clp_options['body_img_repeat']=='repeat-x') echo ' selected="selected"'; ?>>no-repeat</option>
         <option value="repeat-x"<?php if ($clp_options['body_img_repeat']=='repeat-x') echo ' selected="selected"'; ?>>repeat-x</option>
         <option value="repeat-y"<?php if ($clp_options['body_img_repeat']=='repeat-y') echo ' selected="selected"'; ?>>repeat-y</option>
         </select>         
-        <label for="body_img_pos"><?php _e('Position of the Background Picture'); ?></label>
+        <label for="body_img_pos"><?php _e('Position of the Background Picture', 'custom-login-page'); ?></label>
         <input name="body_img_pos" id="body_img_pos" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['body_img_pos']; ?>" />        
-        <label for="body_bg_color1"><?php _e('Background Colour'); ?></label>
+        <label for="body_bg_color1"><?php _e('Background Colour', 'custom-login-page'); ?></label>
         <input name="body_bg_color1" id="body_bg_color1" type="text" value="<?php echo $clp_options['body_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="body_bg_color2"><?php _e('Second Background Colour (for Gradient)'); ?></label>
+        <label for="body_bg_color2"><?php _e('Second Background Colour (for Gradient)', 'custom-login-page'); ?></label>
         <input name="body_bg_color2" id="body_bg_color2" type="text" value="<?php echo $clp_options['body_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="body_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="body_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="body_text_color" id="body_text_color" type="text" value="<?php echo $clp_options['body_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Body'); ?></h2>
-        <p><?php _e('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the directionn of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.'); ?></p>
-        <p><?php _e('In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <h2><?php _e('Body', 'custom-login-page'); ?></h2>
+        <p><?php _e('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', 'custom-login-page'); ?></p>
+        <p><?php _e('In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>
         <div style="clear: both;"></div>
 	  </div>    
       <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
 		<p class="submit">
-		<input class="save-tab" name="main_save" id="main_save" value="<?php esc_attr_e('Save Changes'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="main-save" style="display: none;" />
-		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style'); ?></span>
+		<input class="save-tab" name="main_save" id="main_save" value="<?php esc_attr_e('Save Changes', 'custom-login-page'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="main-save" style="display: none;" />
+		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', 'custom-login-page'); ?></span>
 		</p></div>
     </form>
 </div>
@@ -303,26 +303,26 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
       <div class="clp-container">
         <div class="clp-container-left">
         <?php wp_nonce_field('save_loginform','loginformnonce'); ?>
-        <label for="loginform_background"><?php _e('Background Picture'); ?></label>
+        <label for="loginform_background"><?php _e('Background Picture', 'custom-login-page'); ?></label>
         <input name="loginform_background" id="loginform_background" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['loginform_background']; ?>" />
-        <label for="loginform_img_repeat"><?php _e('Background Repeat'); ?></label>
+        <label for="loginform_img_repeat"><?php _e('Background Repeat', 'custom-login-page'); ?></label>
         <select name="loginform_img_repeat" id="loginform_img_repeat" style="width: 150px;">
-        <option value=""><?php _e('default'); ?></option>
+        <option value=""><?php _e('default', 'custom-login-page'); ?></option>
         <option value="no-repeat"<?php if ($clp_options['loginform_img_repeat']=='no-repeat') echo ' selected="selected"'; ?>>no-repeat</option>
         <option value="repeat-x"<?php if ($clp_options['loginform_img_repeat']=='repeat-x') echo ' selected="selected"'; ?>>repeat-x</option>
         <option value="repeat-y"<?php if ($clp_options['loginform_img_repeat']=='repeat-y') echo ' selected="selected"'; ?>>repeat-y</option>
         </select>         
-        <label for="loginform_img_pos"><?php _e('Position of the Background Picture'); ?></label>
+        <label for="loginform_img_pos"><?php _e('Position of the Background Picture', 'custom-login-page'); ?></label>
         <input name="loginform_img_pos" id="loginform_img_pos" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['loginform_img_pos']; ?>" />        
-        <label for="loginform_bg_color1"><?php _e('Background Colour'); ?></label>
+        <label for="loginform_bg_color1"><?php _e('Background Colour', 'custom-login-page'); ?></label>
         <input name="loginform_bg_color1" id="loginform_bg_color1" type="text" value="<?php echo $clp_options['loginform_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="loginform_bg_color2"><?php _e('Second Background Colour (for Gradient)'); ?></label>
+        <label for="loginform_bg_color2"><?php _e('Second Background Colour (for Gradient)', 'custom-login-page'); ?></label>
         <input name="loginform_bg_color2" id="loginform_bg_color2" type="text" value="<?php echo $clp_options['loginform_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="loginform_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="loginform_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="loginform_text_color" id="loginform_text_color" type="text" value="<?php echo $clp_options['loginform_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="loginform_border_style"><?php _e('Border Style'); ?></label>
-        <select name="loginform_border_style" id="loginform_border_style" style="width: 150px;">
-        <option value=""><?php _e('choose a border style'); ?></option>
+        <label for="loginform_border_style"><?php _e('Border Style', 'custom-login-page'); ?></label>
+        <select name="loginform_border_style" id="loginform_border_style" style="width: 220px;">
+        <option value=""><?php _e('choose a border style', 'custom-login-page'); ?></option>
         <option value="none"<?php if ($clp_options['loginform_border_style']=='none') echo ' selected="selected"'; ?>>none</option>
         <option value="dotted"<?php if ($clp_options['loginform_border_style']=='dotted') echo ' selected="selected"'; ?>>dotted</option>
         <option value="dashed"<?php if ($clp_options['loginform_border_style']=='dashed') echo ' selected="selected"'; ?>>dashed</option>
@@ -333,36 +333,36 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
         <option value="inset"<?php if ($clp_options['loginform_border_style']=='inset') echo ' selected="selected"'; ?>>inset</option>
         <option value="outset"<?php if ($clp_options['loginform_border_style']=='outset') echo ' selected="selected"'; ?>>outset</option>
         </select>
-        <label for="loginform_border_width"><?php _e('Border Width (in px)'); ?></label>
+        <label for="loginform_border_width"><?php _e('Border Width (in px)', 'custom-login-page'); ?></label>
         <input name="loginform_border_width" id="loginform_border_width" type="text" value="<?php echo $clp_options['loginform_border_width']; ?>" />
-        <label for="loginform_border_color"><?php _e('Border Colour'); ?></label>
+        <label for="loginform_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="loginform_border_color" id="loginform_border_color" type="text" value="<?php echo $clp_options['loginform_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="loginform_border_round"><?php _e('Rounded Corners (in px)'); ?></label>
+        <label for="loginform_border_round"><?php _e('Rounded Corners (in px)', 'custom-login-page'); ?></label>
         <input name="loginform_border_round" id="loginform_border_round" type="text" value="<?php echo $clp_options['loginform_border_round']; ?>" />
-        <label for="loginform_shadow_x"><?php _e('Shadow (x-direction in px)'); ?></label>
+        <label for="loginform_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
         <input name="loginform_shadow_x" id="loginform_shadow_x" type="text" value="<?php echo $clp_options['loginform_shadow_x']; ?>" />
-        <label for="loginform_shadow_y"><?php _e('Shadow (y-direction in px)'); ?></label>
+        <label for="loginform_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
         <input name="loginform_shadow_y" id="loginform_shadow_y" type="text" value="<?php echo $clp_options['loginform_shadow_y']; ?>" />
-        <label for="loginform_shadow_softness"><?php _e('Shadow (softness in px)'); ?></label>
+        <label for="loginform_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
         <input name="loginform_shadow_softness" id="loginform_shadow_softness" type="text" value="<?php echo $clp_options['loginform_shadow_softness']; ?>" />
-        <label for="loginform_shadow_color"><?php _e('Shadow Colour'); ?></label>
+        <label for="loginform_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="loginform_shadow_color" id="loginform_shadow_color" type="text" value="<?php echo $clp_options['loginform_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Login Form'); ?></h2>
+        <h2><?php _e('Login Form', 'custom-login-page'); ?></h2>
         <div id="loginmsg"></div>
-        <p><?php _e('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the directionn of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.'); ?></p>
-        <p><?php _e('In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.'); ?></p>
-        <p><?php _e('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).'); ?></p>
-        <p><?php _e('At last, give the form a shadow (is not supported by all browsers).'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <p><?php _e('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', 'custom-login-page'); ?></p>
+        <p><?php _e('In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', 'custom-login-page'); ?></p>
+        <p><?php _e('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', 'custom-login-page'); ?></p>
+        <p><?php _e('At last, give the form a shadow (is not supported by all browsers).', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>
         <div style="clear: both;"></div>
 	  </div> 
       <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
 		<p class="submit">
-		<input class="save-tab" name="loginform_save" id="loginform_save" value="<?php esc_attr_e('Save Changes'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="loginform_save" style="display: none;" />
-		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style'); ?></span>
+		<input class="save-tab" name="loginform_save" id="loginform_save" value="<?php esc_attr_e('Save Changes', 'custom-login-page'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="loginform_save" style="display: none;" />
+		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', 'custom-login-page'); ?></span>
 		</p></div>
     </form>
 </div>
@@ -371,35 +371,35 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
       <div class="clp-container">
         <div class="clp-container-left">
         <?php wp_nonce_field('save_button','buttonnonce'); ?>
-        <label for="button_bg_color1"><?php _e('Background Colour'); ?></label>
+        <label for="button_bg_color1"><?php _e('Background Colour', 'custom-login-page'); ?></label>
         <input name="button_bg_color1" id="button_bg_color1" type="text" value="<?php echo $clp_options['button_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="button_bg_color2"><?php _e('Second Background Colour (for Gradient)'); ?></label>
+        <label for="button_bg_color2"><?php _e('Second Background Colour (for Gradient)', 'custom-login-page'); ?></label>
         <input name="button_bg_color2" id="button_bg_color2" type="text" value="<?php echo $clp_options['button_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="button_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="button_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="button_text_color" id="button_text_color" type="text" value="<?php echo $clp_options['button_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="button_border_color"><?php _e('Border Colour'); ?></label>
+        <label for="button_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="button_border_color" id="button_border_color" type="text" value="<?php echo $clp_options['button_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="btn_hover_bg_color1"><?php _e('Hover Background Colour'); ?></label>
+        <label for="btn_hover_bg_color1"><?php _e('Hover Background Colour', 'custom-login-page'); ?></label>
         <input name="btn_hover_bg_color1" id="btn_hover_bg_color1" type="text" value="<?php echo $clp_options['btn_hover_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="btn_hover_bg_color2"><?php _e('Second Hover Background Colour (for Gradient)'); ?></label>
+        <label for="btn_hover_bg_color2"><?php _e('Second Hover Background Colour (for Gradient)', 'custom-login-page'); ?></label>
         <input name="btn_hover_bg_color2" id="btn_hover_bg_color2" type="text" value="<?php echo $clp_options['btn_hover_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="btn_hover_text_color"><?php _e('Hover Text Colour'); ?></label>
+        <label for="btn_hover_text_color"><?php _e('Hover Text Colour', 'custom-login-page'); ?></label>
         <input name="btn_hover_text_color" id="btn_hover_text_color" type="text" value="<?php echo $clp_options['btn_hover_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="btn_hover_border_color"><?php _e('Hover Border Colour'); ?></label>
+        <label for="btn_hover_border_color"><?php _e('Hover Border Colour', 'custom-login-page'); ?></label>
         <input name="btn_hover_border_color" id="btn_hover_border_color" type="text" value="<?php echo $clp_options['btn_hover_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Submit Button'); ?></h2>
+        <h2><?php _e('Submit Button', 'custom-login-page'); ?></h2>
         <div id="buttonmsg"></div>
-        <p><?php _e('Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <p><?php _e('Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>
         <div style="clear: both;"></div>
 	  </div>    
       <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
 		<p class="submit">
-		<input class="save-tab" name="button_save" id="button_save" value="<?php esc_attr_e('Save Changes'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="button_save" style="display: none;" />
-		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style'); ?></span>
+		<input class="save-tab" name="button_save" id="button_save" value="<?php esc_attr_e('Save Changes', 'custom-login-page'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="button_save" style="display: none;" />
+		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', 'custom-login-page'); ?></span>
 		</p></div>
     </form>
 </div>
@@ -408,57 +408,57 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
       <div class="clp-container">
         <div class="clp-container-left"> 
         <?php wp_nonce_field('save_message','messagenonce'); ?>        
-        <label for="loggedout_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="loggedout_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="loggedout_text_color" id="loggedout_text_color" type="text" value="<?php echo $clp_options['loggedout_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="loggedout_bg_color"><?php _e('Background Colour'); ?></label>
+        <label for="loggedout_bg_color"><?php _e('Background Colour', 'custom-login-page'); ?></label>
         <input name="loggedout_bg_color" id="loggedout_bg_color" type="text" value="<?php echo $clp_options['loggedout_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="loggedout_border_color"><?php _e('Border Colour'); ?></label>
+        <label for="loggedout_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="loggedout_border_color" id="loggedout_border_color" type="text" value="<?php echo $clp_options['loggedout_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Logged Out Message'); ?></h2>
+        <h2><?php _e('Logged Out Message', 'custom-login-page'); ?></h2>
         <div id="messagemsg"></div>
-        <p><?php _e('This changes the colours of the text container, that appears, when you have successfully logged out.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <p><?php _e('This changes the colours of the text container, that appears, when you have successfully logged out.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>
         <div style="clear: both;"></div>
 	  </div>
       <div class="clp-container">
         <div class="clp-container-left">         
-        <label for="error_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="error_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="error_text_color" id="error_text_color" type="text" value="<?php echo $clp_options['error_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="error_bg_color"><?php _e('Background Colour'); ?></label>
+        <label for="error_bg_color"><?php _e('Background Colour', 'custom-login-page'); ?></label>
         <input name="error_bg_color" id="error_bg_color" type="text" value="<?php echo $clp_options['error_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="error_border_color"><?php _e('Border Colour'); ?></label>
+        <label for="error_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="error_border_color" id="error_border_color" type="text" value="<?php echo $clp_options['error_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Error Message'); ?></h2>
-        <p><?php _e('This changes the colours of the text container, that appears, when you get an error logging in.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <h2><?php _e('Error Message', 'custom-login-page'); ?></h2>
+        <p><?php _e('This changes the colours of the text container, that appears, when you get an error logging in.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>        
         <div style="clear: both;"></div>
 	  </div>
       <div class="clp-container">
         <div class="clp-container-left">         
-        <label for="input_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="input_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="input_text_color" id="input_text_color" type="text" value="<?php echo $clp_options['input_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="input_bg_color"><?php _e('Background Colour'); ?></label>
+        <label for="input_bg_color"><?php _e('Background Colour', 'custom-login-page'); ?></label>
         <input name="input_bg_color" id="input_bg_color" type="text" value="<?php echo $clp_options['input_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-        <label for="input_border_color"><?php _e('Border Colour'); ?></label>
+        <label for="input_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="input_border_color" id="input_border_color" type="text" value="<?php echo $clp_options['input_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Input Fields'); ?></h2>
-        <p><?php _e('This changes the colours of the name and password fields of the log in form.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <h2><?php _e('Input Fields', 'custom-login-page'); ?></h2>
+        <p><?php _e('This changes the colours of the name and password fields of the log in form.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>        
         <div style="clear: both;"></div>
 	  </div> 
       <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
 		<p class="submit">
-		<input class="save-tab" name="message_save" id="message_save" value="<?php esc_attr_e('Save Changes'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="message_save" style="display: none;" />
-		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style'); ?></span>
+		<input class="save-tab" name="message_save" id="message_save" value="<?php esc_attr_e('Save Changes', 'custom-login-page'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="message_save" style="display: none;" />
+		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', 'custom-login-page'); ?></span>
 		</p></div>
     </form>
 </div>
@@ -467,57 +467,57 @@ A5 Custom Login Page <?php _e('Settings'); ?></h2></td><td valign="middle">&nbsp
       <div class="clp-container">
         <div class="clp-container-left">
         <?php wp_nonce_field('save_link','linknonce'); ?>       
-        <label for="link_text_color"><?php _e('Text Colour'); ?></label>
+        <label for="link_text_color"><?php _e('Text Colour', 'custom-login-page'); ?></label>
         <input name="link_text_color" id="link_text_color" type="text" value="<?php echo $clp_options['link_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="link_textdecoration"><?php _e('Text Decoration'); ?></label>
+        <label for="link_textdecoration"><?php _e('Text Decoration', 'custom-login-page'); ?></label>
         <select name="link_textdecoration" id="link_textdecoration" style="width: 160px;">
-        <option value=""><?php _e('choose a text decoration'); ?></option>
+        <option value=""><?php _e('choose a text decoration', 'custom-login-page'); ?></option>
         <option value="none"<?php if ($clp_options['link_textdecoration']=='none') echo ' selected="selected"'; ?>>none</option>
         <option value="underline"<?php if ($clp_options['link_textdecoration']=='underline') echo ' selected="selected"'; ?>>underline</option>
         <option value="overline"<?php if ($clp_options['link_textdecoration']=='overline') echo ' selected="selected"'; ?>>overline</option>
         <option value="line-through"<?php if ($clp_options['link_textdecoration']=='line-through') echo ' selected="selected"'; ?>>line-through</option>
         <option value="blink"<?php if ($clp_options['link_textdecoration']=='blink') echo ' selected="selected"'; ?>>blink</option>
         </select>
-        <label for="link_shadow_x"><?php _e('Shadow (x-direction in px)'); ?></label>
+        <label for="link_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
         <input name="link_shadow_x" id="link_shadow_x" type="text" value="<?php echo $clp_options['link_shadow_x']; ?>" />
-        <label for="link_shadow_y"><?php _e('Shadow (y-direction in px)'); ?></label>
+        <label for="link_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
         <input name="link_shadow_y" id="link_shadow_y" type="text" value="<?php echo $clp_options['link_shadow_y']; ?>" />
-        <label for="link_shadow_softness"><?php _e('Shadow (softness in px)'); ?></label>
+        <label for="link_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
         <input name="link_shadow_softness" id="link_shadow_softness" type="text" value="<?php echo $clp_options['link_shadow_softness']; ?>" />
-        <label for="link_shadow_color"><?php _e('Shadow Colour'); ?></label>
+        <label for="link_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="link_shadow_color" id="link_shadow_color" type="text" value="<?php echo $clp_options['link_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="hover_text_color"><?php _e('Hover Colour'); ?></label>
+        <label for="hover_text_color"><?php _e('Hover Colour', 'custom-login-page'); ?></label>
         <input name="hover_text_color" id="hover_text_color" type="text" value="<?php echo $clp_options['hover_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-        <label for="hover_textdecoration"><?php _e('Hover Text Decoration'); ?></label>
+        <label for="hover_textdecoration"><?php _e('Hover Text Decoration', 'custom-login-page'); ?></label>
         <select name="hover_textdecoration" id="hover_textdecoration" style="width: 160px;">
-        <option value=""><?php _e('choose a text decoration'); ?></option>
+        <option value=""><?php _e('choose a text decoration', 'custom-login-page'); ?></option>
         <option value="none"<?php if ($clp_options['hover_textdecoration']=='none') echo ' selected="selected"'; ?>>none</option>
         <option value="underline"<?php if ($clp_options['hover_textdecoration']=='underline') echo ' selected="selected"'; ?>>underline</option>
         <option value="overline"<?php if ($clp_options['hover_textdecoration']=='overline') echo ' selected="selected"'; ?>>overline</option>
         <option value="line-through"<?php if ($clp_options['hover_textdecoration']=='line-through') echo ' selected="selected"'; ?>>line-through</option>
         <option value="blink"<?php if ($clp_options['hover_textdecoration']=='blink') echo ' selected="selected"'; ?>>blink</option>
         </select>
-        <label for="hover_shadow_x"><?php _e('Shadow (x-direction in px)'); ?></label>
+        <label for="hover_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
         <input name="hover_shadow_x" id="hover_shadow_x" type="text" value="<?php echo $clp_options['hover_shadow_x']; ?>" />
-        <label for="hover_shadow_y"><?php _e('Shadow (y-direction in px)'); ?></label>
+        <label for="hover_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
         <input name="hover_shadow_y" id="hover_shadow_y" type="text" value="<?php echo $clp_options['hover_shadow_y']; ?>" />
-        <label for="hover_shadow_softness"><?php _e('Shadow (softness in px)'); ?></label>
+        <label for="hover_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
         <input name="hover_shadow_softness" id="hover_shadow_softness" type="text" value="<?php echo $clp_options['hover_shadow_softness']; ?>" />
-        <label for="hover_shadow_color"><?php _e('Shadow Colour'); ?></label>
+        <label for="hover_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="hover_shadow_color" id="hover_shadow_color" type="text" value="<?php echo $clp_options['hover_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
         <div class="clp-container-right">
-        <h2><?php _e('Links'); ?></h2>
+        <h2><?php _e('Links', 'custom-login-page'); ?></h2>
         <div id="linkmsg"></div>
-        <p><?php _e('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.'); ?></p>
-        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.'); ?></i></p>
+        <p><?php _e('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', 'custom-login-page'); ?></p>
+        <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>
         <div style="clear: both;"></div>
 	  </div> 
       <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
 		<p class="submit">
-		<input class="save-tab" name="link_save" id="link_save" value="<?php esc_attr_e('Save Changes'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="link_save" style="display: none;" />
-		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style'); ?></span>
+		<input class="save-tab" name="link_save" id="link_save" value="<?php esc_attr_e('Save Changes', 'custom-login-page'); ?>" type="submit"><img src="<?php admin_url(); ?>/wp-admin/images/wpspin_light.gif" alt="" class="link_save" style="display: none;" />
+		<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', 'custom-login-page'); ?></span>
 		</p></div>
     </form>
 </div>
@@ -554,7 +554,7 @@ function clp_save_settings() {
 		
 		if (!wp_verify_nonce($_POST['mainnonce'],'save_main')) :
 			
-			$output = '<p class="error">'.__('Error in Datatransfer.').'</p>';
+			$output = '<p class="error">'.__('Error in Datatransfer.', 'custom-login-page').'</p>';
 		
 		else :
 		
@@ -569,7 +569,7 @@ function clp_save_settings() {
 			$clp_options['body_text_color'] = $_POST['body_text_color'];
 			
 			update_option('clp_options', $clp_options);
-			$output='<p class="save">'.__('Settings saved').'</p>';
+			$output='<p class="save">'.__('Settings saved', 'custom-login-page').'</p>';
 		
 		endif;
 		
@@ -582,7 +582,7 @@ function clp_save_settings() {
 		
 		if (!wp_verify_nonce($_POST['loginformnonce'],'save_loginform')) :
 			
-			$output = '<p class="error">'.__('Error in Datatransfer.').'</p>';
+			$output = '<p class="error">'.__('Error in Datatransfer.', 'custom-login-page').'</p>';
 		
 		else :
 		
@@ -602,7 +602,7 @@ function clp_save_settings() {
 			$clp_options['loginform_shadow_color'] = $_POST['loginform_shadow_color'];
 			
 			update_option('clp_options', $clp_options);
-			$output='<p class="save">'.__('Settings saved').'</p>';
+			$output='<p class="save">'.__('Settings saved', 'custom-login-page').'</p>';
 		
 		endif;
 		
@@ -615,7 +615,7 @@ function clp_save_settings() {
 		
 		if (!wp_verify_nonce($_POST['buttonnonce'],'save_button')) :
 			
-			$output = '<p class="error">'.__('Error in Datatransfer.').'</p>';
+			$output = '<p class="error">'.__('Error in Datatransfer.', 'custom-login-page').'</p>';
 		
 		else :
 		
@@ -629,7 +629,7 @@ function clp_save_settings() {
 			$clp_options['btn_hover_border_color'] = $_POST['btn_hover_border_color'];
 			
 			update_option('clp_options', $clp_options);
-			$output='<p class="save">'.__('Settings saved').'</p>';
+			$output='<p class="save">'.__('Settings saved', 'custom-login-page').'</p>';
 		
 		endif;
 		
@@ -642,7 +642,7 @@ function clp_save_settings() {
 		
 		if (!wp_verify_nonce($_POST['messagenonce'],'save_message')) :
 			
-			$output = '<p class="error">'.__('Error in Datatransfer.').'</p>';
+			$output = '<p class="error">'.__('Error in Datatransfer.', 'custom-login-page').'</p>';
 		
 		else :
 		
@@ -657,7 +657,7 @@ function clp_save_settings() {
 			$clp_options['input_border_color'] = $_POST['input_border_color'];
 			
 			update_option('clp_options', $clp_options);
-			$output='<p class="save">'.__('Settings saved').'</p>';
+			$output='<p class="save">'.__('Settings saved', 'custom-login-page').'</p>';
 		
 		endif;
 		
@@ -670,7 +670,7 @@ function clp_save_settings() {
 		
 		if (!wp_verify_nonce($_POST['linknonce'],'save_link')) :
 			
-			$output = '<p class="error">'.__('Error in Datatransfer.').'</p>';
+			$output = '<p class="error">'.__('Error in Datatransfer.', 'custom-login-page').'</p>';
 		
 		else :
 		
@@ -688,7 +688,7 @@ function clp_save_settings() {
 			$clp_options['hover_shadow_color'] = $_POST['hover_shadow_color'];
 			
 			update_option('clp_options', $clp_options);
-			$output='<p class="save">'.__('Settings saved').'</p>';
+			$output='<p class="save">'.__('Settings saved', 'custom-login-page').'</p>';
 		
 		endif;
 		
@@ -714,6 +714,13 @@ function clp_get_the_style() {
 	#collecting variables
 	
 	$clp_options=get_option('clp_options');
+	
+	if ($clp_options['version'] !='1.0') {
+		
+		$clp_options['version']='1.0';
+		update_option('clp_options', $clp_options);
+		
+	}
 	
 	if (!empty($clp_options['body_text_color'])) $body_style = "color: ".$clp_options['body_text_color']." !important;\r\n";
 	if (!empty($clp_options['body_bg_color1'])) $body_style .= "background-color: ".$clp_options['body_bg_color1']." !important;\r\n";
