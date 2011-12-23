@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2011-12-19 00:47+0200\n"
+"PO-Revision-Date: 2011-12-23 14:48+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Atelier 5 <stoffel@atelier-fuenf.de>\n"
 "X-Poedit-Language: German\n"
@@ -41,6 +41,11 @@ msgstr "Body"
 #: custom-login-page.php:352
 msgid "Login Form"
 msgstr "Login Formular"
+
+#: custom-login-page.php:236
+#: custom-login-page.php:352
+msgid "Login Container"
+msgstr "Login Container"
 
 #: custom-login-page.php:237
 msgid "Button"
@@ -140,9 +145,16 @@ msgid "Text Colour"
 msgstr "Textfarbe"
 
 #: custom-login-page.php:288
-#: custom-login-page.php:354
 msgid "You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
 msgstr "Hier kannst du die URL des Bildes angeben, das du auf dem Login Screen haben willst. Lade einfach ein Bild (am besten im png oder gif Format mit transparentem Hintergrund) mit dem Uploader in der Mediathek hoch und Kopiere die Url der Datei in dieses Feld. Lasse das Feld leer, wenn du kein Hintergrundbild willst. Hintergrundbilder werden standardmäßig endlos wiederholt. Du kannst die Richtung, in der das Bild wiederholt werden soll angeben, oder ob das Bild überhaupt wiederholt werden soll. Die Position kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px 50%&#39; oder &#39center top&#39;."
+
+#: custom-login-page.php:354
+msgid "You can enter the url of the background picture, that you want to have in the login form. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
+msgstr "Hier kannst du die URL des Bildes angeben, das du im Login Formular haben willst. Lade einfach ein Bild (am besten im png oder gif Format mit transparentem Hintergrund) mit dem Uploader in der Mediathek hoch und Kopiere die Url der Datei in dieses Feld. Lasse das Feld leer, wenn du kein Hintergrundbild willst. Hintergrundbilder werden standardmäßig endlos wiederholt. Du kannst die Richtung, in der das Bild wiederholt werden soll angeben, oder ob das Bild überhaupt wiederholt werden soll. Die Position kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px 50%&#39; oder &#39center top&#39;."
+
+#: custom-login-page.php:354
+msgid "You can enter the url of the background picture, that you want to have on the login container. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39;center top&#39;."
+msgstr "Hier kannst du die URL des Bildes angeben, das du im Login Container haben willst. Lade einfach ein Bild (am besten im png oder gif Format mit transparentem Hintergrund) mit dem Uploader in der Mediathek hoch und Kopiere die Url der Datei in dieses Feld. Lasse das Feld leer, wenn du kein Hintergrundbild willst. Hintergrundbilder werden standardmäßig endlos wiederholt. Du kannst die Richtung, in der das Bild wiederholt werden soll angeben, oder ob das Bild überhaupt wiederholt werden soll. Die Position kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px 50%&#39; oder &#39center top&#39;."
 
 #: custom-login-page.php:289
 msgid "In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up."
@@ -216,6 +228,10 @@ msgstr "Schattenfarbe"
 msgid "In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up."
 msgstr "Im nächsten Abschnitt kannst du eine Hintergrundfarbe und eine Textfarbe für das Login Formular wählen. Wenn du zwei Farben angibst, kannst du einen Verlauf kreieren. Farbe Nr. 1 wird immer oben sein."
 
+#: custom-login-page.php:355
+msgid "In the next section, you choose the background colour and the colour of the text in the login container. If you give two background colours, you can create a gradient. Colour no. 1 will always be up."
+msgstr "Im nächsten Abschnitt kannst du eine Hintergrundfarbe und eine Textfarbe für den Login Container wählen. Wenn du zwei Farben angibst, kannst du einen Verlauf kreieren. Farbe Nr. 1 wird immer oben sein."
+
 #: custom-login-page.php:356
 msgid "Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers)."
 msgstr "Wähle einen Rahmen, wenn du willst. Definiere Stil und Breite des Rahmens und ob du abgerundete Ecken haben willst (wird nicht von allen Browsern erkannt)."
@@ -223,6 +239,30 @@ msgstr "Wähle einen Rahmen, wenn du willst. Definiere Stil und Breite des Rahme
 #: custom-login-page.php:357
 msgid "At last, give the form a shadow (is not supported by all browsers)."
 msgstr "Zum Schluss gib dem Formular einen Schatten (wird nicht von allen Browsern erkannt)."
+
+#: custom-login-page.php:357
+msgid "At last, give the container a shadow (is not supported by all browsers)."
+msgstr "Zum Schluss gib dem Container einen Schatten (wird nicht von allen Browsern erkannt)."
+
+#: custom-login-page.php:357
+msgid "Position of the Login Container"
+msgstr "Position des Login Containers"
+
+#: custom-login-page.php:502
+msgid "Position (x-direction in px)"
+msgstr "Position (x-Richtung in px)"
+
+#: custom-login-page.php:502
+msgid "Position (y-direction in px)"
+msgstr "Position (y-Richtung in px"
+
+#: custom-login-page.php:502
+msgid "Margin (in px)"
+msgstr "Margin (in px)"
+
+#: custom-login-page.php:357
+msgid "Here you can give the whole login container a position. If you enter &#39;0&#39; in both of the fields, it will be in the top left corner. The margin defines the empty space around the container."
+msgstr "Hier kannst du den Login Container positionieren. Wenn du &#39;0&#39; in beide Felder eingibst, wird er in der linken oberen Ecke sein. Margin definiert den äußerern Abstand um den Container."
 
 #: custom-login-page.php:382
 msgid "Hover Background Colour"
