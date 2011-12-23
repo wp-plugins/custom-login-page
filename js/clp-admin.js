@@ -42,6 +42,64 @@ jQuery(document).ready(function(){
 	return false;
 	});
 	
+//save logindiv_form
+
+	jQuery("#logindiv_form").submit(function()	{
+		jQuery("#logindivmsg").html('<p class="save">' + message.saving + '</p>');		
+		var section = 'logindiv';
+		var logindiv_background = jQuery("#logindiv_background").val();
+		var logindiv_img_repeat = jQuery("#logindiv_img_repeat").val();
+		var logindiv_img_pos = jQuery("#logindiv_img_pos").val();
+		var logindiv_bg_color1 = jQuery("#logindiv_bg_color1").val();
+		var logindiv_bg_color2 = jQuery("#logindiv_bg_color2").val();
+		var logindiv_text_color = jQuery("#logindiv_text_color").val();
+		var logindiv_border_style = jQuery("#logindiv_border_style").val();
+		var logindiv_border_width = jQuery("#logindiv_border_width").val();
+		var logindiv_border_color = jQuery("#logindiv_border_color").val();
+		var logindiv_border_round = jQuery("#logindiv_border_round").val();
+		var logindiv_shadow_x = jQuery("#logindiv_shadow_x").val();
+		var logindiv_shadow_y = jQuery("#logindiv_shadow_y").val();
+		var logindiv_shadow_softness = jQuery("#logindiv_shadow_softness").val();
+		var logindiv_shadow_color = jQuery("#logindiv_shadow_color").val();		
+		var logindiv_left = jQuery("#logindiv_left").val();
+		var logindiv_top = jQuery("#logindiv_top").val();
+		var logindiv_margin = jQuery("#logindiv_margin").val();
+		var logindivnonce = jQuery("#logindivnonce").val();
+		var _wp_http_referer = jQuery("#logindiv_form #_wp_http_referer").val();
+		var data = {
+			action: 'clp_save_settings',
+			section: section,
+			logindiv_background: logindiv_background,
+			logindiv_img_repeat: logindiv_img_repeat,
+			logindiv_img_pos: logindiv_img_pos,
+			logindiv_bg_color1: logindiv_bg_color1,
+			logindiv_bg_color2: logindiv_bg_color2,
+			logindiv_text_color: logindiv_text_color,
+			logindiv_border_style: logindiv_border_style,
+			logindiv_border_width: logindiv_border_width,
+			logindiv_border_color: logindiv_border_color,
+			logindiv_border_round: logindiv_border_round,
+			logindiv_shadow_x: logindiv_shadow_x,
+			logindiv_shadow_y: logindiv_shadow_y,
+			logindiv_shadow_softness: logindiv_shadow_softness,
+			logindiv_shadow_color: logindiv_shadow_color,
+			logindiv_left: logindiv_left,
+			logindiv_top: logindiv_top,
+			logindiv_margin: logindiv_margin,
+			logindivnonce: logindivnonce,
+			_wp_http_referer: _wp_http_referer
+		};
+		jQuery("#logindiv_save").hide();
+		jQuery(".logindiv_save").show();
+		jQuery.post(ajaxurl, data,
+		function(response){
+			jQuery("#logindivmsg").html(response);
+			jQuery(".logindiv_save").hide();
+			jQuery("#logindiv_save").show();
+		});
+	return false;
+	})
+	
 //save loginform_form
 
 	jQuery("#loginform_form").submit(function()	{
