@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 1.1
+Stable tag: 1.2
 
 Style your login page differently.
 
@@ -49,8 +49,16 @@ We are planning some more advanced features in the future such as
 
 * Some bugfixes, you can style login container now
 
+= 1.2 =
+
+* A bit more foolproof
+
 == Upgrade Notice ==
 
 = 1.1 =
 
 Some bugfixes and you can style login container now
+
+= 1.2 =
+
+A bit more foolproof
