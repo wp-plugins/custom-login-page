@@ -3,8 +3,8 @@ Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
-Tested up to: 3.3
-Stable tag: 1.0
+Tested up to: 3.4
+Stable tag: 1.2
 
 Style your login page differently.
 
@@ -22,6 +22,16 @@ If you are working for a customer or you just want to set a page for a community
 
 None so far.
 
+== Future Versions ==
+
+We are planning some more advanced features in the future such as
+
+* styling of the complete login container
+
+* freeedom to enter your own pieces of css instead of using the plugin's interface
+
+* posibility to just copy paste your entire stylesheet
+
 == Screenshots ==
 
 1. The options page of the plugin
@@ -34,3 +44,21 @@ None so far.
 = 1.0 =
 
 * initial release
+
+= 1.1 =
+
+* Some bugfixes, you can style login container now
+
+= 1.2 =
+
+* A bit more foolproof
+
+== Upgrade Notice ==
+
+= 1.1 =
+
+Some bugfixes and you can style login container now
+
+= 1.2 =
+
+A bit more foolproof
