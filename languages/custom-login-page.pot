@@ -259,6 +259,13 @@ msgid ""
 "an error logging in."
 msgstr ""
 
+#: custom-login-page.php:438
+msgid ""
+"Furthermore, you can enter your own error message here. By default, "
+"Wordpress says that either the username or the password is wrong, "
+"which is perhaps a hint to foreigners that you don&#39;t wish to give."
+msgstr ""
+
 #: custom-login-page.php:452
 msgid "Input Fields"
 msgstr ""

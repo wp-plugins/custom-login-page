@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2011-12-23 14:48+0200\n"
+"PO-Revision-Date: 2012-04-23 12:37+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Atelier 5 <stoffel@atelier-fuenf.de>\n"
 "X-Poedit-Language: German\n"
@@ -303,6 +303,10 @@ msgstr "Felhlermeldung"
 #: custom-login-page.php:437
 msgid "This changes the colours of the text container, that appears, when you get an error logging in."
 msgstr "Hier änderst du die Farben des Textcontainers, der bei einem Fehler beim Anmelden erscheint."
+
+#: custom-login-page.php:438
+msgid "Furthermore, you can enter your own error message here. By default, Wordpress says that either the username or the password is wrong, which is perhaps a hint to foreigners that you don&#39;t wish to give."
+msgstr "Außerdem kannst du hier deine eigene Fehlermeldung eingeben. Standardmäßig teilt Wordpress mit, dass entweder der Username oder das Passwort falsch ist, eine Information, die du vielleicht nicht preisgeben willst."
 
 #: custom-login-page.php:452
 msgid "Input Fields"

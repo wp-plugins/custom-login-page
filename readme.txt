@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
 Tested up to: 3.4
-Stable tag: 1.3
+Stable tag: 1.4
 
 Style your login page differently.
 
@@ -26,7 +26,7 @@ None so far.
 
 We are planning some more advanced features in the future such as
 
-* freeedom to enter your own pieces of css instead of using the plugin's interface
+* freedom to enter your own pieces of css instead of using the plugin's interface
 
 * posibility to just copy paste your entire stylesheet
 
@@ -38,6 +38,10 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 1.4 =
+
+* You can now enter a custom error message
 
 = 1.3 =
 
@@ -68,3 +72,8 @@ A bit more foolproof
 = 1.3 =
 
 Small bugfix that caused issues in WP 3.4
+
+
+= 1.4 =
+
+You can now enter a custom error message
