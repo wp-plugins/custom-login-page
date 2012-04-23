@@ -203,6 +203,7 @@ jQuery(document).ready(function(){
 		var error_text_color = jQuery("#error_text_color").val();
 		var error_bg_color = jQuery("#error_bg_color").val();
 		var error_border_color = jQuery("#error_border_color").val();
+		var error_custom_message = jQuery("#error_custom_message").val();
 		var input_text_color = jQuery("#input_text_color").val();
 		var input_bg_color = jQuery("#input_bg_color").val();
 		var input_border_color = jQuery("#input_border_color").val();
@@ -217,6 +218,7 @@ jQuery(document).ready(function(){
 			error_text_color: error_text_color,
 			error_bg_color: error_bg_color,
 			error_border_color: error_border_color,
+			error_custom_message: error_custom_message,
 			input_text_color: input_text_color,
 			input_bg_color: input_bg_color,
 			input_border_color: input_border_color,

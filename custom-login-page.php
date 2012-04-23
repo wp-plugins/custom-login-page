@@ -2,12 +2,12 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your loginpage (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.2
-
+Version: 1.4
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/custom-login-page
 License: GPL3
+Text Domain: custom-login-page
 */
 
 /*  Copyright 2011 Waldemar Stoffel  (email: stoffel@atelier-fuenf.de)
@@ -45,7 +45,6 @@ function clp_register_links($links, $file) {
 	
 	$base = plugin_basename(__FILE__);
 	if ($file == $base) {
-		$links[] = '<a href="'.admin_url().'plugins.php?page=clp-settings">'.__('Settings', 'custom-login-page').'</a>';
 		$links[] = '<a href="http://wordpress.org/extend/plugins/custom-login-page/faq/" target="_blank">'.__('FAQ', 'custom-login-page').'</a>';
 		$links[] = '<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA" target="_blank">'.__('Donate', 'custom-login-page').'</a>';
 	}
@@ -55,6 +54,17 @@ function clp_register_links($links, $file) {
 }
 add_filter('plugin_row_meta', 'clp_register_links',10,2);
 
+function clp_plugin_action_links( $links, $file ) {
+	
+	$base = plugin_basename(__FILE__);
+	
+	if ($file == $base) array_unshift($links, '<a href="'.admin_url( 'themes.php?page=clp-settings' ).'">'.__('Settings', 'custom-login-page').'</a>');
+
+	return $links;
+
+}
+add_filter( 'plugin_action_links', 'clp_plugin_action_links', 10, 2 );
+
 /**
  *
  * Changes the link behind the logo
@@ -63,7 +73,7 @@ add_filter('plugin_row_meta', 'clp_register_links',10,2);
 function clp_headerurl() {
 	
 	global $clp_options;
-	if (!empty($clp_options['url'])) echo $clp_options['url'];
+	return $clp_options['url'];
 	
 }
 if (!empty($clp_options['url'])) add_filter( 'login_headerurl', 'clp_headerurl' );
@@ -76,24 +86,37 @@ if (!empty($clp_options['url'])) add_filter( 'login_headerurl', 'clp_headerurl' 
 function clp_headertitle() {
 	
 	global $clp_options;
-	if (!empty($clp_options['title'])) echo $clp_options['title'];
+	return $clp_options['title'];
 	
 }
 if (!empty($clp_options['title'])) add_filter( 'login_headertitle', 'clp_headertitle' );
 
 /**
  *
+ * Changes the Error Message
+ *
+ */
+function clp_custom_error() {
+	
+	global $clp_options;
+	return $clp_options['error_custom_message'];
+	
+}
+if (!empty($clp_options['error_custom_message'])) add_filter( 'login_errors', 'clp_custom_error' );
+
+/**
+ *
  * Adds the style sheet to the login page
  *
  */
-function clp_login_head() {
+function clp_login_css() {
 	
-	$clp_css_file=get_bloginfo('url')."/?clpfile=css";
+	$clp_css_file=get_bloginfo('url').'/?clpfile=css';
 	
-	echo '<link rel="stylesheet" type="text/css" href="' .$clp_css_file. '" />';
+	echo "<link rel='stylesheet' id='clp-css' href='" .$clp_css_file. "' type='text/css' media='all' />\r\n";
 	
 }
-add_action('login_head', 'clp_login_head');
+add_action('login_enqueue_scripts', 'clp_login_css');
 
 
 /**
@@ -113,7 +136,7 @@ register_activation_hook(  __FILE__, 'start_clp' );
 
 function start_clp() {
 	
-	add_option('clp_options', array('version' => '1.2'));
+	add_option('clp_options', array('version' => '1.3'));
 
 }
 
@@ -137,7 +160,7 @@ function unset_clp() {
  */
 function clp_admin_menu() {
 	
-	$pages=add_plugins_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', 'clp_options_page');	
+	$pages=add_theme_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', 'clp_options_page');	
 	
 	add_action('admin_print_styles-'.$pages, 'clp_admin_css');
 	add_action('admin_print_scripts-'.$pages, 'clp_admin_js');
@@ -326,17 +349,17 @@ A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td 
         <option value="outset"<?php if ($clp_options['logindiv_border_style']=='outset') echo ' selected="selected"'; ?>>outset</option>
         </select>
         <label for="logindiv_border_width"><?php _e('Border Width (in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_border_width" id="logindiv_border_width" type="text" value="<?php echo $clp_options['logindiv_border_width']; ?>" />
+        <input name="logindiv_border_width" id="logindiv_border_width" type="number" value="<?php echo $clp_options['logindiv_border_width']; ?>" />
         <label for="logindiv_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="logindiv_border_color" id="logindiv_border_color" type="text" value="<?php echo $clp_options['logindiv_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         <label for="logindiv_border_round"><?php _e('Rounded Corners (in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_border_round" id="logindiv_border_round" type="text" value="<?php echo $clp_options['logindiv_border_round']; ?>" />
+        <input name="logindiv_border_round" id="logindiv_border_round" type="number" value="<?php echo $clp_options['logindiv_border_round']; ?>" />
         <label for="logindiv_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_shadow_x" id="logindiv_shadow_x" type="text" value="<?php echo $clp_options['logindiv_shadow_x']; ?>" />
+        <input name="logindiv_shadow_x" id="logindiv_shadow_x" type="number" value="<?php echo $clp_options['logindiv_shadow_x']; ?>" />
         <label for="logindiv_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_shadow_y" id="logindiv_shadow_y" type="text" value="<?php echo $clp_options['logindiv_shadow_y']; ?>" />
+        <input name="logindiv_shadow_y" id="logindiv_shadow_y" type="number" value="<?php echo $clp_options['logindiv_shadow_y']; ?>" />
         <label for="logindiv_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_shadow_softness" id="logindiv_shadow_softness" type="text" value="<?php echo $clp_options['logindiv_shadow_softness']; ?>" />
+        <input name="logindiv_shadow_softness" id="logindiv_shadow_softness" type="number" value="<?php echo $clp_options['logindiv_shadow_softness']; ?>" />
         <label for="logindiv_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="logindiv_shadow_color" id="logindiv_shadow_color" type="text" value="<?php echo $clp_options['logindiv_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
@@ -354,11 +377,11 @@ A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td 
       <div class="clp-container">
         <div class="clp-container-left">
         <label for="logindiv_left"><?php _e('Position (x-direction in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_left" id="logindiv_left" type="text" value="<?php echo $clp_options['logindiv_left']; ?>" />
+        <input name="logindiv_left" id="logindiv_left" type="number" value="<?php echo $clp_options['logindiv_left']; ?>" />
         <label for="logindiv_top"><?php _e('Position (y-direction in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_top" id="logindiv_top" type="text" value="<?php echo $clp_options['logindiv_top']; ?>" />
+        <input name="logindiv_top" id="logindiv_top" type="number" value="<?php echo $clp_options['logindiv_top']; ?>" />
         <label for="logindiv_margin"><?php _e('Margin (in px)', 'custom-login-page'); ?></label>
-        <input name="logindiv_margin" id="logindiv_margin" type="text" value="<?php echo $clp_options['logindiv_margin']; ?>" />
+        <input name="logindiv_margin" id="logindiv_margin" type="number" value="<?php echo $clp_options['logindiv_margin']; ?>" />
         </div>
         <div class="clp-container-right">
         <h2><?php _e('Position of the Login Container', 'custom-login-page'); ?></h2>
@@ -410,17 +433,17 @@ A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td 
         <option value="outset"<?php if ($clp_options['loginform_border_style']=='outset') echo ' selected="selected"'; ?>>outset</option>
         </select>
         <label for="loginform_border_width"><?php _e('Border Width (in px)', 'custom-login-page'); ?></label>
-        <input name="loginform_border_width" id="loginform_border_width" type="text" value="<?php echo $clp_options['loginform_border_width']; ?>" />
+        <input name="loginform_border_width" id="loginform_border_width" type="number" value="<?php echo $clp_options['loginform_border_width']; ?>" />
         <label for="loginform_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
-        <input name="loginform_border_color" id="loginform_border_color" type="text" value="<?php echo $clp_options['loginform_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
+        <input name="loginform_border_color" id="loginform_border_color" type="number" value="<?php echo $clp_options['loginform_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         <label for="loginform_border_round"><?php _e('Rounded Corners (in px)', 'custom-login-page'); ?></label>
-        <input name="loginform_border_round" id="loginform_border_round" type="text" value="<?php echo $clp_options['loginform_border_round']; ?>" />
+        <input name="loginform_border_round" id="loginform_border_round" type="number" value="<?php echo $clp_options['loginform_border_round']; ?>" />
         <label for="loginform_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
-        <input name="loginform_shadow_x" id="loginform_shadow_x" type="text" value="<?php echo $clp_options['loginform_shadow_x']; ?>" />
+        <input name="loginform_shadow_x" id="loginform_shadow_x" type="number" value="<?php echo $clp_options['loginform_shadow_x']; ?>" />
         <label for="loginform_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
-        <input name="loginform_shadow_y" id="loginform_shadow_y" type="text" value="<?php echo $clp_options['loginform_shadow_y']; ?>" />
+        <input name="loginform_shadow_y" id="loginform_shadow_y" type="number" value="<?php echo $clp_options['loginform_shadow_y']; ?>" />
         <label for="loginform_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
-        <input name="loginform_shadow_softness" id="loginform_shadow_softness" type="text" value="<?php echo $clp_options['loginform_shadow_softness']; ?>" />
+        <input name="loginform_shadow_softness" id="loginform_shadow_softness" type="number" value="<?php echo $clp_options['loginform_shadow_softness']; ?>" />
         <label for="loginform_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="loginform_shadow_color" id="loginform_shadow_color" type="text" value="<?php echo $clp_options['loginform_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
@@ -507,10 +530,13 @@ A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td 
         <input name="error_bg_color" id="error_bg_color" type="text" value="<?php echo $clp_options['error_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
         <label for="error_border_color"><?php _e('Border Colour', 'custom-login-page'); ?></label>
         <input name="error_border_color" id="error_border_color" type="text" value="<?php echo $clp_options['error_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
+        <label for="error_custom_message"><?php _e('Error Message', 'custom-login-page'); ?></label>
+        <input name="error_custom_message" id="error_custom_message" type="text" size="40" style="width: 95%;" value="<?php echo $clp_options['error_custom_message']; ?>" />
         </div>
         <div class="clp-container-right">
         <h2><?php _e('Error Message', 'custom-login-page'); ?></h2>
         <p><?php _e('This changes the colours of the text container, that appears, when you get an error logging in.', 'custom-login-page'); ?></p>
+        <p><?php _e('Furthermore, you can enter your own error message here. By default, Wordpress says that either the username or the password is wrong, which is perhaps a hint to foreigners that you don&#39;t wish to give.', 'custom-login-page'); ?></p>
         <p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', 'custom-login-page'); ?></i></p>
         </div>        
         <div style="clear: both;"></div>
@@ -555,11 +581,11 @@ A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td 
         <option value="blink"<?php if ($clp_options['link_textdecoration']=='blink') echo ' selected="selected"'; ?>>blink</option>
         </select>
         <label for="link_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
-        <input name="link_shadow_x" id="link_shadow_x" type="text" value="<?php echo $clp_options['link_shadow_x']; ?>" />
+        <input name="link_shadow_x" id="link_shadow_x" type="number" value="<?php echo $clp_options['link_shadow_x']; ?>" />
         <label for="link_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
-        <input name="link_shadow_y" id="link_shadow_y" type="text" value="<?php echo $clp_options['link_shadow_y']; ?>" />
+        <input name="link_shadow_y" id="link_shadow_y" type="number" value="<?php echo $clp_options['link_shadow_y']; ?>" />
         <label for="link_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
-        <input name="link_shadow_softness" id="link_shadow_softness" type="text" value="<?php echo $clp_options['link_shadow_softness']; ?>" />
+        <input name="link_shadow_softness" id="link_shadow_softness" type="number" value="<?php echo $clp_options['link_shadow_softness']; ?>" />
         <label for="link_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="link_shadow_color" id="link_shadow_color" type="text" value="<?php echo $clp_options['link_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         <label for="hover_text_color"><?php _e('Hover Colour', 'custom-login-page'); ?></label>
@@ -574,11 +600,11 @@ A5 Custom Login Page <?php _e('Settings', 'custom-login-page'); ?></h2></td><td 
         <option value="blink"<?php if ($clp_options['hover_textdecoration']=='blink') echo ' selected="selected"'; ?>>blink</option>
         </select>
         <label for="hover_shadow_x"><?php _e('Shadow (x-direction in px)', 'custom-login-page'); ?></label>
-        <input name="hover_shadow_x" id="hover_shadow_x" type="text" value="<?php echo $clp_options['hover_shadow_x']; ?>" />
+        <input name="hover_shadow_x" id="hover_shadow_x" type="number" value="<?php echo $clp_options['hover_shadow_x']; ?>" />
         <label for="hover_shadow_y"><?php _e('Shadow (y-direction in px)', 'custom-login-page'); ?></label>
-        <input name="hover_shadow_y" id="hover_shadow_y" type="text" value="<?php echo $clp_options['hover_shadow_y']; ?>" />
+        <input name="hover_shadow_y" id="hover_shadow_y" type="number" value="<?php echo $clp_options['hover_shadow_y']; ?>" />
         <label for="hover_shadow_softness"><?php _e('Shadow (softness in px)', 'custom-login-page'); ?></label>
-        <input name="hover_shadow_softness" id="hover_shadow_softness" type="text" value="<?php echo $clp_options['hover_shadow_softness']; ?>" />
+        <input name="hover_shadow_softness" id="hover_shadow_softness" type="number" value="<?php echo $clp_options['hover_shadow_softness']; ?>" />
         <label for="hover_shadow_color"><?php _e('Shadow Colour', 'custom-login-page'); ?></label>
         <input name="hover_shadow_color" id="hover_shadow_color" type="text" value="<?php echo $clp_options['hover_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
         </div>
@@ -764,6 +790,7 @@ function clp_save_settings() {
 			$clp_options['error_text_color'] = $_POST['error_text_color'];
 			$clp_options['error_bg_color'] = $_POST['error_bg_color'];
 			$clp_options['error_border_color'] = $_POST['error_border_color'];
+			$clp_options['error_custom_message'] = $_POST['error_custom_message'];
 			$clp_options['input_text_color'] = $_POST['input_text_color'];
 			$clp_options['input_bg_color'] = $_POST['input_bg_color'];
 			$clp_options['input_border_color'] = $_POST['input_border_color'];
@@ -823,201 +850,203 @@ add_action('wp_ajax_clp_save_settings', 'clp_save_settings');
  */
 function clp_get_the_style() {
 	
-	#collecting variables
+	# collecting variables
 	
 	global $clp_options;
 	
-	if ($clp_options['version'] !='1.2') {
+	if ($clp_options['version'] !='1.3') {
 		
-		$clp_options['version']='1.2';
+		$clp_options['version']='1.3';
 		update_option('clp_options', $clp_options);
 		
 	}
 	
+	$eol = "\r\n";
+	
 	# body
 	
-	if (!empty($clp_options['body_text_color'])) $body_style = "color: ".$clp_options['body_text_color']." !important;\r\n";
-	if (!empty($clp_options['body_bg_color1'])) $body_style .= "background-color: ".$clp_options['body_bg_color1']." !important;\r\n";
+	if (!empty($clp_options['body_text_color'])) $body_style = 'color: '.$clp_options['body_text_color'].' !important;'.$eol;
+	if (!empty($clp_options['body_bg_color1'])) $body_style .= 'background-color: '.$clp_options['body_bg_color1'].' !important;'.$eol;
 	if (!empty($clp_options['body_bg_color2'])) {
 		
-		$body_style .= "background-image: -webkit-gradient(linear, left top, left bottom, from(".$clp_options['body_bg_color1']."), to(".$clp_options['body_bg_color2'].")) !important;\r\n";
-		$body_style .= "background-image: -webkit-linear-gradient(top, ".$clp_options['body_bg_color1'].", ".$clp_options['body_bg_color2'].") !important;\r\n";
-		$body_style .= "background-image: -moz-linear-gradient(top, ".$clp_options['body_bg_color1'].", ".$clp_options['body_bg_color2'].") !important;\r\n";
-		$body_style .= "background-image: -ms-linear-gradient(top, ".$clp_options['body_bg_color1'].", ".$clp_options['body_bg_color2'].") !important;\r\n";
-		$body_style .= "background-image: -o-linear-gradient(top, ".$clp_options['body_bg_color1'].", ".$clp_options['body_bg_color2'].") !important;\r\n";
-		$body_style .= "background-image: -linear-gradient(top, ".$clp_options['body_bg_color1'].", ".$clp_options['body_bg_color2'].") !important;\r\n";
+		$body_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.$clp_options['body_bg_color1'].'), to('.$clp_options['body_bg_color2'].')) !important;'.$eol;
+		$body_style .= 'background-image: -webkit-linear-gradient(top, '.$clp_options['body_bg_color1'].', '.$clp_options['body_bg_color2'].') !important;'.$eol;
+		$body_style .= 'background-image: -moz-linear-gradient(top, '.$clp_options['body_bg_color1'].', '.$clp_options['body_bg_color2'].') !important;'.$eol;
+		$body_style .= 'background-image: -ms-linear-gradient(top, '.$clp_options['body_bg_color1'].', '.$clp_options['body_bg_color2'].') !important;'.$eol;
+		$body_style .= 'background-image: -o-linear-gradient(top, '.$clp_options['body_bg_color1'].', '.$clp_options['body_bg_color2'].') !important;'.$eol;
+		$body_style .= 'background-image: -linear-gradient(top, '.$clp_options['body_bg_color1'].', '.$clp_options['body_bg_color2'].') !important;'.$eol;
 		
 	}
-	if (!empty($clp_options['body_background'])) $body_style .= "background-image: url(".$clp_options['body_background'].") !important;\r\n";
-	if (!empty($clp_options['body_img_repeat'])) $body_style .= "background-repeat: ".$clp_options['body_img_repeat']." !important;\r\n";
-	if (!empty($clp_options['body_img_pos'])) $body_style .= "background-position: ".$clp_options['body_img_pos']." !important;\r\n";
+	if (!empty($clp_options['body_background'])) $body_style .= 'background-image: url('.$clp_options['body_background'].') !important;'.$eol;
+	if (!empty($clp_options['body_img_repeat'])) $body_style .= 'background-repeat: '.$clp_options['body_img_repeat'].' !important;'.$eol;
+	if (!empty($clp_options['body_img_pos'])) $body_style .= 'background-position: '.$clp_options['body_img_pos'].' !important;'.$eol;
 	
 	# h1 a
 	
-	if (!empty($clp_options['logo'])) $h1_style = "background: transparent url(".$clp_options['logo'].") no-repeat center top !important;\r\n";
+	if (!empty($clp_options['logo'])) $h1_style = 'background: transparent url('.$clp_options['logo'].') no-repeat center top !important;'.$eol;
 	
 	# #login
 	
-	if (!empty($clp_options['logindiv_top']) || !empty($clp_options['logindiv_left']) || $clp_options['logindiv_top']=='0' || $clp_options['logindiv_left']=='0') $logindiv_style = "position: absolute;\r\n";
-	if (!empty($clp_options['logindiv_top']) || $clp_options['logindiv_top']=='0') $logindiv_style .= "top: ".$clp_options['logindiv_top']."px !important;\r\n";
-	if (!empty($clp_options['logindiv_left']) || $clp_options['logindiv_left']=='0') $logindiv_style .= "left: ".$clp_options['logindiv_left']."px !important;\r\n";
-	if (!empty($clp_options['logindiv_margin'])) $logindiv_style .= "margin: ".$clp_options['logindiv_margin']."px !important;\r\n";
-	if (!empty($clp_options['logindiv_bg_color1'])) $logindiv_style .= "background-color: ".$clp_options['logindiv_bg_color1']." !important;\r\n";
+	if (!empty($clp_options['logindiv_top']) || !empty($clp_options['logindiv_left']) || $clp_options['logindiv_top']=='0' || $clp_options['logindiv_left']=='0') $logindiv_style = 'position: absolute;'.$eol;
+	if (!empty($clp_options['logindiv_top']) || $clp_options['logindiv_top']=='0') $logindiv_style .= 'top: '.$clp_options['logindiv_top'].'px !important;'.$eol;
+	if (!empty($clp_options['logindiv_left']) || $clp_options['logindiv_left']=='0') $logindiv_style .= 'left: '.$clp_options['logindiv_left'].'px !important;'.$eol;
+	if (!empty($clp_options['logindiv_margin'])) $logindiv_style .= 'margin: '.$clp_options['logindiv_margin'].'px !important;'.$eol;
+	if (!empty($clp_options['logindiv_bg_color1'])) $logindiv_style .= 'background-color: '.$clp_options['logindiv_bg_color1'].' !important;'.$eol;
 	if (!empty($clp_options['logindiv_bg_color2'])) {
 		
-		$logindiv_style .= "background-image: -webkit-gradient(linear, left top, left bottom, from(".$clp_options['logindiv_bg_color1']."), to(".$clp_options['logindiv_bg_color2'].")) !important;\r\n";
-		$logindiv_style .= "background-image: -webkit-linear-gradient(top, ".$clp_options['logindiv_bg_color1'].", ".$clp_options['logindiv_bg_color2'].") !important;\r\n";
-		$logindiv_style .= "background-image: -moz-linear-gradient(top, ".$clp_options['logindiv_bg_color1'].", ".$clp_options['logindiv_bg_color2'].") !important;\r\n";
-		$logindiv_style .= "background-image: -ms-linear-gradient(top, ".$clp_options['logindiv_bg_color1'].", ".$clp_options['logindiv_bg_color2'].") !important;\r\n";
-		$logindiv_style .= "background-image: -o-linear-gradient(top, ".$clp_options['logindiv_bg_color1'].", ".$clp_options['logindiv_bg_color2'].") !important;\r\n";
-		$logindiv_style .= "background-image: -linear-gradient(top, ".$clp_options['logindiv_bg_color1'].", ".$clp_options['logindiv_bg_color2'].") !important;\r\n";
+		$logindiv_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.$clp_options['logindiv_bg_color1'].'), to('.$clp_options['logindiv_bg_color2'].')) !important;'.$eol;
+		$logindiv_style .= 'background-image: -webkit-linear-gradient(top, '.$clp_options['logindiv_bg_color1'].', '.$clp_options['logindiv_bg_color2'].') !important;'.$eol;
+		$logindiv_style .= 'background-image: -moz-linear-gradient(top, '.$clp_options['logindiv_bg_color1'].', '.$clp_options['logindiv_bg_color2'].') !important;'.$eol;
+		$logindiv_style .= 'background-image: -ms-linear-gradient(top, '.$clp_options['logindiv_bg_color1'].', '.$clp_options['logindiv_bg_color2'].') !important;'.$eol;
+		$logindiv_style .= 'background-image: -o-linear-gradient(top, '.$clp_options['logindiv_bg_color1'].', '.$clp_options['logindiv_bg_color2'].') !important;'.$eol;
+		$logindiv_style .= 'background-image: -linear-gradient(top, '.$clp_options['logindiv_bg_color1'].', '.$clp_options['logindiv_bg_color2'].') !important;'.$eol;
 		
 	}
-	if (!empty($clp_options['logindiv_background'])) $logindiv_style .= "background-image: url(".$clp_options['logindiv_background'].") !important;\r\n";
-	if (!empty($clp_options['logindiv_img_repeat'])) $logindiv_style .= "background-repeat: ".$clp_options['logindiv_img_repeat']." !important;\r\n";
-	if (!empty($clp_options['logindiv_img_pos'])) $logindiv_style .= "background-position: ".$clp_options['logindiv_img_pos']." !important;\r\n";
-	if (!empty($clp_options['logindiv_border_style'])) $logindiv_style .= "border: ".$clp_options['logindiv_border_style']." ".$clp_options['logindiv_border_width']."px ".$clp_options['logindiv_border_color']." !important;\r\n";
+	if (!empty($clp_options['logindiv_background'])) $logindiv_style .= 'background-image: url('.$clp_options['logindiv_background'].') !important;'.$eol;
+	if (!empty($clp_options['logindiv_img_repeat'])) $logindiv_style .= 'background-repeat: '.$clp_options['logindiv_img_repeat'].' !important;'.$eol;
+	if (!empty($clp_options['logindiv_img_pos'])) $logindiv_style .= 'background-position: '.$clp_options['logindiv_img_pos'].' !important;'.$eol;
+	if (!empty($clp_options['logindiv_border_style'])) $logindiv_style .= 'border: '.$clp_options['logindiv_border_style'].' '.$clp_options['logindiv_border_width'].'px '.$clp_options['logindiv_border_color'].' !important;'.$eol;
 	if (!empty($clp_options['logindiv_border_round'])) {
 		
-		$logindiv_style .= "-webkit-border-radius: ".$clp_options['logindiv_border_round']."px;\r\n";
-		$logindiv_style .= "-moz-border-radius: ".$clp_options['logindiv_border_round']."px;\r\n";
-		$logindiv_style .= "border-radius: ".$clp_options['logindiv_border_round']."px;\r\n";
+		$logindiv_style .= '-webkit-border-radius: '.$clp_options['logindiv_border_round'].'px;'.$eol;
+		$logindiv_style .= '-moz-border-radius: '.$clp_options['logindiv_border_round'].'px;'.$eol;
+		$logindiv_style .= 'border-radius: '.$clp_options['logindiv_border_round'].'px;'.$eol;
 		
 	}
 	if (!empty($clp_options['logindiv_shadow_x']) || $clp_options['logindiv_shadow_x']=='0') {
 		
-		$logindiv_style .= "-webkit-box-shadow: ".$clp_options['logindiv_shadow_x']."px ".$clp_options['logindiv_shadow_y']."px ".$clp_options['logindiv_shadow_softness']."px ".$clp_options['logindiv_shadow_color'].";\r\n";
-		$logindiv_style .= "-moz-box-shadow: ".$clp_options['logindiv_shadow_x']."px ".$clp_options['logindiv_shadow_y']."px ".$clp_options['logindiv_shadow_softness']."px ".$clp_options['logindiv_shadow_color'].";\r\n";;
-		$logindiv_style .= "box-shadow: ".$clp_options['logindiv_shadow_x']."px ".$clp_options['logindiv_shadow_y']."px ".$clp_options['logindiv_shadow_softness']."px ".$clp_options['logindiv_shadow_color'].";\r\n";
+		$logindiv_style .= '-webkit-box-shadow: '.$clp_options['logindiv_shadow_x'].'px '.$clp_options['logindiv_shadow_y'].'px '.$clp_options['logindiv_shadow_softness'].'px '.$clp_options['logindiv_shadow_color'].';'.$eol;
+		$logindiv_style .= '-moz-box-shadow: '.$clp_options['logindiv_shadow_x'].'px '.$clp_options['logindiv_shadow_y'].'px '.$clp_options['logindiv_shadow_softness'].'px '.$clp_options['logindiv_shadow_color'].';'.$eol;;
+		$logindiv_style .= 'box-shadow: '.$clp_options['logindiv_shadow_x'].'px '.$clp_options['logindiv_shadow_y'].'px '.$clp_options['logindiv_shadow_softness'].'px '.$clp_options['logindiv_shadow_color'].';'.$eol;
 		
 	}
 	
 	if (!empty($clp_options['logindiv_text_color'])) {
 		
-		$logindiv_style .= "color: ".$clp_options['logindiv_text_color']." !important;\r\n";
-		$label_style = "color: ".$clp_options['logindiv_text_color']." !important;\r\n";
+		$logindiv_style .= 'color: '.$clp_options['logindiv_text_color'].' !important;'.$eol;
+		$label_style = 'color: '.$clp_options['logindiv_text_color'].' !important;'.$eol;
 		
 	}
 	
 	# #loginform, #lostpasswordform, #registerform
 	
-	if (!empty($clp_options['loginform_bg_color1'])) $loginform_style = "background-color: ".$clp_options['loginform_bg_color1']." !important;\r\n";
+	if (!empty($clp_options['loginform_bg_color1'])) $loginform_style = 'background-color: '.$clp_options['loginform_bg_color1'].' !important;'.$eol;
 	if (!empty($clp_options['loginform_bg_color2'])) {
 		
-		$loginform_style .= "background-image: -webkit-gradient(linear, left top, left bottom, from(".$clp_options['loginform_bg_color1']."), to(".$clp_options['loginform_bg_color2'].")) !important;\r\n";
-		$loginform_style .= "background-image: -webkit-linear-gradient(top, ".$clp_options['loginform_bg_color1'].", ".$clp_options['loginform_bg_color2'].") !important;\r\n";
-		$loginform_style .= "background-image: -moz-linear-gradient(top, ".$clp_options['loginform_bg_color1'].", ".$clp_options['loginform_bg_color2'].") !important;\r\n";
-		$loginform_style .= "background-image: -ms-linear-gradient(top, ".$clp_options['loginform_bg_color1'].", ".$clp_options['loginform_bg_color2'].") !important;\r\n";
-		$loginform_style .= "background-image: -o-linear-gradient(top, ".$clp_options['loginform_bg_color1'].", ".$clp_options['loginform_bg_color2'].") !important;\r\n";
-		$loginform_style .= "background-image: -linear-gradient(top, ".$clp_options['loginform_bg_color1'].", ".$clp_options['loginform_bg_color2'].") !important;\r\n";
+		$loginform_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.$clp_options['loginform_bg_color1'].'), to('.$clp_options['loginform_bg_color2'].')) !important;'.$eol;
+		$loginform_style .= 'background-image: -webkit-linear-gradient(top, '.$clp_options['loginform_bg_color1'].', '.$clp_options['loginform_bg_color2'].') !important;'.$eol;
+		$loginform_style .= 'background-image: -moz-linear-gradient(top, '.$clp_options['loginform_bg_color1'].', '.$clp_options['loginform_bg_color2'].') !important;'.$eol;
+		$loginform_style .= 'background-image: -ms-linear-gradient(top, '.$clp_options['loginform_bg_color1'].', '.$clp_options['loginform_bg_color2'].') !important;'.$eol;
+		$loginform_style .= 'background-image: -o-linear-gradient(top, '.$clp_options['loginform_bg_color1'].', '.$clp_options['loginform_bg_color2'].') !important;'.$eol;
+		$loginform_style .= 'background-image: -linear-gradient(top, '.$clp_options['loginform_bg_color1'].', '.$clp_options['loginform_bg_color2'].') !important;'.$eol;
 		
 	}
-	if (!empty($clp_options['loginform_background'])) $loginform_style .= "background-image: url(".$clp_options['loginform_background'].") !important;\r\n";
-	if (!empty($clp_options['loginform_img_repeat'])) $loginform_style .= "background-repeat: ".$clp_options['loginform_img_repeat']." !important;\r\n";
-	if (!empty($clp_options['loginform_img_pos'])) $loginform_style .= "background-position: ".$clp_options['loginform_img_pos']." !important;\r\n";
-	if (!empty($clp_options['loginform_border_style'])) $loginform_style .= "border: ".$clp_options['loginform_border_style']." ".$clp_options['loginform_border_width']."px ".$clp_options['loginform_border_color']." !important;\r\n";
+	if (!empty($clp_options['loginform_background'])) $loginform_style .= 'background-image: url('.$clp_options['loginform_background'].') !important;'.$eol;
+	if (!empty($clp_options['loginform_img_repeat'])) $loginform_style .= 'background-repeat: '.$clp_options['loginform_img_repeat'].' !important;'.$eol;
+	if (!empty($clp_options['loginform_img_pos'])) $loginform_style .= 'background-position: '.$clp_options['loginform_img_pos'].' !important;'.$eol;
+	if (!empty($clp_options['loginform_border_style'])) $loginform_style .= 'border: '.$clp_options['loginform_border_style'].' '.$clp_options['loginform_border_width'].'px '.$clp_options['loginform_border_color'].' !important;'.$eol;
 	if (!empty($clp_options['loginform_border_round'])) {
 		
-		$loginform_style .= "-webkit-border-radius: ".$clp_options['loginform_border_round']."px;\r\n";
-		$loginform_style .= "-moz-border-radius: ".$clp_options['loginform_border_round']."px;\r\n";
-		$loginform_style .= "border-radius: ".$clp_options['loginform_border_round']."px;\r\n";
+		$loginform_style .= '-webkit-border-radius: '.$clp_options['loginform_border_round'].'px;'.$eol;
+		$loginform_style .= '-moz-border-radius: '.$clp_options['loginform_border_round'].'px;'.$eol;
+		$loginform_style .= 'border-radius: '.$clp_options['loginform_border_round'].'px;'.$eol;
 		
 	}
 	if (!empty($clp_options['loginform_shadow_x']) || $clp_options['loginform_shadow_x']=='0') {
 		
-		$loginform_style .= "-webkit-box-shadow: ".$clp_options['loginform_shadow_x']."px ".$clp_options['loginform_shadow_y']."px ".$clp_options['loginform_shadow_softness']."px ".$clp_options['loginform_shadow_color'].";\r\n";
-		$loginform_style .= "-moz-box-shadow: ".$clp_options['loginform_shadow_x']."px ".$clp_options['loginform_shadow_y']."px ".$clp_options['loginform_shadow_softness']."px ".$clp_options['loginform_shadow_color'].";\r\n";;
-		$loginform_style .= "box-shadow: ".$clp_options['loginform_shadow_x']."px ".$clp_options['loginform_shadow_y']."px ".$clp_options['loginform_shadow_softness']."px ".$clp_options['loginform_shadow_color'].";\r\n";
+		$loginform_style .= '-webkit-box-shadow: '.$clp_options['loginform_shadow_x'].'px '.$clp_options['loginform_shadow_y'].'px '.$clp_options['loginform_shadow_softness'].'px '.$clp_options['loginform_shadow_color'].';'.$eol;
+		$loginform_style .= '-moz-box-shadow: '.$clp_options['loginform_shadow_x'].'px '.$clp_options['loginform_shadow_y'].'px '.$clp_options['loginform_shadow_softness'].'px '.$clp_options['loginform_shadow_color'].';'.$eol;;
+		$loginform_style .= 'box-shadow: '.$clp_options['loginform_shadow_x'].'px '.$clp_options['loginform_shadow_y'].'px '.$clp_options['loginform_shadow_softness'].'px '.$clp_options['loginform_shadow_color'].';'.$eol;
 		
 	}
 	
 	if (!empty($clp_options['loginform_text_color'])) {
 		
-		$loginform_style .= "color: ".$clp_options['loginform_text_color']." !important;\r\n";
-		$label_style = "color: ".$clp_options['loginform_text_color']." !important;\r\n";
+		$loginform_style .= 'color: '.$clp_options['loginform_text_color'].' !important;'.$eol;
+		$label_style = 'color: '.$clp_options['loginform_text_color'].' !important;'.$eol;
 		
 	}
 	
 	# .login .message
 	
-	if (!empty($clp_options['loggedout_text_color'])) $loggedout_style = "color: ".$clp_options['loggedout_text_color'].";\r\n";
-	if (!empty($clp_options['loggedout_bg_color'])) $loggedout_style .= "background-color: ".$clp_options['loggedout_bg_color'].";\r\n";
-	if (!empty($clp_options['loggedout_border_color'])) $loggedout_style .= "border-color: ".$clp_options['loggedout_border_color'].";\r\n";
+	if (!empty($clp_options['loggedout_text_color'])) $loggedout_style = 'color: '.$clp_options['loggedout_text_color'].';'.$eol;
+	if (!empty($clp_options['loggedout_bg_color'])) $loggedout_style .= 'background-color: '.$clp_options['loggedout_bg_color'].';'.$eol;
+	if (!empty($clp_options['loggedout_border_color'])) $loggedout_style .= 'border-color: '.$clp_options['loggedout_border_color'].';'.$eol;
 	
 	# #login_error
 	
-	if (!empty($clp_options['error_text_color'])) $error_style = "color: ".$clp_options['error_text_color'].";\r\n";
-	if (!empty($clp_options['error_bg_color'])) $error_style .= "background-color: ".$clp_options['error_bg_color']." !important;\r\n";
-	if (!empty($clp_options['error_border_color'])) $error_style .= "border-color: ".$clp_options['error_border_color']." !important;\r\n";
+	if (!empty($clp_options['error_text_color'])) $error_style = 'color: '.$clp_options['error_text_color'].';'.$eol;
+	if (!empty($clp_options['error_bg_color'])) $error_style .= 'background-color: '.$clp_options['error_bg_color'].' !important;'.$eol;
+	if (!empty($clp_options['error_border_color'])) $error_style .= 'border-color: '.$clp_options['error_border_color'].' !important;'.$eol;
 	
 	# .input
 	
-	if (!empty($clp_options['input_text_color'])) $input_style = "color: ".$clp_options['input_text_color']." !important;\r\n";
-	if (!empty($clp_options['input_bg_color'])) $input_style .= "background-color: ".$clp_options['input_bg_color']." !important;\r\n";
-	if (!empty($clp_options['input_border_color'])) $input_style .= "border-color: ".$clp_options['input_border_color']." !important;\r\n";
+	if (!empty($clp_options['input_text_color'])) $input_style = 'color: '.$clp_options['input_text_color'].' !important;'.$eol;
+	if (!empty($clp_options['input_bg_color'])) $input_style .= 'background-color: '.$clp_options['input_bg_color'].' !important;'.$eol;
+	if (!empty($clp_options['input_border_color'])) $input_style .= 'border-color: '.$clp_options['input_border_color'].' !important;'.$eol;
 	
 	# #login_error a, .login #nav a, .login #backtoblog a
 	
-	if (!empty($clp_options['link_text_color'])) $link_style = "color: ".$clp_options['link_text_color']." !important;\r\n";
-	if (!empty($clp_options['link_textdecoration'])) $link_style .= "text-decoration: ".$clp_options['link_textdecoration']." !important;\r\n";
-	if (!empty($clp_options['link_shadow_x']) || $clp_options['link_shadow_x']=='0') $link_style .= "text-shadow: ".$clp_options['link_shadow_x']."px ".$clp_options['link_shadow_y']."px ".$clp_options['link_shadow_softness']."px ".$clp_options['link_shadow_color']." !important;\r\n";
-	if (!empty($link_style) && empty($clp_options['link_shadow_x'])) $link_style .= "text-shadow: none !important;\r\n";
+	if (!empty($clp_options['link_text_color'])) $link_style = 'color: '.$clp_options['link_text_color'].' !important;'.$eol;
+	if (!empty($clp_options['link_textdecoration'])) $link_style .= 'text-decoration: '.$clp_options['link_textdecoration'].' !important;'.$eol;
+	if (!empty($clp_options['link_shadow_x']) || $clp_options['link_shadow_x']=='0') $link_style .= 'text-shadow: '.$clp_options['link_shadow_x'].'px '.$clp_options['link_shadow_y'].'px '.$clp_options['link_shadow_softness'].'px '.$clp_options['link_shadow_color'].' !important;'.$eol;
+	if (!empty($link_style) && empty($clp_options['link_shadow_x'])) $link_style .= 'text-shadow: none !important;'.$eol;
 	
-	if (!empty($clp_options['hover_text_color'])) $hover_style = "color: ".$clp_options['hover_text_color']." !important;\r\n";
-	if (!empty($clp_options['hover_textdecoration'])) $hover_style .= "text-decoration: ".$clp_options['hover_textdecoration']." !important;\r\n";
-	if (!empty($clp_options['hover_shadow_x']) || $clp_options['hover_shadow_x']=='0') $hover_style .= "text-shadow: ".$clp_options['hover_shadow_x']."px ".$clp_options['hover_shadow_y']."px ".$clp_options['hover_shadow_softness']."px ".$clp_options['hover_shadow_color']." !important;\r\n";
+	if (!empty($clp_options['hover_text_color'])) $hover_style = 'color: '.$clp_options['hover_text_color'].' !important;'.$eol;
+	if (!empty($clp_options['hover_textdecoration'])) $hover_style .= 'text-decoration: '.$clp_options['hover_textdecoration'].' !important;'.$eol;
+	if (!empty($clp_options['hover_shadow_x']) || $clp_options['hover_shadow_x']=='0') $hover_style .= 'text-shadow: '.$clp_options['hover_shadow_x'].'px '.$clp_options['hover_shadow_y'].'px '.$clp_options['hover_shadow_softness'].'px '.$clp_options['hover_shadow_color'].' !important;'.$eol;
 	
 	# .button-primary
 	
 	if (!empty($clp_options['button_bg_color1'])) {
 		
-		$button_style = "background: transparent !important;\r\n";
-		$button_style .= "background-color: ".$clp_options['button_bg_color1']." !important;\r\n";
+		$button_style = 'background: transparent !important;'.$eol;
+		$button_style .= 'background-color: '.$clp_options['button_bg_color1'].' !important;'.$eol;
 		
 	}
 	if (!empty($clp_options['button_bg_color2'])) {
 		
-		$button_style .= "background-image: -webkit-gradient(linear, left top, left bottom, from(".$clp_options['button_bg_color1']."), to(".$clp_options['button_bg_color2'].")) !important;\r\n";
-		$button_style .= "background-image: -webkit-linear-gradient(top, ".$clp_options['button_bg_color1'].", ".$clp_options['button_bg_color2'].") !important;\r\n";
-		$button_style .= "background-image: -moz-linear-gradient(top, ".$clp_options['button_bg_color1'].", ".$clp_options['button_bg_color2'].") !important;\r\n";
-		$button_style .= "background-image: -ms-linear-gradient(top, ".$clp_options['button_bg_color1'].", ".$clp_options['button_bg_color2'].") !important;\r\n";
-		$button_style .= "background-image: -o-linear-gradient(top, ".$clp_options['button_bg_color1'].", ".$clp_options['button_bg_color2'].") !important;\r\n";
-		$button_style .= "background-image: -linear-gradient(top, ".$clp_options['button_bg_color1'].", ".$clp_options['button_bg_color2'].") !important;\r\n";
+		$button_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.$clp_options['button_bg_color1'].'), to('.$clp_options['button_bg_color2'].')) !important;'.$eol;
+		$button_style .= 'background-image: -webkit-linear-gradient(top, '.$clp_options['button_bg_color1'].', '.$clp_options['button_bg_color2'].') !important;'.$eol;
+		$button_style .= 'background-image: -moz-linear-gradient(top, '.$clp_options['button_bg_color1'].', '.$clp_options['button_bg_color2'].') !important;'.$eol;
+		$button_style .= 'background-image: -ms-linear-gradient(top, '.$clp_options['button_bg_color1'].', '.$clp_options['button_bg_color2'].') !important;'.$eol;
+		$button_style .= 'background-image: -o-linear-gradient(top, '.$clp_options['button_bg_color1'].', '.$clp_options['button_bg_color2'].') !important;'.$eol;
+		$button_style .= 'background-image: -linear-gradient(top, '.$clp_options['button_bg_color1'].', '.$clp_options['button_bg_color2'].') !important;'.$eol;
 		
 	}
-	if (!empty($clp_options['button_text_color'])) $button_style .= "color: ".$clp_options['button_text_color']." !important;\r\n";
-	if (!empty($clp_options['button_border_color'])) $button_style .= "border: solid 1px ".$clp_options['button_border_color']." !important;\r\n";
+	if (!empty($clp_options['button_text_color'])) $button_style .= 'color: '.$clp_options['button_text_color'].' !important;'.$eol;
+	if (!empty($clp_options['button_border_color'])) $button_style .= 'border: solid 1px '.$clp_options['button_border_color'].' !important;'.$eol;
 	
-	if (!empty($clp_options['btn_hover_bg_color1'])) $btn_hover_style = "background-color: ".$clp_options['btn_hover_bg_color1']." !important;\r\n";
+	if (!empty($clp_options['btn_hover_bg_color1'])) $btn_hover_style = 'background-color: '.$clp_options['btn_hover_bg_color1'].' !important;'.$eol;
 	if (!empty($clp_options['btn_hover_bg_color2'])) {
 		
-		$btn_hover_style .= "background-image: -webkit-gradient(linear, left top, left bottom, from(".$clp_options['btn_hover_bg_color1']."), to(".$clp_options['btn_hover_bg_color2'].")) !important;\r\n";
-		$btn_hover_style .= "background-image: -webkit-linear-gradient(top, ".$clp_options['btn_hover_bg_color1'].", ".$clp_options['btn_hover_bg_color2'].") !important;\r\n";
-		$btn_hover_style .= "background-image: -moz-linear-gradient(top, ".$clp_options['btn_hover_bg_color1'].", ".$clp_options['btn_hover_bg_color2'].") !important;\r\n";
-		$btn_hover_style .= "background-image: -ms-linear-gradient(top, ".$clp_options['btn_hover_bg_color1'].", ".$clp_options['btn_hover_bg_color2'].") !important;\r\n";
-		$btn_hover_style .= "background-image: -o-linear-gradient(top, ".$clp_options['btn_hover_bg_color1'].", ".$clp_options['btn_hover_bg_color2'].") !important;\r\n";
-		$btn_hover_style .= "background-image: -linear-gradient(top, ".$clp_options['btn_hover_bg_color1'].", ".$clp_options['btn_hover_bg_color2'].") !important;\r\n";
+		$btn_hover_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.$clp_options['btn_hover_bg_color1'].'), to('.$clp_options['btn_hover_bg_color2'].')) !important;'.$eol;
+		$btn_hover_style .= 'background-image: -webkit-linear-gradient(top, '.$clp_options['btn_hover_bg_color1'].', '.$clp_options['btn_hover_bg_color2'].') !important;'.$eol;
+		$btn_hover_style .= 'background-image: -moz-linear-gradient(top, '.$clp_options['btn_hover_bg_color1'].', '.$clp_options['btn_hover_bg_color2'].') !important;'.$eol;
+		$btn_hover_style .= 'background-image: -ms-linear-gradient(top, '.$clp_options['btn_hover_bg_color1'].', '.$clp_options['btn_hover_bg_color2'].') !important;'.$eol;
+		$btn_hover_style .= 'background-image: -o-linear-gradient(top, '.$clp_options['btn_hover_bg_color1'].', '.$clp_options['btn_hover_bg_color2'].') !important;'.$eol;
+		$btn_hover_style .= 'background-image: -linear-gradient(top, '.$clp_options['btn_hover_bg_color1'].', '.$clp_options['btn_hover_bg_color2'].') !important;'.$eol;
 		
 	}
-	if (!empty($clp_options['btn_hover_text_color'])) $btn_hover_style .= "color: ".$clp_options['btn_hover_text_color']." !important;\r\n";
-	if (!empty($clp_options['btn_hover_border_color'])) $btn_hover_style .= "border: solid 1px ".$clp_options['btn_hover_border_color']." !important;\r\n";
+	if (!empty($clp_options['btn_hover_text_color'])) $btn_hover_style .= 'color: '.$clp_options['btn_hover_text_color'].' !important;'.$eol;
+	if (!empty($clp_options['btn_hover_border_color'])) $btn_hover_style .= 'border: solid 1px '.$clp_options['btn_hover_border_color'].' !important;'.$eol;
 
 	#building the stylesheet
 	
-	$clp_css="@charset \"UTF-8\";\r\n/* CSS Document */\r\n\r\n";
+	$clp_css='@charset "UTF-8";'.$eol.'/* CSS Document */'.$eol.$eol;
 	
-	if(!empty($body_style)) $clp_css.="body {\r\n".$body_style."}\r\n";
-	if(!empty($h1_style)) $clp_css.="h1 a {\r\n".$h1_style."}\r\n";
-	if(!empty($logindiv_style)) $clp_css.="#login {\r\n".$logindiv_style."}\r\n";
-	if(!empty($loginform_style)) $clp_css.="#loginform, #lostpasswordform, #registerform {\r\n".$loginform_style."}\r\n";
-	if(!empty($label_style)) $clp_css.="#loginform label, #lostpasswordform label, #registerform label {\r\n".$label_style."}\r\n";
-	if(!empty($loggedout_style)) $clp_css.=".login .message {\r\n".$loggedout_style."}\r\n";
-	if(!empty($error_style)) $clp_css.="#login_error {\r\n".$error_style."}\r\n";
-	if(!empty($input_style)) $clp_css.=".input {\r\n".$input_style."}\r\n";
-	if(!empty($link_style)) $clp_css.="#login_error a, .login #nav a, .login #backtoblog a {\r\n".$link_style."}\r\n";
-	if(!empty($hover_style)) $clp_css.="#login_error a:hover, .login #nav a:hover, .login #backtoblog a:hover {\r\n".$hover_style."}\r\n";
-	if(!empty($button_style)) $clp_css.=".button-primary {\r\n".$button_style."}\r\n";
-	if(!empty($btn_hover_style)) $clp_css.=".button-primary:hover {\r\n".$btn_hover_style."}\r\n";
+	if(!empty($body_style)) $clp_css.='body {'.$eol.$body_style.'}'.$eol;
+	if(!empty($h1_style)) $clp_css.='h1 a {'.$eol.$h1_style.'}'.$eol;
+	if(!empty($logindiv_style)) $clp_css.='#login {'.$eol.$logindiv_style.'}'.$eol;
+	if(!empty($loginform_style)) $clp_css.='#loginform, #lostpasswordform, #registerform {'.$eol.$loginform_style.'}'.$eol;
+	if(!empty($label_style)) $clp_css.='#loginform label, #lostpasswordform label, #registerform label {'.$eol.$label_style.'}'.$eol;
+	if(!empty($loggedout_style)) $clp_css.='.login .message {'.$eol.$loggedout_style.'}'.$eol;
+	if(!empty($error_style)) $clp_css.='#login_error {'.$eol.$error_style.'}'.$eol;
+	if(!empty($input_style)) $clp_css.='.input {'.$eol.$input_style.'}'.$eol;
+	if(!empty($link_style)) $clp_css.='#login_error a, .login #nav a, .login #backtoblog a {'.$eol.$link_style.'}'.$eol;
+	if(!empty($hover_style)) $clp_css.='#login_error a:hover, .login #nav a:hover, .login #backtoblog a:hover {'.$eol.$hover_style.'}'.$eol;
+	if(!empty($button_style)) $clp_css.='.button-primary {'.$eol.$button_style.'}'.$eol;
+	if(!empty($btn_hover_style)) $clp_css.='.button-primary:hover {'.$eol.$btn_hover_style.'}'.$eol;
 
 	return $clp_css;
 	
@@ -1044,6 +1073,17 @@ function clp_css_template() {
 			   
                exit;
        }
+}
+
+add_action('init','clp_penisverlaengerung');
+function clp_penisverlaengerung() {
+	
+	if (is_page('login')) :
+	
+		wp_deregister_style('wp-admin');
+		
+	endif;
+
 }
 
 ?>
