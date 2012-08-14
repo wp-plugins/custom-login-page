@@ -1,0 +1,398 @@
+# Copyright (C) 2010 A5 Custom Login Page
+# This file is distributed under the same license as the A5 Custom Login Page package.
+msgid ""
+msgstr ""
+"Project-Id-Version: A5 Custom Login Page 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-07-27 12:52+0100\n"
+"PO-Revision-Date: 2012-07-27 12:54+0100\n"
+"Last-Translator: Jorge Ballesteros <jballesterosruiz@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Spanish\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: /Users/jballesterosruiz/Downloads/src/custom-login-page\n"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:48
+msgid "FAQ"
+msgstr "FAQ"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:49
+msgid "Donate"
+msgstr "Donar"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:61
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:239
+msgid "Settings"
+msgstr "Configuración"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:221
+msgid "Saving..."
+msgstr "Guardando..."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:249
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:302
+msgid "Body"
+msgstr "Body"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:250
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:367
+msgid "Login Container"
+msgstr "Fomulario Contenedor"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:251
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:451
+msgid "Login Form"
+msgstr "Fomulario Acceso"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:252
+msgid "Button"
+msgstr "Botón"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:253
+msgid "Messages and Input Fields"
+msgstr "Mensajes y Campos"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:254
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:612
+msgid "Links"
+msgstr "Enlaces"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:264
+msgid "Logo URL"
+msgstr "Logo URL"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:266
+msgid "URL to link to"
+msgstr "URL a enlazar"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:268
+msgid "Title tag of the logo"
+msgstr "Etiqueta Title del logo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:272
+msgid "Logo"
+msgstr "Logo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:274
+msgid "You can enter the url of the logo, that you want to have in place of the WP logo on the login screen. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here."
+msgstr "Puedes introducir la url del logo al que quieras que enlace el logo de WP en la pantalla de acceso. Sube una imagen ( mejor en png o gif con fondo transparente) a través de la sección Multimedia y copia la URL del fichero."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:275
+msgid "In the URL field, you enter the URL to which the logo should link."
+msgstr "En el campo URL, introduce la URL a donde quieres que apunte el logo."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:276
+msgid "Title refers to the title tag behind the logo."
+msgstr "Esto se refiere a la etiqueta tras el logo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:277
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:305
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:373
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:389
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:457
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:494
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:521
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:540
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:556
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:615
+msgid "You can leave any of the fields empty to keep the default settings of Wordpress."
+msgstr "Puedes dejar cualquier campo vacío para mantener los ajustes originales de WordPress."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:283
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:321
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:405
+msgid "Background Picture"
+msgstr "Imagen de Fondo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:285
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:323
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:407
+msgid "Background Repeat"
+msgstr "Repetir Imagen de Fondo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:287
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:325
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:409
+msgid "default"
+msgstr "por defecto"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:292
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:330
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:414
+msgid "Position of the Background Picture"
+msgstr "Posición de la Imagen de Fondo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:294
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:332
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:416
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:473
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:512
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:529
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:548
+msgid "Background Colour"
+msgstr "Color del Fondo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:296
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:334
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:418
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:475
+msgid "Second Background Colour (for Gradient)"
+msgstr "Color Secundario de Fondo (Gradiente)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:298
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:336
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:420
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:477
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:510
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:527
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:546
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:572
+msgid "Text Colour"
+msgstr "Color del Texto"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:303
+msgid "You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
+msgstr "Puedes introducir la URL de la imagen de fondo que quieras mostrar en la página de acceso. Sube una imagen ( mejor en png o gif con fondo transparente) a través de la sección Multimedia y copia la URL del fichero. Dejálo vacío si no quieres mostrar ninguna imagen. Las imágenes se repetirán por defecto. Puedes ajustar la dirección de repetición de las mismas y si se repiten o no."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:304
+msgid "In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up."
+msgstr "En la última sección, selecciona el color de fondo y el texto en el elemento body del html. Si seleccionas dos colores de fondo, se creara un gradiente. El color 1 siempre será el superior."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:312
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:396
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:464
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:501
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:563
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:622
+msgid "Save style"
+msgstr "Guardar estilo"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:338
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:422
+msgid "Border Style"
+msgstr "Estilo Borde"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:340
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:424
+msgid "choose a border style"
+msgstr "selecciona estilo de borde"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:351
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:435
+msgid "Border Width (in px)"
+msgstr "Ancho Borde (px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:353
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:437
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:479
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:514
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:531
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:550
+msgid "Border Colour"
+msgstr "Color Borde"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:355
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:439
+msgid "Rounded Corners (in px)"
+msgstr "Esquinas Redondeadas (px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:357
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:441
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:583
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:602
+msgid "Shadow (x-direction in px)"
+msgstr "Sombra (x-direction en px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:359
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:443
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:585
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:604
+msgid "Shadow (y-direction in px)"
+msgstr "Sombra (y-direction en px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:361
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:445
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:587
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:606
+msgid "Shadow (softness in px)"
+msgstr "Sombra (suvizado en px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:363
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:447
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:589
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:608
+msgid "Shadow Colour"
+msgstr "Color Sombra"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:369
+msgid "You can enter the url of the background picture, that you want to have on the login container. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39;center top&#39;."
+msgstr "Puedes introducir la URL de la imagen de fondo que quieras mostrar en la página de acceso. Sube una imagen ( mejor en png o gif con fondo transparente) a través de la sección Multimedia y copia la URL del fichero. Dejálo vacío si no quieres mostrar ninguna imagen. Las imágenes se repetirán por defecto. Puedes ajustar la dirección de repetición de las mismas y si se repiten o no."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:370
+msgid "In the next section, you choose the background colour and the colour of the text in the login container. If you give two background colours, you can create a gradient. Colour no. 1 will always be up."
+msgstr "En la siguiente sección, selecciona el color de fondo y el color del texto en el contenedor de acceso. Si seleccionas dos colores se creará un gradiente. El Color 1 sera siempre el superior."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:371
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:455
+msgid "Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers)."
+msgstr "Selecciona un borde, si quieres uno. Define el estilo, ancho y si quieres que tenga esquinas redondeadas o no (no esta soportado en todos los navegadores)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:372
+msgid "At last, give the container a shadow (is not supported by all browsers)."
+msgstr "Finalmente, dale una forma a la sombra"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:379
+msgid "Position (x-direction in px)"
+msgstr "Sombra (x-direction en px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:381
+msgid "Position (y-direction in px)"
+msgstr "Sombra (y-direction en px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:383
+msgid "Margin (in px)"
+msgstr "Márgen (px)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:387
+msgid "Position of the Login Container"
+msgstr "Posición del Contenedor Acceso"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:388
+msgid "Here you can give the whole login container a position. If you enter &#39;0&#39; in both of the fields, it will be in the top left corner. The margin defines the empty space around the container."
+msgstr "Puedes fijar la posición del contenedor. Si  introduces &#39;0&#39; en ambos campos, se situará en la esquina superior izquierda. El márgen define el espacio libre alrededor del contenedor."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:453
+msgid "You can enter the url of the background picture, that you want to have in the login form. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
+msgstr "Puedes introducir la URL de la imagen de fondo que quieras mostrar en la página de acceso. Sube una imagen ( mejor en png o gif con fondo transparente) a través de la sección Multimedia y copia la URL del fichero. Dejálo vacío si no quieres mostrar ninguna imagen. Las imágenes se repetirán por defecto. Puedes ajustar la dirección de repetición de las mismas y si se repiten o no."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:454
+msgid "In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up."
+msgstr "En la siguiente sección, selecciona el color de fondo y el color del texto en el formulario de acceso. Si seleccionas dos colores se creará un gradiente. El Color 1 sera siempre el superior."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:456
+msgid "At last, give the form a shadow (is not supported by all browsers)."
+msgstr "Finalmente, dale una forma a la sombra"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:481
+msgid "Hover Background Colour"
+msgstr "Color de Fondo Hover"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:483
+msgid "Second Hover Background Colour (for Gradient)"
+msgstr "Color de Fondo Hover (Gradiente)"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:485
+msgid "Hover Text Colour"
+msgstr "Color Texto Hover"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:487
+msgid "Hover Border Colour"
+msgstr "Color Borde Hover"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:491
+msgid "Submit Button"
+msgstr "Botón Envío"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:493
+msgid "Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then."
+msgstr "Introduce el color de fondo y borde del botón de envío. El botón parecerá estático si no das valores al estado hover."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:518
+msgid "Logged Out Message"
+msgstr "Mensaje Salida"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:520
+msgid "This changes the colours of the text container, that appears, when you have successfully logged out."
+msgstr "Modifica los colores del contenedor del texto, que aparece cuando has salido de manera satisfactoria."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:533
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:537
+msgid "Error Message"
+msgstr "Mensaje Error"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:538
+msgid "This changes the colours of the text container, that appears, when you get an error logging in."
+msgstr "Modifica los colores del contenedor del texto, que aparece cuando se ha producido un error al entrar."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:539
+msgid "Furthermore, you can enter your own error message here. By default, Wordpress says that either the username or the password is wrong, which is perhaps a hint to foreigners that you don&#39;t wish to give."
+msgstr "Además, puedes introducir tu propio mensaje de error."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:554
+msgid "Input Fields"
+msgstr "Campos"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:555
+msgid "This changes the colours of the name and password fields of the log in form."
+msgstr "Modifica los colores de los campos de usuario y contraseña del formulario."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:574
+msgid "Text Decoration"
+msgstr "Decorado Texto"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:576
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:595
+msgid "choose a text decoration"
+msgstr "selecciona una decoración del texto"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:591
+msgid "Hover Colour"
+msgstr "Color Hover"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:593
+msgid "Hover Text Decoration"
+msgstr "Decorado Texto Hover"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:614
+msgid "Style the links by giving a text colour, text decoration and shadow for the link and the hover style."
+msgstr "Fija el estilo de los enlaces modificando el color del texto, la decoración y la sombra del enlace."
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:659
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:687
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:723
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:756
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:783
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:812
+msgid "Error in Datatransfer."
+msgstr "Error en Transferencia de Datos"
+
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:674
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:710
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:743
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:770
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:799
+#: /Users/jballesterosruiz/Downloads/src/custom-login-page/custom-login-page.php:830
+msgid "Settings saved"
+msgstr "Ajustes guardados"
+
+#~ msgid "Save Changes"
+#~ msgstr "Guardar cambios"
+
+#~ msgid "A5 Custom Login Page"
+#~ msgstr "A5 Custom Login Page"
+
+#~ msgid ""
+#~ "http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/custom-login-"
+#~ "page"
+#~ msgstr ""
+#~ "http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/custom-login-"
+#~ "page"
+
+#~ msgid ""
+#~ "Just customize your loginpage (or that of your community etc.) by giving "
+#~ "the WP login page a different look, with your own logo and special "
+#~ "colours and styles."
+#~ msgstr ""
+#~ "Customiza tu página de acceso (or that of your community etc.) "
+#~ "modificando el logo los colores y estilos, dándole así una apariencia "
+#~ "diferente."
+
+#~ msgid "Waldemar Stoffel"
+#~ msgstr "Waldemar Stoffel"
+
+#~ msgid "http://www.waldemarstoffel.com"
+#~ msgstr "http://www.waldemarstoffel.com"
