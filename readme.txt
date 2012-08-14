@@ -3,8 +3,8 @@ Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
-Tested up to: 3.4
-Stable tag: 1.4
+Tested up to: 3.5
+Stable tag: 1.4.1
 
 Style your login page differently.
 
@@ -38,6 +38,10 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 1.4.1 =
+
+* Spanish translation added
 
 = 1.4 =
 
@@ -77,3 +81,7 @@ Small bugfix that caused issues in WP 3.4
 = 1.4 =
 
 You can now enter a custom error message
+
+= 1.4.1 =
+
+Spanish translation added
