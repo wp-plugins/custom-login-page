@@ -2,10 +2,10 @@
 # This file is distributed under the same license as the A5 Custom Login Page package.
 msgid ""
 msgstr ""
-"Project-Id-Version: A5 Custom Login Page 1.4.1\n"
+"Project-Id-Version: A5 Custom Login Page 1.5\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-login-page\n"
 "POT-Creation-Date: 2012-08-16 05:52:15+00:00\n"
-"PO-Revision-Date: 2012-08-16 09:54+0200\n"
+"PO-Revision-Date: 2012-08-16 14:56+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -103,29 +103,31 @@ msgstr ""
 
 #: custom-login-page.php:278
 msgid "Width of the Logo (in px)"
-msgstr ""
+msgstr "Ancho del Logo (px)"
 
 #: custom-login-page.php:280
 msgid "Height of the Logo (in px)"
-msgstr ""
+msgstr "Altura del Logo (px)"
 
 #: custom-login-page.php:282
 msgid "Width of the Logo Container (in px)"
-msgstr ""
+msgstr "Ancho del contenedor del Logo (px)"
 
 #: custom-login-page.php:284
 msgid "Height of the Logo Container (in px)"
-msgstr ""
+msgstr "Altura del contenedor del Logo (px)"
 
 #: custom-login-page.php:288
 msgid "Position and Size of the Logo"
-msgstr ""
+msgstr "Posición y Tamaño del Logo"
 
 #: custom-login-page.php:290
 msgid ""
 "If your logo is larger than the default WP-logo (274px by 63px), you can "
 "enter the width and the height of it here."
 msgstr ""
+"Si tu logo es más grande sue original de WP (274px by 63px), puedes "
+"modificar la altura y el ancho aquí."
 
 #: custom-login-page.php:291
 msgid ""
@@ -133,6 +135,9 @@ msgid ""
 "They are used to move the Logo around, since the background-position is "
 "always &#39;center top&#39;."
 msgstr ""
+"La altura y el ancho del contenedor del logo es por defecto 326px y 67px "
+"respectivamente. Estos valores se pueden utilizar para mover el logo ya que "
+"el parámetro background-position es siempre &#39;center top&#39;."
 
 #: custom-login-page.php:298 custom-login-page.php:336
 #: custom-login-page.php:427
@@ -203,7 +208,7 @@ msgstr ""
 #: custom-login-page.php:492 custom-login-page.php:529
 #: custom-login-page.php:591 custom-login-page.php:650
 msgid "Save Changes"
-msgstr ""
+msgstr "Guardar Cambios"
 
 #: custom-login-page.php:327 custom-login-page.php:418
 #: custom-login-page.php:493 custom-login-page.php:530
@@ -213,7 +218,7 @@ msgstr "Guardar estilo"
 
 #: custom-login-page.php:353 custom-login-page.php:444
 msgid "Transparency (in percent)"
-msgstr ""
+msgstr "Transparencia (%)"
 
 #: custom-login-page.php:355 custom-login-page.php:446
 msgid "Border Style"
@@ -307,19 +312,19 @@ msgstr "Posición (y-direction en px)"
 
 #: custom-login-page.php:400
 msgid "Width (in px)"
-msgstr ""
+msgstr "Ancho (px)"
 
 #: custom-login-page.php:402
 msgid "Height (in px)"
-msgstr ""
+msgstr "Altura (px)"
 
 #: custom-login-page.php:404 custom-login-page.php:467
 msgid "Padding"
-msgstr ""
+msgstr "Padding"
 
 #: custom-login-page.php:408
 msgid "Position and Size of the Login Container"
-msgstr ""
+msgstr "Posición y Tamaño del Contenedor del Logo"
 
 #: custom-login-page.php:409
 msgid ""
@@ -335,6 +340,8 @@ msgid ""
 "The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the "
 "default padding of the login container)."
 msgstr ""
+"El atributo padding se especifica como un valor de css, por ejemplo, "
+"&#39;144px 0 0&#39; (que es el valor por defecto)."
 
 #: custom-login-page.php:465
 msgid "Margin"
@@ -372,6 +379,9 @@ msgid ""
 "8px by default and a padding of 26px 24px 46px. By changing the top and the "
 "bottom padding, you can stretch the form in its length."
 msgstr ""
+"Los atributos padding y márgen se especifican como valorous de css. Existe "
+"un márgen de 8px  y un padding de 26px 24px 46px por defecto. Cambiando el "
+"padding top y bottom, puedes estirar a lo largo."
 
 #: custom-login-page.php:485
 msgid "At last, give the form a shadow (is not supported by all browsers)."
@@ -502,10 +512,13 @@ msgid ""
 "the WP login page a different look, with your own logo and special colours "
 "and styles."
 msgstr ""
+"Customiza tu página de inicio (o la de tu comunidad) dándole una apariencia "
+"diferente, añadiendo con tu propio logo y modificando colores y estilos "
+"especiales."
 
 #. Author of the plugin/theme
 msgid "Waldemar Stoffel"
-msgstr "Waldfemar Stoffel"
+msgstr "Waldemar Stoffel"
 
 #. Author URI of the plugin/theme
 msgid "http://www.waldemarstoffel.com"

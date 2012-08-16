@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 1.4.1
+Stable tag: 1.5
 
 Style your login page differently.
 
@@ -45,7 +45,7 @@ We are planning some more advanced features in the future such as
 
 = 1.4.1 =
 
-* Spanish translation added
+* Spanish translation added thanks to [Jorge Ballesteros](http://profiles.wordpress.org/jballesterosruiz/)
 
 = 1.4 =
 
@@ -89,3 +89,7 @@ You can now enter a custom error message
 = 1.4.1 =
 
 Spanish translation added
+
+= 1.5 =
+
+Login container and login form can now be resized and positioned; size of the logo can be changed

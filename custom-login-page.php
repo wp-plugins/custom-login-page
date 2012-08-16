@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.4.1
+Version: 1.5
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -26,6 +26,17 @@ Text Domain: custom-login-page
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
+
+/**
+ * ------------------------------------------------------
+ *  ACKNOWLEDGEMENTS
+ * ------------------------------------------------------
+ * 
+ * Thx to Jorge Ballesteros - http://motivando.me
+ * for the translation into Spanish
+ *
+ * ------------------------------------------------------
+ */
 
 /**
  *
@@ -231,7 +242,7 @@ class A5_CustomLoginPage {
 	
 		?>
 		
-	<table width="100%" cellpadding="2" cellspacing="0"><tr><td valign="middle" width="380"><h2 style="margin:0 30px 0 0; padding: 5px 0 5px 0;">
+	<table width="100%" cellpadding="2" cellspacing="0"><tr><td valign="middle" width="380"><a href="<?php _e('http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page'); ?>"><div id="a5-logo" class="icon32" style="background: url('<?php echo plugins_url('/img/a5-icon-34.png', __FILE__);?>');"></div></a><h2 style="margin:0 30px 0 0; padding: 5px 0 5px 0;">
 	A5 Custom Login Page <?php _e('Settings', self::language_file); ?></h2></td><td valign="middle">&nbsp;</td>
 	</tr></table>
 	
