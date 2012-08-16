@@ -54,6 +54,7 @@ div.tabcontent {
 	margin:0;
 	padding: 3px;
 	border: none;
+	text-shadow: none;
 } 
 .clp-container input, select, textarea { 
 	background: #d7d7ed;

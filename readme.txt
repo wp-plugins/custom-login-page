@@ -39,6 +39,10 @@ We are planning some more advanced features in the future such as
 
 == Changelog ==
 
+= 1.5 =
+
+* Login container and login form can now be resized and positioned; size of the logo can be changed
+
 = 1.4.1 =
 
 * Spanish translation added
