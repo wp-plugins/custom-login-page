@@ -16,95 +16,25 @@
  
 	List of field functions with their parameters:
 
-	a5_textarea($field_name, $value, [$label], [$style], [$class], [$rows], [$cols], [$space], [$echo])
-
-	a5_checkbox($field_name, $value, [$label], [$style], [$class], [$space], [$echo])
-
-	a5_radio($field_name, array($value), [$label], [$style], [$class], [$space], [$echo])
-
-	a5_select($field_name, $value, array($options), [$label], [$default], [$style], [$class], [$space], [$echo])
-
-	a5_checkgroup($field_name, array($value), [$label], [$checkall], [$style], [$class], [$space], [$echo])
-
-	a5_hidden_field($field_name, $value, [$echo])
-
-	a5_text_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_color_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_date_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_datetime_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_datetime_local_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_email_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_month_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_number_field($field_name, $value, [$label], [$size], [$step], [$min], [$max], [$style], [$class], [$space], [$echo])
-
-	a5_range_field($field_name, $value, $min, $max, [$label], [$step], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_search_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_tel_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_time_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_url_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_week_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_resize_textarea($field_name, [$echo])
+	a5_open_page($id, [$echo])
 	
-/**************************************************************************************************/
-
-/***************************************************************************************************
- 
-	List of page functions with their parameters:
-
-	a5_textarea($field_name, $value, [$label], [$style], [$class], [$rows], [$cols], [$space], [$echo])
-
-	a5_checkbox($field_name, $value, [$label], [$style], [$class], [$space], [$echo])
-
-	a5_radio($field_name, array($value), [$label], [$style], [$class], [$space], [$echo])
-
-	a5_select($field_name, $value, array($options), [$label], [$default], [$style], [$class], [$space], [$echo])
-
-	a5_checkgroup($field_name, array($value), [$label], [$checkall], [$style], [$class], [$space], [$echo])
-
-	a5_hidden_field($field_name, $value, [$echo])
-
-	a5_text_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_color_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_date_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_datetime_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_datetime_local_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_email_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_month_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_number_field($field_name, $value, [$label], [$size], [$step], [$min], [$max], [$style], [$class], [$space], [$echo])
-
-	a5_range_field($field_name, $value, $min, $max, [$label], [$step], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_search_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_tel_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_time_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_url_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_week_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
-
-	a5_resize_textarea($field_name, [$echo])
+	a5_next_page($id, [$echo])
+	
+	a5_close_page([$echo])
+	
+	a5_open_section([$echo])
+	
+	a5_next_section([$echo])
+	
+	a5_close_section([$echo])
+	
+	a5_container_left(array($fields), [$echo])
+	
+	a5_container_right($headline, array($text), [$special], [array($message, $priority)], [$echo])
+	
+	a5_submit_button($name, $button_text, [$text], [$echo])
+	
+	a5_nav_js([$echo])
 	
 /**************************************************************************************************/
 
