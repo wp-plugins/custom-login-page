@@ -9,7 +9,7 @@ div.tabcontent {
 	display:none;
 	width: auto;
 }
-.clp-container { 
+.a5-option-container { 
 	width: auto 100%;
 	border: solid 3px #7b4bbe;
 	background-color: #85bad6;
@@ -20,14 +20,14 @@ div.tabcontent {
 	-webkit-border-radius: 10px;
 	border-radius: 10px;	
 }
-.clp-container h3.infohighlight-header {
+.a5-option-container h3.infohighlight-header {
 	color: #06689d;
 	margin: 30px 0 10px 0;
 	font-family:georgia;
 	font-weight:normal;
 	font-size: 20px;
 } 
-.clp-container-left { 
+.a5-option-container-left { 
 	display: block;
 	float: left;
 	text-align: right;
@@ -36,67 +36,68 @@ div.tabcontent {
 	margin: 0;
 	padding: 10px;
 } 
-.clp-container-right { 
+.a5-option-container-right { 
 	display: block;
 	float: right;
 	width: 58%;
 	margin: 0;
 	padding: 10px;
 } 
-.clp-container-full { 
+.a5-option-container-full { 
 	width: auto;
 	margin: 0;
 	padding: 10px; 
 } 
-.clp-container h2 { 
+.a5-option-container h2 { 
 	font-size: 1.5em;
 	color: #06689d;
 	margin:0;
-	padding: 3px;
+	padding: 3px 0;
 	border: none;
+	text-shadow: none;
 } 
-.clp-container input, select, textarea { 
+.a5-option-container input, select, textarea { 
 	background: #d7d7ed;
 }
-.clp-container label {
+.a5-option-container label {
 	font-size: 16px;
 	font-weight: bold;
 	color: #06689d;
 	display: block;
 	margin-bottom: 5px;
 }
-.clp-container-left label {
+.a5-option-container-left label {
 	margin-bottom: 0;
 }
-.clp-container input, 
-.clp-container-left textarea, 
-.clp-container-left select { 
+.a5-option-container input, 
+.a5-option-container-left textarea, 
+.a5-option-container-left select { 
 	margin: 7px 0 4px 7px;
 }
-.clp-container-left textarea {
+.a5-option-container-left textarea {
 	height: 1em;
 	width: 90%;
 }
-ul#clp-optiontabs,
-ul#clp-pagetabs {
+ul#a5-optiontabs,
+ul#a5-pagetabs {
 	text-align: left;
 	list-style-type: none;
 	margin: 0 0 0 0;
 	padding: 0;
 	-moz-padding-start: 0;
 } 
-ul#clp-optiontabs li,
-ul#clp-pagetabs li {
+ul#a5-optiontabs li,
+ul#a5-pagetabs li {
 	width: 190px;
 	list-style-type: none;
 	margin-bottom: 0; 
 } 
-ul#clp-optiontabs li a:link, 
-ul#clp-optiontabs li a:visited, 
-ul#clp-optiontabs li a:active,
-ul#clp-pagetabs li a:link, 
-ul#clp-pagetabs li a:visited, 
-ul#clp-pagetabs li a:active {
+ul#a5-optiontabs li a:link, 
+ul#a5-optiontabs li a:visited, 
+ul#a5-optiontabs li a:active,
+ul#a5-pagetabs li a:link, 
+ul#a5-pagetabs li a:visited, 
+ul#a5-pagetabs li a:active {
 	display: -moz-inline-box;
 	display: inline-block;
 	white-space: nowrap;
@@ -117,32 +118,32 @@ ul#clp-pagetabs li a:active {
 	border-radius: 3px;
 	width: 170px;
 } 
-ul#clp-optiontabs li a:hover,
-ul#clp-pagetabs li a:hover {
+ul#a5-optiontabs li a:hover,
+ul#a5-pagetabs li a:hover {
 	border: 2px solid #7b4bbe;
 	background-color: #ffffff;
 	color: #06689d;
 } 
-ul#clp-optiontabs li a.selected,
-ul#clp-pagetabs li a.selected {
+ul#a5-optiontabs li a.selected,
+ul#a5-pagetabs li a.selected {
 	border: 2px solid #1c1163;
 	background-color: #5d00ff;
 	color: #ffffff !important;
 	outline: 0;
 }
-table.clp-optiontable-layout {
+table.a5-optiontable-layout {
 	border-collapse: collapse;
 	background-color: #d7d7ed;
 }
-table.clp-optiontable-layout th, 
-table.clp-optiontable-layout td {
+table.a5-optiontable-layout th, 
+table.a5-optiontable-layout td {
 	border: 1px #06689d solid; 
 	text-align: center;
 	font-size: 0.7 em;
 	height: 20px;
 
 }
-table.clp-optiontable {
+table.a5-optiontable {
 	text-align: left;
 	vertical-align: top;
 	white-space: wrap;
@@ -150,21 +151,21 @@ table.clp-optiontable {
 	border-collapse: collapse; 
 	border: solid 1px #06689d;	
 } 
-table.clp-optiontable input {
+table.a5-optiontable input {
 	margin: 0 2px 0 2px;
 	padding: 2px;
 } 
-table.clp-optiontable input.color {
+table.a5-optiontable input.color {
 	text-align: right;
 } 
-table.clp-optiontable thead tr td {
+table.a5-optiontable thead tr td {
 	line-height: 11px; 
 }  
-table.clp-optiontable td {
+table.a5-optiontable td {
 	vertical-align: middle;
 	padding: 1px 3px;
 } 
-table.clp-optiontable thead td {
+table.a5-optiontable thead td {
 	text-align: left;
 	background-color: #d7d7ed;
 	font-weight: bold;
