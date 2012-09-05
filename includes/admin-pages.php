@@ -14,7 +14,7 @@
  
 /***************************************************************************************************
  
-	List of field functions with all parameters:
+	List of field functions with their parameters:
 
 	a5_textarea($field_name, $value, [$label], [$style], [$class], [$rows], [$cols], [$space], [$echo])
 
@@ -60,7 +60,55 @@
 	
 /**************************************************************************************************/
 
-$control = new A5_OptionPage;
+/***************************************************************************************************
+ 
+	List of page functions with their parameters:
+
+	a5_textarea($field_name, $value, [$label], [$style], [$class], [$rows], [$cols], [$space], [$echo])
+
+	a5_checkbox($field_name, $value, [$label], [$style], [$class], [$space], [$echo])
+
+	a5_radio($field_name, array($value), [$label], [$style], [$class], [$space], [$echo])
+
+	a5_select($field_name, $value, array($options), [$label], [$default], [$style], [$class], [$space], [$echo])
+
+	a5_checkgroup($field_name, array($value), [$label], [$checkall], [$style], [$class], [$space], [$echo])
+
+	a5_hidden_field($field_name, $value, [$echo])
+
+	a5_text_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_color_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_date_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_datetime_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_datetime_local_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_email_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_month_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_number_field($field_name, $value, [$label], [$size], [$step], [$min], [$max], [$style], [$class], [$space], [$echo])
+
+	a5_range_field($field_name, $value, $min, $max, [$label], [$step], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_search_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_tel_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_time_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_url_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_week_field($field_name, $value, [$label], [$size], [$style], [$class], [$space], [$echo])
+
+	a5_resize_textarea($field_name, [$echo])
+	
+/**************************************************************************************************/
+
+$a5_option_page = new A5_OptionPage;
  
 /**
  *
@@ -82,7 +130,7 @@ function a5_option_page_version() {
  
 function a5_textarea($field_name, $value, $label = false, $style = false, $class = false, $rows = false, $cols = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'textarera',
 					'field_name' => $field_name,
@@ -96,7 +144,7 @@ function a5_textarea($field_name, $value, $label = false, $style = false, $class
 					'echo' => $echo
 					);
 					
-	$textearea = $control->input_field($args);
+	$textearea = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $textarea;
 	
@@ -110,7 +158,7 @@ function a5_textarea($field_name, $value, $label = false, $style = false, $class
  
 function a5_checkbox($field_name, $value, $label = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'checkbox',
 					'field_name' => $field_name,
@@ -122,7 +170,7 @@ function a5_checkbox($field_name, $value, $label = false, $style = false, $class
 					'echo' => $echo
 					);
 					
-	$checkbox = $control->input_field($args);
+	$checkbox = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $checkbox;	
 	
@@ -136,7 +184,7 @@ function a5_checkbox($field_name, $value, $label = false, $style = false, $class
  
 function a5_radio($field_name, $value, $label = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'radio',
 					'field_name' => $field_name,
@@ -148,7 +196,7 @@ function a5_radio($field_name, $value, $label = false, $style = false, $class = 
 					'echo' => $echo
 					);
 					
-	$radio = $control->input_field($args);
+	$radio = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $radio;
 	
@@ -162,7 +210,7 @@ function a5_radio($field_name, $value, $label = false, $style = false, $class = 
  
 function a5_select($field_name, $value, $options, $label = false, $default = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'select',
 					'field_name' => $field_name,
@@ -176,7 +224,7 @@ function a5_select($field_name, $value, $options, $label = false, $default = fal
 					'echo' => $echo
 					);
 					
-	$select = $control->input_field($args);
+	$select = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $select;
 	
@@ -190,7 +238,7 @@ function a5_select($field_name, $value, $options, $label = false, $default = fal
  
 function a5_checkgroup($field_name, $value, $label = false, $checkall = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'checkgroup',
 					'field_name' => $field_name,
@@ -203,7 +251,7 @@ function a5_checkgroup($field_name, $value, $label = false, $checkall = false, $
 					'echo' => $echo
 					);
 					
-	$checkgroup = $control->input_field($args);
+	$checkgroup = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $checkgroup;
 	
@@ -220,14 +268,14 @@ function a5_resize_textarea($field_name, $echo = false) {
 	
 	if (!is_array($field_name)) $fieldname[]=$field_name;
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'resize',
 					'field_name' => $field_name,
 					'echo' => $echo
 					);
 					
-	$resize = $control->input_field($args);
+	$resize = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $resize;
 }
@@ -240,7 +288,7 @@ function a5_resize_textarea($field_name, $echo = false) {
  
 function a5_hidden_field($field_name, $value, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'hidden',
 					'field_name' => $field_name,
@@ -248,7 +296,7 @@ function a5_hidden_field($field_name, $value, $echo = false) {
 					'echo' => $echo
 					);
 					
-	$hidden_field = $control->input_field($args);
+	$hidden_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $hidden_field;
 	
@@ -262,7 +310,7 @@ function a5_hidden_field($field_name, $value, $echo = false) {
  
 function a5_text_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'text',
 					'field_name' => $field_name,
@@ -275,7 +323,7 @@ function a5_text_field($field_name, $value, $label = false, $size = false, $styl
 					'echo' => $echo
 					);
 					
-	$text_field = $control->input_field($args);
+	$text_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $text_field;
 	
@@ -289,7 +337,7 @@ function a5_text_field($field_name, $value, $label = false, $size = false, $styl
  
 function a5_color_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'color',
 					'field_name' => $field_name,
@@ -302,7 +350,7 @@ function a5_color_field($field_name, $value, $label = false, $size = false, $sty
 					'echo' => $echo
 					);
 					
-	$color_field = $control->input_field($args);
+	$color_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $color_field;
 	
@@ -316,7 +364,7 @@ function a5_color_field($field_name, $value, $label = false, $size = false, $sty
  
 function a5_date_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'date',
 					'field_name' => $field_name,
@@ -329,7 +377,7 @@ function a5_date_field($field_name, $value, $label = false, $size = false, $styl
 					'echo' => $echo
 					);
 					
-	$date_field = $control->input_field($args);
+	$date_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $date_field;
 	
@@ -343,7 +391,7 @@ function a5_date_field($field_name, $value, $label = false, $size = false, $styl
  
 function a5_datetime_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'datetime',
 					'field_name' => $field_name,
@@ -356,7 +404,7 @@ function a5_datetime_field($field_name, $value, $label = false, $size = false, $
 					'echo' => $echo
 					);
 					
-	$datetime_field = $control->input_field($args);
+	$datetime_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $datetime_field;
 	
@@ -370,7 +418,7 @@ function a5_datetime_field($field_name, $value, $label = false, $size = false, $
  
 function a5_datetime_local_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'datetime-local',
 					'field_name' => $field_name,
@@ -383,7 +431,7 @@ function a5_datetime_local_field($field_name, $value, $label = false, $size = fa
 					'echo' => $echo
 					);
 					
-	$datetime_local_field = $control->input_field($args);
+	$datetime_local_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $datetime_local_field;
 	
@@ -397,7 +445,7 @@ function a5_datetime_local_field($field_name, $value, $label = false, $size = fa
  
 function a5_email_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'email',
 					'field_name' => $field_name,
@@ -410,7 +458,7 @@ function a5_email_field($field_name, $value, $label = false, $size = false, $sty
 					'echo' => $echo
 					);
 					
-	$email_field = $control->input_field($args);
+	$email_field = $a5_option_page->input_field($args);
 
 	if ($echo === false) return $email_field;	
 	
@@ -425,7 +473,7 @@ function a5_email_field($field_name, $value, $label = false, $size = false, $sty
  
 function a5_month_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'month',
 					'field_name' => $field_name,
@@ -438,7 +486,7 @@ function a5_month_field($field_name, $value, $label = false, $size = false, $sty
 					'echo' => $echo
 					);
 					
-	$month_field = $control->input_field($args);
+	$month_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $month_field;
 	
@@ -452,7 +500,7 @@ function a5_month_field($field_name, $value, $label = false, $size = false, $sty
  
 function a5_number_field($field_name, $value, $label = false, $size = false, $step = false, $min = false, $max = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'number',
 					'field_name' => $field_name,
@@ -468,7 +516,7 @@ function a5_number_field($field_name, $value, $label = false, $size = false, $st
 					'echo' => $echo
 					);
 					
-	$number_field = $control->input_field($args);
+	$number_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $number_field;
 	
@@ -482,7 +530,7 @@ function a5_number_field($field_name, $value, $label = false, $size = false, $st
  
 function a5_range_field($field_name, $value, $min, $max, $label = false, $step = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	 
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'range',
 					'field_name' => $field_name,
@@ -498,7 +546,7 @@ function a5_range_field($field_name, $value, $min, $max, $label = false, $step =
 					'echo' => $echo
 					);
 					
-	$range_field = $control->input_field($args);
+	$range_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $range_field;
 	
@@ -512,7 +560,7 @@ function a5_range_field($field_name, $value, $min, $max, $label = false, $step =
  
 function a5_search_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'search',
 					'field_name' => $field_name,
@@ -525,7 +573,7 @@ function a5_search_field($field_name, $value, $label = false, $size = false, $st
 					'echo' => $echo
 					);
 					
-	$search_field = $control->input_field($args);
+	$search_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $search_field;
 	
@@ -539,7 +587,7 @@ function a5_search_field($field_name, $value, $label = false, $size = false, $st
  
 function a5_tel_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'tel',
 					'field_name' => $field_name,
@@ -552,7 +600,7 @@ function a5_tel_field($field_name, $value, $label = false, $size = false, $style
 					'echo' => $echo
 					);
 					
-	$tel_field = $control->input_field($args);
+	$tel_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $tel_field;
 	
@@ -566,7 +614,7 @@ function a5_tel_field($field_name, $value, $label = false, $size = false, $style
  
 function a5_time_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'time',
 					'field_name' => $field_name,
@@ -579,7 +627,7 @@ function a5_time_field($field_name, $value, $label = false, $size = false, $styl
 					'echo' => $echo
 					);
 					
-	$time_field = $control->input_field($args);
+	$time_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $time_field;
 	
@@ -593,7 +641,7 @@ function a5_time_field($field_name, $value, $label = false, $size = false, $styl
  
 function a5_url_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'url',
 					'field_name' => $field_name,
@@ -606,7 +654,7 @@ function a5_url_field($field_name, $value, $label = false, $size = false, $style
 					'echo' => $echo
 					);
 					
-	$url_field = $control->input_field($args);
+	$url_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $url_field;
 	
@@ -620,7 +668,7 @@ function a5_url_field($field_name, $value, $label = false, $size = false, $style
  
 function a5_week_field($field_name, $value, $label = false, $size = false, $style = false, $class = false, $space = false, $echo = false) {
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'type' => 'week',
 					'field_name' => $field_name,
@@ -633,7 +681,7 @@ function a5_week_field($field_name, $value, $label = false, $size = false, $styl
 					'echo' => $echo
 					);
 					
-	$week_field = $control->input_field($args);
+	$week_field = $a5_option_page->input_field($args);
 	
 	if ($echo === false) return $week_field;
 	
@@ -650,14 +698,14 @@ function a5_open_page($id, $echo = true){
 	$eol = "\r\n";
 	$tab = "\t";
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'id' => $id,
 					'class' => 'tabcontent',
 					'echo' => false
 					);
 	
-	$page_start = $control->container($args).' <!-- / page &#39;'.$id.'&#39; start -->';
+	$page_start = $a5_option_page->container($args).' <!-- / page &#39;'.$id.'&#39; start -->';
 	
 	$page_start.= $eol.$tab.'<form method="post" name="'.$id.'_form" id="'.$id.'_form" action="">';
 	
@@ -710,13 +758,13 @@ function a5_close_page($echo = true){
  
 function a5_open_section($echo = true){
 	
-	global $control;
+	global $a5_option_page;
 	
 	$args = array ( 'class' => 'a5-option-container',
 					'echo' => $echo
 					);
 	
-	$section_begin = $control->container($args).' <!-- / section start -->';
+	$section_begin = $a5_option_page->container($args).' <!-- / section start -->';
 	
 	if ($echo === false) return $section_begin;
 	
@@ -767,7 +815,7 @@ function a5_close_section($echo = true){
  
 function a5_container_left($fields, $echo = true){
 	
-	global $control;
+	global $a5_option_page;
 	
 	$eol = "\r\n";
 	$tab = "\t";
@@ -776,7 +824,7 @@ function a5_container_left($fields, $echo = true){
 					'echo' => false
 					);
 	
-	$container = $control->container($args);
+	$container = $a5_option_page->container($args);
 	
 	foreach ($fields as $field) $container.=$field;
 	
@@ -796,7 +844,7 @@ function a5_container_left($fields, $echo = true){
  
 function a5_container_right($headline, $text, $special = false, $message = false, $echo = true){
 	
-	global $control;
+	global $a5_option_page;
 	
 	$eol = "\r\n";
 	$tab = "\t";
@@ -817,7 +865,7 @@ function a5_container_right($headline, $text, $special = false, $message = false
 					'echo' => false
 					);
 	
-	$container = $control->container($args);
+	$container = $a5_option_page->container($args);
 	
 	if ($priority == 1) $container.=$message;
 	
