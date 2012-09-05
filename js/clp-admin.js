@@ -40,11 +40,11 @@ jQuery(document).ready(function(){
 			_wp_http_referer: _wp_http_referer
 		};
 		jQuery("#main_save").hide();
-		jQuery(".main-save").show();
+		jQuery(".main_save").show();
 		jQuery.post(ajaxurl, data,
 		function(response){
 			jQuery("#mainmsg").html(response);
-			jQuery(".main-save").hide();
+			jQuery(".main_save").hide();
 			jQuery("#main_save").show();
 		});
 	return false;

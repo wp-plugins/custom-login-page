@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.5
+Version: 1.5.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -45,6 +45,10 @@ Text Domain: custom-login-page
  */
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) die('Sorry, you don&#39;t have direct access to this page.');
 
+define( 'CLP_PATH', plugin_dir_path(__FILE__) );
+if (!class_exists('A5_OptionPage')) require_once CLP_PATH.'class-lib/A5_OptionPageClass.php';
+if (!function_exists('a5_option_page_version')) require_once CLP_PATH.'includes/admin-pages.php';
+
 class A5_CustomLoginPage {
 	
 	static $options;
@@ -55,13 +59,13 @@ class A5_CustomLoginPage {
 		
 		self::$options = get_option('clp_options');
 		
-		register_activation_hook(  __FILE__, array($this, 'start_clp') ); 
-		register_deactivation_hook(  __FILE__, array($this, 'unset_clp') );	
+		register_activation_hook(__FILE__, array($this, 'start_clp')); 
+		register_deactivation_hook(__FILE__, array($this, 'unset_clp'));	
 		
 		add_filter('plugin_row_meta', array($this, 'clp_register_links'),10,2);
-		add_filter( 'plugin_action_links', array($this, 'clp_plugin_action_links'), 10, 2 );
+		add_filter('plugin_action_links', array($this, 'clp_plugin_action_links'), 10, 2 );
 		
-		add_action('login_enqueue_scripts', array($this, 'clp_login_css'));
+		add_action('login_head', array($this, 'clp_login_css'));
 		add_action('admin_menu', array($this, 'clp_admin_menu'));
 		add_action('admin_init', array($this, 'clp_register_admin_extras'));
 		add_action('admin_enqueue_scripts', array($this, 'clp_admin_css'));
@@ -69,8 +73,8 @@ class A5_CustomLoginPage {
 		add_action('init', array($this, 'clp_add_rewrite'));
 		add_action('template_redirect', array($this, 'clp_css_template'));
 		
-		if (!empty(self::$options['url'])) add_filter( 'login_headerurl', array($this, 'clp_headerurl') );
-		if (!empty(self::$options['title'])) add_filter( 'login_headertitle', array($this, 'clp_headertitle') );
+		if (!empty(self::$options['url'])) add_filter('login_headerurl', array($this, 'clp_headerurl'));
+		if (!empty(self::$options['title'])) add_filter('login_headertitle', array($this, 'clp_headertitle'));
 		
 		/**
 		 *
@@ -148,12 +152,9 @@ class A5_CustomLoginPage {
 	 */
 	function clp_login_css() {
 		
-		$clp_css_file = get_bloginfo('url').'/?clpfile=css';
+		echo "<link rel='stylesheet' id='a5-custom-login-css' href='".get_bloginfo('url')."/?clpfile=css&amp;ver=".self::$options['version']."' type='text/css' media='all' />\r\n";
 		
-		wp_register_style('clp', $clp_css_file, false, self::$options['version'], 'all');
-		
-		wp_enqueue_style('clp');
-		
+		// later perhaps try that: add_query_arg( array('clpfile' => 'css', 'ver' => self::$options['version']), get_bloginfo('url') )
 	}
 
 	/**
@@ -163,7 +164,7 @@ class A5_CustomLoginPage {
 	 */
 	function start_clp() {
 		
-		add_option('clp_options', array('version' => '1.5'));
+		add_option('clp_options', array('version' => '1.5.1'));
 	
 	}
 	
@@ -198,10 +199,10 @@ class A5_CustomLoginPage {
 		 
 		 self::$options=get_option('clp_options');
 		 
-		 wp_register_style('clp-admin', plugins_url('/css/clp-admin-css.css', __FILE__), false, self::$options['version'], 'all');
+		 wp_register_style('a5-admin', plugins_url('/css/a5-admin-css.css', __FILE__), false, self::$options['version'], 'all');
 		 wp_register_script('clp-admin-script', plugins_url('/js/clp-admin.js', __FILE__), array('jquery'), self::$options['version'], true);
-		 wp_register_script('clp-colorpicker', plugins_url('/js/jscolor/jscolor.js', __FILE__), false, '1.3.11', true);
-		 wp_register_script('clp-admin-tabs', plugins_url('/js/tabcontent.js', __FILE__), false, '2.2', false);
+		 wp_register_script('a5-colorpicker', plugins_url('/js/jscolor/jscolor.js', __FILE__), false, '1.3.11', true);
+		 wp_register_script('a5-admin-tabs', plugins_url('/js/tabcontent.js', __FILE__), false, '2.2', false);
 	
 	}
 	
@@ -214,10 +215,10 @@ class A5_CustomLoginPage {
 		
 		if ($hook != 'appearance_page_clp-settings') return;
 		
-		wp_enqueue_style('clp-admin');
+		wp_enqueue_style('a5-admin');
 		wp_enqueue_script('clp-admin-script');
-		wp_enqueue_script('clp-colorpicker');
-		wp_enqueue_script('clp-admin-tabs');
+		wp_enqueue_script('a5-colorpicker');
+		wp_enqueue_script('a5-admin-tabs');
 		wp_localize_script('clp-admin-script', 'message', $this->clp_localize_admin());	
 		
 	}
@@ -241,18 +242,15 @@ class A5_CustomLoginPage {
 	function clp_options_page() {
 	
 		?>
-		
-	<table width="100%" cellpadding="2" cellspacing="0"><tr><td valign="middle" width="380"><a href="<?php _e('http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page'); ?>"><div id="a5-logo" class="icon32" style="background: url('<?php echo plugins_url('/img/a5-icon-34.png', __FILE__);?>');"></div></a><h2 style="margin:0 30px 0 0; padding: 5px 0 5px 0;">
+	<div class="wrap">
+	<table width="100%" cellpadding="2" cellspacing="0"><tr><td><a href="<?php _e('http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page', self::language_file); ?>"><div id="a5-logo" class="icon32" style="background: url('<?php echo plugins_url('/img/a5-icon-34.png', __FILE__);?>');"></div></a><h2>
 	A5 Custom Login Page <?php _e('Settings', self::language_file); ?></h2></td><td valign="middle">&nbsp;</td>
 	</tr></table>
-	
-	<div class="wrap" style="margin: 0 10px 0 0">
-		
 	<table>
 	<tr>
 	<td valign="top" width="200">
 	
-	<ul id="clp-pagetabs">
+	<ul id="a5-pagetabs">
 		<li><a href="#" id="main-tab" rel="main" class="selected"><?php _e('Body', self::language_file); ?></a></li>
 		<li><a href="#" id="logindiv-tab" rel="logindiv"><?php _e('Login Container', self::language_file); ?></a></li>
 		<li><a href="#" id="loginform-tab" rel="loginform"><?php _e('Login Form', self::language_file); ?></a></li>
@@ -263,418 +261,348 @@ class A5_CustomLoginPage {
 	
 	</td>
 	<td valign="top" width="100%">
-	<div id="main" class="tabcontent">
-		<form method="post" name="main_form" id="main_form" action="">
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<?php wp_nonce_field('save_main','mainnonce'); ?>
-			<label for="logo"><?php _e('Logo URL', self::language_file); ?></label>
-			<input name="logo" id="logo" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['logo']; ?>" />
-			<label for="url"><?php _e('URL to link to', self::language_file); ?></label>
-			<input name="url" id="url" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['url']; ?>" />
-			<label for="title"><?php _e('Title tag of the logo', self::language_file); ?></label>
-			<input name="title" id="title" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['title']; ?>" />
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Logo', self::language_file); ?></h2>
-			<div id="mainmsg"></div>
-			<p><?php _e('You can enter the url of the logo, that you want to have in place of the WP logo on the login screen. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here.', self::language_file); ?></p>
-			<p><?php _e('In the URL field, you enter the URL to which the logo should link.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div>
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<label for="logo_width"><?php _e('Width of the Logo (in px)', self::language_file); ?></label>
-			<input name="logo_width" id="logo_width" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['logo_width']; ?>" />
-			<label for="logo_height"><?php _e('Height of the Logo (in px)', self::language_file); ?></label>
-			<input name="logo_height" id="logo_height" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['logo_height']; ?>" />
-			<label for="h1_width"><?php _e('Width of the Logo Container (in px)', self::language_file); ?></label>
-			<input name="h1_width" id="h1_width" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['h1_width']; ?>" />
-			<label for="h1_height"><?php _e('Height of the Logo Container (in px)', self::language_file); ?></label>
-			<input name="h1_height" id="h1_height" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['h1_height']; ?>" />                        
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Position and Size of the Logo', self::language_file); ?></h2>
-			<div id="mainmsg"></div>
-			<p><?php _e('If your logo is larger than the default WP-logo (274px by 63px), you can enter the width and the height of it here.', self::language_file); ?></p>
-			<p><?php _e('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div>          
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<label for="body_background"><?php _e('Background Picture', self::language_file); ?></label>
-			<input name="body_background" id="body_background" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['body_background']; ?>" />
-			<label for="body_img_repeat"><?php _e('Background Repeat', self::language_file); ?></label>
-			<select name="body_img_repeat" id="body_img_repeat" style="width: 135px;">
-			<option value=""><?php _e('default', self::language_file); ?></option>
-			<option value="no-repeat"<?php selected(self::$options['body_img_repeat'], 'no-repeat'); ?>>no-repeat</option>
-			<option value="repeat-x"<?php selected(self::$options['body_img_repeat'], 'repeat-x'); ?>>repeat-x</option>
-			<option value="repeat-y"<?php selected(self::$options['body_img_repeat'], 'repeat-y'); ?>>repeat-y</option>
-			</select>         
-			<label for="body_img_pos"><?php _e('Position of the Background Picture', self::language_file); ?></label>
-			<input name="body_img_pos" id="body_img_pos" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['body_img_pos']; ?>" />        
-			<label for="body_bg_color1"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="body_bg_color1" id="body_bg_color1" type="text" value="<?php echo self::$options['body_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="body_bg_color2"><?php _e('Second Background Colour (for Gradient)', self::language_file); ?></label>
-			<input name="body_bg_color2" id="body_bg_color2" type="text" value="<?php echo self::$options['body_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="body_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="body_text_color" id="body_text_color" type="text" value="<?php echo self::$options['body_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Body', self::language_file); ?></h2>
-			<p><?php _e('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file); ?></p>
-			<p><?php _e('In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div>    
-		  <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
-			<p class="submit">
-			<input class="save-tab" name="main_save" id="main_save" value="<?php esc_attr_e('Save Changes', self::language_file); ?>" type="submit"><img src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" alt="" class="main-save" style="display: none;" />
-			<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', self::language_file); ?></span>
-			</p></div>
-		</form>
-	</div>
-	<div id="logindiv" class="tabcontent">
-		<form method="post" name="logindiv_form" id="logindiv_form" action="">
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<?php wp_nonce_field('save_logindiv','logindivnonce'); ?>
-			<label for="logindiv_background"><?php _e('Background Picture', self::language_file); ?></label>
-			<input name="logindiv_background" id="logindiv_background" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['logindiv_background']; ?>" />
-			<label for="logindiv_img_repeat"><?php _e('Background Repeat', self::language_file); ?></label>
-			<select name="logindiv_img_repeat" id="logindiv_img_repeat" style="width: 150px;">
-			<option value=""><?php _e('default', self::language_file); ?></option>
-			<option value="no-repeat"<?php if (self::$options['logindiv_img_repeat']=='no-repeat') echo ' selected="selected"'; ?>>no-repeat</option>
-			<option value="repeat-x"<?php if (self::$options['logindiv_img_repeat']=='repeat-x') echo ' selected="selected"'; ?>>repeat-x</option>
-			<option value="repeat-y"<?php if (self::$options['logindiv_img_repeat']=='repeat-y') echo ' selected="selected"'; ?>>repeat-y</option>
-			</select>         
-			<label for="logindiv_img_pos"><?php _e('Position of the Background Picture', self::language_file); ?></label>
-			<input name="logindiv_img_pos" id="logindiv_img_pos" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['logindiv_img_pos']; ?>" />        
-			<label for="logindiv_bg_color1"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="logindiv_bg_color1" id="logindiv_bg_color1" type="text" value="<?php echo self::$options['logindiv_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="logindiv_bg_color2"><?php _e('Second Background Colour (for Gradient)', self::language_file); ?></label>
-			<input name="logindiv_bg_color2" id="logindiv_bg_color2" type="text" value="<?php echo self::$options['logindiv_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="logindiv_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="logindiv_text_color" id="logindiv_text_color" type="text" value="<?php echo self::$options['logindiv_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-            <label for="logindiv_transparency"><?php _e('Transparency (in percent)', self::language_file); ?></label>
-			<input name="logindiv_transparency" id="logindiv_transparency" type="number" min="0" max="100" step="1" value="<?php echo self::$options['logindiv_transparency']; ?>" />
-			<label for="logindiv_border_style"><?php _e('Border Style', self::language_file); ?></label>
-			<select name="logindiv_border_style" id="logindiv_border_style" style="width: 220px;">
-			<option value=""><?php _e('choose a border style', self::language_file); ?></option>
-			<option value="none"<?php selected(self::$options['logindiv_border_style'], 'none'); ?>>none</option>
-			<option value="dotted"<?php selected(self::$options['logindiv_border_style'], 'dotted'); ?>>dotted</option>
-			<option value="dashed"<?php selected(self::$options['logindiv_border_style'], 'dashed'); ?>>dashed</option>
-			<option value="solid"<?php selected(self::$options['logindiv_border_style'], 'solid'); ?>>solid</option>
-			<option value="double"<?php selected(self::$options['logindiv_border_style'], 'double'); ?>>double</option>
-			<option value="groove"<?php selected(self::$options['logindiv_border_style'], 'groove'); ?>>groove</option>
-			<option value="ridge"<?php selected(self::$options['logindiv_border_style'], 'ridge'); ?>>ridge</option>
-			<option value="inset"<?php selected(self::$options['logindiv_border_style'], 'inset'); ?>>inset</option>
-			<option value="outset"<?php selected(self::$options['logindiv_border_style'], 'outset'); ?>>outset</option>
-			</select>
-			<label for="logindiv_border_width"><?php _e('Border Width (in px)', self::language_file); ?></label>
-			<input name="logindiv_border_width" id="logindiv_border_width" type="number" value="<?php echo self::$options['logindiv_border_width']; ?>" />
-			<label for="logindiv_border_color"><?php _e('Border Colour', self::language_file); ?></label>
-			<input name="logindiv_border_color" id="logindiv_border_color" type="text" value="<?php echo self::$options['logindiv_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="logindiv_border_round"><?php _e('Rounded Corners (in px)', self::language_file); ?></label>
-			<input name="logindiv_border_round" id="logindiv_border_round" type="number" value="<?php echo self::$options['logindiv_border_round']; ?>" />
-			<label for="logindiv_shadow_x"><?php _e('Shadow (x-direction in px)', self::language_file); ?></label>
-			<input name="logindiv_shadow_x" id="logindiv_shadow_x" type="number" value="<?php echo self::$options['logindiv_shadow_x']; ?>" />
-			<label for="logindiv_shadow_y"><?php _e('Shadow (y-direction in px)', self::language_file); ?></label>
-			<input name="logindiv_shadow_y" id="logindiv_shadow_y" type="number" value="<?php echo self::$options['logindiv_shadow_y']; ?>" />
-			<label for="logindiv_shadow_softness"><?php _e('Shadow (softness in px)', self::language_file); ?></label>
-			<input name="logindiv_shadow_softness" id="logindiv_shadow_softness" type="number" value="<?php echo self::$options['logindiv_shadow_softness']; ?>" />
-			<label for="logindiv_shadow_color"><?php _e('Shadow Colour', self::language_file); ?></label>
-			<input name="logindiv_shadow_color" id="logindiv_shadow_color" type="text" value="<?php echo self::$options['logindiv_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Login Container', self::language_file); ?></h2>
-			<div id="logindivmsg"></div>
-			<p><?php _e('You can enter the url of the background picture, that you want to have on the login container. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39;center top&#39;.', self::language_file); ?></p>
-			<p><?php _e('In the next section, you choose the background colour and the colour of the text in the login container. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file); ?></p>
-			<p><?php _e('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', self::language_file); ?></p>
-			<p><?php _e('At last, give the container a shadow (is not supported by all browsers).', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div>
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<label for="logindiv_left"><?php _e('Position (x-direction in px)', self::language_file); ?></label>
-			<input name="logindiv_left" id="logindiv_left" type="number" value="<?php echo self::$options['logindiv_left']; ?>" />
-			<label for="logindiv_top"><?php _e('Position (y-direction in px)', self::language_file); ?></label>
-			<input name="logindiv_top" id="logindiv_top" type="number" value="<?php echo self::$options['logindiv_top']; ?>" />
-            <label for="logindiv_width"><?php _e('Width (in px)', self::language_file); ?></label>
-			<input name="logindiv_width" id="logindiv_width" type="number" value="<?php echo self::$options['logindiv_width']; ?>" />
-			<label for="logindiv_height"><?php _e('Height (in px)', self::language_file); ?></label>
-			<input name="logindiv_height" id="logindiv_height" type="number" value="<?php echo self::$options['logindiv_height']; ?>" />
-			<label for="logindiv_padding"><?php _e('Padding', self::language_file); ?></label>
-			<input name="logindiv_padding" id="logindiv_padding" type="text" value="<?php echo self::$options['logindiv_padding']; ?>" />
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Position and Size of the Login Container', self::language_file); ?></h2>
-			<p><?php _e('Here you can give the whole login container a position. If you enter &#39;0&#39; in both of the fields, it will be in the top left corner of the screen.', self::language_file); ?></p>
-            <p><?php _e('The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the default padding of the login container).', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div> 
-		  <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
-			<p class="submit">
-			<input class="save-tab" name="logindiv_save" id="logindiv_save" value="<?php esc_attr_e('Save Changes', self::language_file); ?>" type="submit"><img src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" alt="" class="logindiv_save" style="display: none;" />
-			<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', self::language_file); ?></span>
-			</p></div>
-		</form>
-	</div>
-	<div id="loginform" class="tabcontent">
-		<form method="post" name="loginform_form" id="loginform_form" action="">
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<?php wp_nonce_field('save_loginform','loginformnonce'); ?>
-			<label for="loginform_background"><?php _e('Background Picture', self::language_file); ?></label>
-			<input name="loginform_background" id="loginform_background" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['loginform_background']; ?>" />
-			<label for="loginform_img_repeat"><?php _e('Background Repeat', self::language_file); ?></label>
-			<select name="loginform_img_repeat" id="loginform_img_repeat" style="width: 150px;">
-			<option value=""><?php _e('default', self::language_file); ?></option>
-			<option value="no-repeat"<?php selected(self::$options['loginform_img_repeat'], 'no-repeat'); ?>>no-repeat</option>
-			<option value="repeat-x"<?php selected(self::$options['loginform_img_repeat'], 'repeat-x'); ?>>repeat-x</option>
-			<option value="repeat-y"<?php selected(self::$options['loginform_img_repeat'], 'repeat-y'); ?>>repeat-y</option>
-			</select>         
-			<label for="loginform_img_pos"><?php _e('Position of the Background Picture', self::language_file); ?></label>
-			<input name="loginform_img_pos" id="loginform_img_pos" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['loginform_img_pos']; ?>" />        
-			<label for="loginform_bg_color1"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="loginform_bg_color1" id="loginform_bg_color1" type="text" value="<?php echo self::$options['loginform_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="loginform_bg_color2"><?php _e('Second Background Colour (for Gradient)', self::language_file); ?></label>
-			<input name="loginform_bg_color2" id="loginform_bg_color2" type="text" value="<?php echo self::$options['loginform_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="loginform_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="loginform_text_color" id="loginform_text_color" type="text" value="<?php echo self::$options['loginform_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-            <label for="loginform_transparency"><?php _e('Transparency (in percent)', self::language_file); ?></label>
-			<input name="loginform_transparency" id="loginform_transparency" type="number" min="0" max="100" step="1" value="<?php echo self::$options['loginform_transparency']; ?>" />
-			<label for="loginform_border_style"><?php _e('Border Style', self::language_file); ?></label>
-			<select name="loginform_border_style" id="loginform_border_style" style="width: 220px;">
-			<option value=""><?php _e('choose a border style', self::language_file); ?></option>
-			<option value="none"<?php selected(self::$options['loginform_border_style'],'none'); ?>>none</option>
-			<option value="dotted"<?php selected(self::$options['loginform_border_style'],'dotted'); ?>>dotted</option>
-			<option value="dashed"<?php selected(self::$options['loginform_border_style'],'dashed'); ?>>dashed</option>
-			<option value="solid"<?php selected(self::$options['loginform_border_style'],'solid'); ?>>solid</option>
-			<option value="double"<?php selected(self::$options['loginform_border_style'],'double'); ?>>double</option>
-			<option value="groove"<?php selected(self::$options['loginform_border_style'],'groove'); ?>>groove</option>
-			<option value="ridge"<?php selected(self::$options['loginform_border_style'],'ridge'); ?>>ridge</option>
-			<option value="inset"<?php selected(self::$options['loginform_border_style'],'inset'); ?>>inset</option>
-			<option value="outset"<?php selected(self::$options['loginform_border_style'],'outset'); ?>>outset</option>
-			</select>
-			<label for="loginform_border_width"><?php _e('Border Width (in px)', self::language_file); ?></label>
-			<input name="loginform_border_width" id="loginform_border_width" type="number" value="<?php echo self::$options['loginform_border_width']; ?>" />
-			<label for="loginform_border_color"><?php _e('Border Colour', self::language_file); ?></label>
-			<input name="loginform_border_color" id="loginform_border_color" type="number" value="<?php echo self::$options['loginform_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="loginform_border_round"><?php _e('Rounded Corners (in px)', self::language_file); ?></label>
-			<input name="loginform_border_round" id="loginform_border_round" type="number" value="<?php echo self::$options['loginform_border_round']; ?>" />
-            <label for="loginform_margin"><?php _e('Margin', self::language_file); ?></label>
-			<input name="loginform_margin" id="loginform_margin" type="text" value="<?php echo self::$options['loginform_margin']; ?>" />
-            <label for="loginform_padding"><?php _e('Padding', self::language_file); ?></label>
-			<input name="loginform_padding" id="loginform_padding" type="text" value="<?php echo self::$options['loginform_padding']; ?>" />
-			<label for="loginform_shadow_x"><?php _e('Shadow (x-direction in px)', self::language_file); ?></label>
-			<input name="loginform_shadow_x" id="loginform_shadow_x" type="number" value="<?php echo self::$options['loginform_shadow_x']; ?>" />
-			<label for="loginform_shadow_y"><?php _e('Shadow (y-direction in px)', self::language_file); ?></label>
-			<input name="loginform_shadow_y" id="loginform_shadow_y" type="number" value="<?php echo self::$options['loginform_shadow_y']; ?>" />
-			<label for="loginform_shadow_softness"><?php _e('Shadow (softness in px)', self::language_file); ?></label>
-			<input name="loginform_shadow_softness" id="loginform_shadow_softness" type="number" value="<?php echo self::$options['loginform_shadow_softness']; ?>" />
-			<label for="loginform_shadow_color"><?php _e('Shadow Colour', self::language_file); ?></label>
-			<input name="loginform_shadow_color" id="loginform_shadow_color" type="text" value="<?php echo self::$options['loginform_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Login Form', self::language_file); ?></h2>
-			<div id="loginmsg"></div>
-			<p><?php _e('You can enter the url of the background picture, that you want to have in the login form. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file); ?></p>
-			<p><?php _e('In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file); ?></p>
-			<p><?php _e('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', self::language_file); ?></p>
-			<p><?php _e('Margin and Padding are given as css values. The form has a left margin of 8px by default and a padding of 26px 24px 46px. By changing the top and the bottom padding, you can stretch the form in its length.', self::language_file); ?></p>
-            <p><?php _e('At last, give the form a shadow (is not supported by all browsers).', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div> 
-		  <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
-			<p class="submit">
-			<input class="save-tab" name="loginform_save" id="loginform_save" value="<?php esc_attr_e('Save Changes', self::language_file); ?>" type="submit"><img src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" alt="" class="loginform_save" style="display: none;" />
-			<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', self::language_file); ?></span>
-			</p></div>
-		</form>
-	</div>
-	<div id="button" class="tabcontent">
-		<form method="post" name="button_form" id="button_form" action="">
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<?php wp_nonce_field('save_button','buttonnonce'); ?>
-			<label for="button_bg_color1"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="button_bg_color1" id="button_bg_color1" type="text" value="<?php echo self::$options['button_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="button_bg_color2"><?php _e('Second Background Colour (for Gradient)', self::language_file); ?></label>
-			<input name="button_bg_color2" id="button_bg_color2" type="text" value="<?php echo self::$options['button_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="button_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="button_text_color" id="button_text_color" type="text" value="<?php echo self::$options['button_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="button_border_color"><?php _e('Border Colour', self::language_file); ?></label>
-			<input name="button_border_color" id="button_border_color" type="text" value="<?php echo self::$options['button_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="btn_hover_bg_color1"><?php _e('Hover Background Colour', self::language_file); ?></label>
-			<input name="btn_hover_bg_color1" id="btn_hover_bg_color1" type="text" value="<?php echo self::$options['btn_hover_bg_color1']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="btn_hover_bg_color2"><?php _e('Second Hover Background Colour (for Gradient)', self::language_file); ?></label>
-			<input name="btn_hover_bg_color2" id="btn_hover_bg_color2" type="text" value="<?php echo self::$options['btn_hover_bg_color2']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="btn_hover_text_color"><?php _e('Hover Text Colour', self::language_file); ?></label>
-			<input name="btn_hover_text_color" id="btn_hover_text_color" type="text" value="<?php echo self::$options['btn_hover_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="btn_hover_border_color"><?php _e('Hover Border Colour', self::language_file); ?></label>
-			<input name="btn_hover_border_color" id="btn_hover_border_color" type="text" value="<?php echo self::$options['btn_hover_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Submit Button', self::language_file); ?></h2>
-			<div id="buttonmsg"></div>
-			<p><?php _e('Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div>    
-		  <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
-			<p class="submit">
-			<input class="save-tab" name="button_save" id="button_save" value="<?php esc_attr_e('Save Changes', self::language_file); ?>" type="submit"><img src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" alt="" class="button_save" style="display: none;" />
-			<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', self::language_file); ?></span>
-			</p></div>
-		</form>
-	</div>
-	<div id="message" class="tabcontent">
-		<form method="post" name="message_form" id="message_form" action="">
-		  <div class="clp-container">
-			<div class="clp-container-left"> 
-			<?php wp_nonce_field('save_message','messagenonce'); ?>        
-			<label for="loggedout_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="loggedout_text_color" id="loggedout_text_color" type="text" value="<?php echo self::$options['loggedout_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="loggedout_bg_color"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="loggedout_bg_color" id="loggedout_bg_color" type="text" value="<?php echo self::$options['loggedout_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="loggedout_border_color"><?php _e('Border Colour', self::language_file); ?></label>
-			<input name="loggedout_border_color" id="loggedout_border_color" type="text" value="<?php echo self::$options['loggedout_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Logged Out Message', self::language_file); ?></h2>
-			<div id="messagemsg"></div>
-			<p><?php _e('This changes the colours of the text container, that appears, when you have successfully logged out.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div>
-		  <div class="clp-container">
-			<div class="clp-container-left">         
-			<label for="error_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="error_text_color" id="error_text_color" type="text" value="<?php echo self::$options['error_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="error_bg_color"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="error_bg_color" id="error_bg_color" type="text" value="<?php echo self::$options['error_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="error_border_color"><?php _e('Border Colour', self::language_file); ?></label>
-			<input name="error_border_color" id="error_border_color" type="text" value="<?php echo self::$options['error_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="error_custom_message"><?php _e('Error Message', self::language_file); ?></label>
-			<input name="error_custom_message" id="error_custom_message" type="text" size="40" style="width: 95%;" value="<?php echo self::$options['error_custom_message']; ?>" />
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Error Message', self::language_file); ?></h2>
-			<p><?php _e('This changes the colours of the text container, that appears, when you get an error logging in.', self::language_file); ?></p>
-			<p><?php _e('Furthermore, you can enter your own error message here. By default, Wordpress says that either the username or the password is wrong, which is perhaps a hint to foreigners that you don&#39;t wish to give.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>        
-			<div style="clear: both;"></div>
-		  </div>
-		  <div class="clp-container">
-			<div class="clp-container-left">         
-			<label for="input_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="input_text_color" id="input_text_color" type="text" value="<?php echo self::$options['input_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="input_bg_color"><?php _e('Background Colour', self::language_file); ?></label>
-			<input name="input_bg_color" id="input_bg_color" type="text" value="<?php echo self::$options['input_bg_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>               
-			<label for="input_border_color"><?php _e('Border Colour', self::language_file); ?></label>
-			<input name="input_border_color" id="input_border_color" type="text" value="<?php echo self::$options['input_border_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Input Fields', self::language_file); ?></h2>
-			<p><?php _e('This changes the colours of the name and password fields of the log in form.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>        
-			<div style="clear: both;"></div>
-		  </div> 
-		  <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
-			<p class="submit">
-			<input class="save-tab" name="message_save" id="message_save" value="<?php esc_attr_e('Save Changes', self::language_file); ?>" type="submit"><img src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" alt="" class="message_save" style="display: none;" />
-			<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', self::language_file); ?></span>
-			</p></div>
-		</form>
-	</div>
-	<div id="link" class="tabcontent">
-		<form method="post" name="link_form" id="link_form" action="">
-		  <div class="clp-container">
-			<div class="clp-container-left">
-			<?php wp_nonce_field('save_link','linknonce'); ?>       
-			<label for="link_text_color"><?php _e('Text Colour', self::language_file); ?></label>
-			<input name="link_text_color" id="link_text_color" type="text" value="<?php echo self::$options['link_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="link_textdecoration"><?php _e('Text Decoration', self::language_file); ?></label>
-			<select name="link_textdecoration" id="link_textdecoration" style="width: 160px;">
-			<option value=""><?php _e('choose a text decoration', self::language_file); ?></option>
-			<option value="none"<?php selected(self::$options['link_textdecoration'], 'none'); ?>>none</option>
-			<option value="underline"<?php selected(self::$options['link_textdecoration'], 'underline'); ?>>underline</option>
-			<option value="overline"<?php selected(self::$options['link_textdecoration'], 'overline'); ?>>overline</option>
-			<option value="line-through"<?php selected(self::$options['link_textdecoration'], 'line-through'); ?>>line-through</option>
-			<option value="blink"<?php selected(self::$options['link_textdecoration'], 'blink'); ?>>blink</option>
-			</select>
-			<label for="link_shadow_x"><?php _e('Shadow (x-direction in px)', self::language_file); ?></label>
-			<input name="link_shadow_x" id="link_shadow_x" type="number" value="<?php echo self::$options['link_shadow_x']; ?>" />
-			<label for="link_shadow_y"><?php _e('Shadow (y-direction in px)', self::language_file); ?></label>
-			<input name="link_shadow_y" id="link_shadow_y" type="number" value="<?php echo self::$options['link_shadow_y']; ?>" />
-			<label for="link_shadow_softness"><?php _e('Shadow (softness in px)', self::language_file); ?></label>
-			<input name="link_shadow_softness" id="link_shadow_softness" type="number" value="<?php echo self::$options['link_shadow_softness']; ?>" />
-			<label for="link_shadow_color"><?php _e('Shadow Colour', self::language_file); ?></label>
-			<input name="link_shadow_color" id="link_shadow_color" type="text" value="<?php echo self::$options['link_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="hover_text_color"><?php _e('Hover Colour', self::language_file); ?></label>
-			<input name="hover_text_color" id="hover_text_color" type="text" value="<?php echo self::$options['hover_text_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			<label for="hover_textdecoration"><?php _e('Hover Text Decoration', self::language_file); ?></label>
-			<select name="hover_textdecoration" id="hover_textdecoration" style="width: 160px;">
-			<option value=""><?php _e('choose a text decoration', self::language_file); ?></option>
-			<option value="none"<?php selected(self::$options['hover_textdecoration'], 'none'); ?>>none</option>
-			<option value="underline"<?php selected(self::$options['hover_textdecoration'], 'underline'); ?>>underline</option>
-			<option value="overline"<?php selected(self::$options['hover_textdecoration'], 'overline'); ?>>overline</option>
-			<option value="line-through"<?php selected(self::$options['hover_textdecoration'], 'line-through'); ?>>line-through</option>
-			<option value="blink"<?php selected(self::$options['hover_textdecoration'], 'blink'); ?>>blink</option>
-			</select>
-			<label for="hover_shadow_x"><?php _e('Shadow (x-direction in px)', self::language_file); ?></label>
-			<input name="hover_shadow_x" id="hover_shadow_x" type="number" value="<?php echo self::$options['hover_shadow_x']; ?>" />
-			<label for="hover_shadow_y"><?php _e('Shadow (y-direction in px)', self::language_file); ?></label>
-			<input name="hover_shadow_y" id="hover_shadow_y" type="number" value="<?php echo self::$options['hover_shadow_y']; ?>" />
-			<label for="hover_shadow_softness"><?php _e('Shadow (softness in px)', self::language_file); ?></label>
-			<input name="hover_shadow_softness" id="hover_shadow_softness" type="number" value="<?php echo self::$options['hover_shadow_softness']; ?>" />
-			<label for="hover_shadow_color"><?php _e('Shadow Colour', self::language_file); ?></label>
-			<input name="hover_shadow_color" id="hover_shadow_color" type="text" value="<?php echo self::$options['hover_shadow_color']; ?>" class="color {hash:true,caps:false,required:false,pickerPosition:'right'}"/>
-			</div>
-			<div class="clp-container-right">
-			<h2><?php _e('Links', self::language_file); ?></h2>
-			<div id="linkmsg"></div>
-			<p><?php _e('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', self::language_file); ?></p>
-			<p><i><?php _e('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file); ?></i></p>
-			</div>
-			<div style="clear: both;"></div>
-		  </div> 
-		  <div id="submit-container" class="clp-container" style="background: none repeat scroll 0% 0% transparent; border: medium none;">	
-			<p class="submit">
-			<input class="save-tab" name="link_save" id="link_save" value="<?php esc_attr_e('Save Changes', self::language_file); ?>" type="submit"><img src="<?php echo admin_url('/images/wpspin_light.gif'); ?>" alt="" class="link_save" style="display: none;" />
-			<span style="font-weight: bold; color:#243e1f"><?php _e('Save style', self::language_file); ?></span>
-			</p></div>
-		</form>
-	</div>
+        <?php
+		
+		// main form
+		
+		a5_open_page('main');
+		
+		wp_nonce_field('save_main','mainnonce'); 
+		
+		a5_open_section();
+			
+		$fields = array (
+		
+		a5_text_field('logo', self::$options['logo'], __('Logo URL', self::language_file), 40, 'width: 95%;'),
+		a5_url_field('url', self::$options['url'], __('URL to link to', self::language_file), 40, 'width: 95%;'),
+		a5_text_field('title', self::$options['title'], __('Title tag of the logo', self::language_file), 40, 'width: 95%;')
+		);
+		
+		a5_container_left($fields);
+					
+		$special = __('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file);
+		
+		$text = array (
+		
+		__('You can enter the url of the logo, that you want to have in place of the WP logo on the login screen. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here.', self::language_file),
+		__('In the URL field, you enter the URL to which the logo should link.', self::language_file)
+		);
+		
+		a5_container_right(__('Logo', self::language_file), $text, $special, array ('mainmsg', 2));			
+		  
+		a5_next_section();
+		  
+		$fields = array(
+			
+		a5_number_field('logo_width', self::$options['logo_width'], __('Width of the Logo (in px)', self::language_file), false, 1),
+		a5_number_field('logo_height', self::$options['logo_height'], __('Height of the Logo (in px)', self::language_file), false, 1),
+		a5_number_field('h1_width', self::$options['h1_width'], __('Width of the Logo Container (in px)', self::language_file), false, 1),
+		a5_number_field('h1_height', self::$options['h1_height'], __('Height of the Logo Container (in px)', self::language_file), false, 1)
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('If your logo is larger than the default WP-logo (274px by 63px), you can enter the width and the height of it here.', self::language_file),
+		__('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file)
+		);
+		
+		a5_container_right(__('Position and Size of the Logo', self::language_file), $text, $special);
+		  
+		a5_next_section();
+			
+		$options = array(array('no-repeat', 'no-repeat'), array('repeat-x', 'repeat-x'), array('repeat-y', 'repeat-y'));
+		
+		$class = "color {hash:true,caps:false,required:false,pickerPosition:'right'}";
+		
+		$fields = array(
+		
+		a5_text_field('body_background', self::$options['body_background'], __('Background Picture', self::language_file), 40, 'width: 95%;'),
+		a5_select('body_img_repeat', self::$options['body_img_repeat'], $options, __('Background Repeat', self::language_file), __('default', self::language_file), 'width: 135px;'),
+		a5_text_field('body_img_pos', self::$options['body_img_pos'], __('Position of the Background Picture', self::language_file), 40, 'width: 95%;'),
+		a5_text_field('body_bg_color1', self::$options['body_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('body_bg_color2', self::$options['body_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
+		a5_text_field('body_text_color', self::$options['body_text_color'], __('Text Colour', self::language_file), false, false, $class)
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file),
+		__('In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file)
+		);
+		
+		a5_container_right(__('Body', self::language_file), $text, $special);
+		  
+		a5_close_section();
+		
+		a5_submit_button('main_save', __('Save Changes'), __('Save style', self::language_file));
+		  
+		// login container
+		
+		a5_next_page('logindiv');
+		
+		wp_nonce_field('save_logindiv','logindivnonce');
+		
+		a5_open_section();
+		
+		$border_style = array(array('none', 'none'), array('dotted', 'dotted'), array('dashed', 'dashed'), array('solid', 'solid'), array('double', 'double'), array('groove', 'groove'), array('ridge', 'rigde'), array('inset', 'inset'), array('outset', 'outset'));
+		
+		$fields = array(
+		
+		a5_text_field('logindiv_background', self::$options['logindiv_background'], __('Background Picture', self::language_file), 40, 'width: 95%;'),
+		a5_select('logindiv_img_repeat', self::$options['logindiv_img_repeat'], $options, __('Background Repeat', self::language_file), __('default', self::language_file), 'width: 135px;'),
+		a5_text_field('logindiv_img_pos', self::$options['logindiv_img_pos'], __('Position of the Background Picture', self::language_file), 40, 'width: 95%;'),
+		a5_text_field('logindiv_bg_color1', self::$options['logindiv_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('logindiv_bg_color2', self::$options['logindiv_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
+		a5_text_field('logindiv_text_color', self::$options['logindiv_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_number_field('logindiv_transparency', self::$options['logindiv_transparency'], __('Transparency (in percent)', self::language_file), false, 1, 0, 100),
+		a5_select('logindiv_border_style', self::$options['logindiv_border_style'], $border_style, __('Border Style', self::language_file), __('choose a border style', self::language_file), 'width: 220px;'),
+		a5_number_field('logindiv_border_width', self::$options['logindiv_border_width'], __('Border Width (in px)', self::language_file), false, 1),
+		a5_text_field('logindiv_border_color', self::$options['logindiv_border_color'], __('Border Colour', self::language_file), false, false, $class),
+		a5_number_field('logindiv_border_round', self::$options['logindiv_border_round'], __('Rounded Corners (in px)', self::language_file), false, 1),
+		a5_number_field('logindiv_shadow_x', self::$options['logindiv_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
+		a5_number_field('logindiv_shadow_y', self::$options['logindiv_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
+		a5_number_field('logindiv_shadow_softness', self::$options['logindiv_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
+		a5_text_field('logindiv_shadow_color', self::$options['logindiv_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class)
+		);
+
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('You can enter the url of the background picture, that you want to have on the login container. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39;center top&#39;.', self::language_file),
+		__('In the next section, you choose the background colour and the colour of the text in the login container. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file),
+		__('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', self::language_file),
+		__('At last, give the container a shadow (is not supported by all browsers).', self::language_file)
+		);
+		
+		a5_container_right(__('Login Container', self::language_file), $text, $special, array('logindivmsg', 2));
+		
+		a5_next_section();
+		
+		$fields = array(
+		
+		a5_number_field('logindiv_left', self::$options['logindiv_left'], __('Position (x-direction in px)', self::language_file), false, 1),
+		a5_number_field('logindiv_top', self::$options['logindiv_top'], __('Position (y-direction in px)', self::language_file), false, 1),
+		a5_number_field('logindiv_width', self::$options['logindiv_width'], __('Width (in px)', self::language_file), false, 1),
+		a5_number_field('logindiv_height', self::$options['logindiv_height'], __('Height (in px)', self::language_file), false, 1),
+		a5_text_field('logindiv_padding', self::$options['logindiv_padding'], __('Padding', self::language_file))
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('Position and Size of the Login Container', self::language_file),
+		__('Here you can give the whole login container a position. If you enter &#39;0&#39; in both of the fields, it will be in the top left corner of the screen.', self::language_file),
+		__('The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the default padding of the login container).', self::language_file)
+		);
+		
+		a5_container_right(__('Position and Size of the Login Container', self::language_file), $text, $special);
+
+		a5_close_section();
+		
+		a5_submit_button('logindiv_save', __('Save Changes'), __('Save style', self::language_file));
+		
+		//loginform
+		
+		a5_next_page('loginform');
+		
+		a5_open_section();
+		
+		wp_nonce_field('save_loginform','loginformnonce');
+		
+		$fields = array(
+		
+		a5_text_field('loginform_background', self::$options['loginform_background'], __('Background Picture', self::language_file), 40, 'width: 95%;'),
+		a5_select('loginform_img_repeat', self::$options['loginform_img_repeat'], $options, __('Background Repeat', self::language_file), __('default', self::language_file), 'width: 135px;'),
+		a5_text_field('loginform_img_pos', self::$options['loginform_img_pos'], __('Position of the Background Picture', self::language_file), 40, 'width: 95%;'),
+		a5_text_field('loginform_bg_color1', self::$options['loginform_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('loginform_bg_color2', self::$options['loginform_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
+		a5_text_field('loginform_text_color', self::$options['loginform_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_number_field('loginform_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), false, 1, 0, 100),
+		a5_select('loginform_border_style', self::$options['loginform_border_style'], $border_style, __('Border Style', self::language_file), __('choose a border style', self::language_file), 'width: 220px;'),
+		a5_number_field('loginform_border_width', self::$options['loginform_border_width'], __('Border Width (in px)', self::language_file), false, 1),
+		a5_text_field('loginform_border_color', self::$options['loginform_border_color'], __('Border Colour', self::language_file), false, false, $class),
+		a5_number_field('loginform_border_round', self::$options['loginform_border_round'], __('Rounded Corners (in px)', self::language_file), false, 1),
+		a5_text_field('loginform_margin', self::$options['loginform_margin'], __('Margin', self::language_file)),
+		a5_text_field('loginform_padding', self::$options['loginform_padding'], __('Padding', self::language_file)),
+		a5_number_field('loginform_shadow_x', self::$options['loginform_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
+		a5_number_field('loginform_shadow_y', self::$options['loginform_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
+		a5_number_field('loginform_shadow_softness', self::$options['loginform_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
+		a5_text_field('loginform_shadow_color', self::$options['loginform_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class)
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('You can enter the url of the background picture, that you want to have in the login form. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file),
+		__('In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file),
+		__('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', self::language_file),
+		__('Margin and Padding are given as css values. The form has a left margin of 8px by default and a padding of 26px 24px 46px. By changing the top and the bottom padding, you can stretch the form in its length.', self::language_file),
+		__('Margin and Padding are given as css values. The form has a left margin of 8px by default and a padding of 26px 24px 46px. By changing the top and the bottom padding, you can stretch the form in its length.', self::language_file),
+		__('At last, give the form a shadow (is not supported by all browsers).', self::language_file)
+		);
+		
+		a5_container_right(__('Login Form', self::language_file), $text, $special, array('loginmsg', 2));
+		
+		a5_close_section();
+		
+		a5_submit_button('loginform_save', __('Save Changes'), __('Save style', self::language_file));
+
+		// button
+		
+		a5_next_page('button');
+		
+		a5_open_section();
+		
+		wp_nonce_field('save_button','buttonnonce');
+		
+		$fields = array(
+		
+		a5_text_field('button_bg_color1', self::$options['button_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('button_bg_color2', self::$options['button_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
+		a5_text_field('button_text_color', self::$options['button_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_text_field('button_border_color', self::$options['button_border_color'], __('Border Colour', self::language_file), false, false, $class),
+		a5_text_field('btn_hover_bg_color1', self::$options['btn_hover_bg_color1'], __('Hover Background Colour', self::language_file), false, false, $class),
+		a5_text_field('btn_hover_bg_color2', self::$options['btn_hover_bg_color2'], __('Second Hover Background Colour (for Gradient)', self::language_file), false, false, $class),
+		a5_text_field('btn_hover_text_color', self::$options['btn_hover_text_color'], __('Hover Text Colour', self::language_file), false, false, $class),
+		a5_text_field('btn_hover_border_color', self::$options['btn_hover_border_color'], __('Hover Border Colour', self::language_file), false, false, $class),
+		
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then.', self::language_file)
+		);
+		
+		a5_container_right(__('Submit Button', self::language_file), $text, $special, array('buttonmsg', 2));
+		
+		a5_close_section();
+		
+		a5_submit_button('button_save', __('Save Changes'), __('Save style', self::language_file));
+		
+		// messages
+		
+		a5_next_page('message');
+		
+		a5_open_section();
+		
+		wp_nonce_field('save_message','messagenonce');
+		
+		$fields = array(
+		
+		a5_text_field('loggedout_text_color', self::$options['loggedout_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_text_field('loggedout_bg_color', self::$options['loggedout_bg_color'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('loggedout_border_color', self::$options['loggedout_border_color'], __('Border Colour', self::language_file), false, false, $class)
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('This changes the colours of the text container, that appears, when you have successfully logged out.', self::language_file)
+		);
+		
+		a5_container_right(__('Logged Out Message', self::language_file), $text, $special, array('messagemsg', 2));
+		
+		a5_next_section();
+		
+		$fields = array(
+		
+		a5_text_field('error_text_color', self::$options['error_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_text_field('error_bg_color', self::$options['error_bg_color'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('error_bg_color', self::$options['error_bg_color'], __('Border Colour', self::language_file), false, false, $class),
+		a5_text_field('error_custom_message', self::$options['error_custom_message'], __('Error Message', self::language_file), 40, 'width: 95%')
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('This changes the colours of the text container, that appears, when you get an error logging in.', self::language_file),
+		__('Furthermore, you can enter your own error message here. By default, Wordpress says that either the username or the password is wrong, which is perhaps a hint to foreigners that you don&#39;t wish to give.', self::language_file)
+		);
+		
+		a5_container_right(__('Error Message', self::language_file), $text, $special);
+		
+		a5_next_section();
+		
+		$fields = array(
+		
+		a5_text_field('input_text_color', self::$options['input_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_text_field('input_bg_color', self::$options['input_bg_color'], __('Background Colour', self::language_file), false, false, $class),
+		a5_text_field('input_border_color', self::$options['input_border_color'], __('Border Colour', self::language_file), false, false, $class)
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('This changes the colours of the name and password fields of the log in form.', self::language_file)
+		);
+		
+		a5_container_right(__('Input Fields', self::language_file), $text, $special);
+		
+		a5_close_section();
+		
+		a5_submit_button('message_save', __('Save Changes'), __('Save style', self::language_file));
+		
+		// links
+		
+		a5_next_page('link');
+		
+		a5_open_section();
+		
+		wp_nonce_field('save_link','linknonce');
+		
+		$textdeco = array(array('none', 'none'), array('underline', 'underline'), array('overline', 'overline'), array('line-through', 'line-through'), array('blink', 'blink'));
+		
+		$fields = array(
+		
+		a5_text_field('link_text_color', self::$options['link_text_color'], __('Text Colour', self::language_file), false, false, $class),
+		a5_select('link_textdecoration', self::$options['link_textdecoration'], $textdeco, __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), 'width: 220px;'),
+		a5_number_field('link_shadow_x', self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
+		a5_number_field('link_shadow_y', self::$options['link_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
+		a5_number_field('link_shadow_softness', self::$options['link_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
+		a5_text_field('link_shadow_color', self::$options['link_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class),
+		a5_text_field('hover_text_color', self::$options['hover_text_color'], __('Hover Text Colour', self::language_file), false, false, $class),
+		a5_select('hover_textdecoration', self::$options['hover_textdecoration'], $textdeco, __('Hover Text Decoration', self::language_file), __('choose a text decoration', self::language_file), 'width: 220px;'),
+		a5_number_field('hover_shadow_x', self::$options['hover_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
+		a5_number_field('hover_shadow_y', self::$options['hover_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
+		a5_number_field('hover_shadow_softness', self::$options['hover_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
+		a5_text_field('hover_shadow_color', self::$options['hover_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class)
+		);
+		
+		a5_container_left($fields);
+
+		$text = array(
+		
+		__('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', self::language_file)
+		);
+		
+		a5_container_right(__('Links', self::language_file), $text, $special, array('linkmsg', 2));
+		
+		a5_close_section();
+		
+		a5_submit_button('link_save', __('Save Changes'), __('Save style', self::language_file));
+		
+		a5_close_page();
+		
+		?>
 	</td>
 	</tr>
 	</table>
-	
-	</div><!-- / class=wrap -->
-	<script type="text/javascript">
-	var pages=new ddtabcontent("clp-pagetabs") //enter ID of Tab Container
-	pages.setpersist(true) //toogle persistence of the tabs' state
-	pages.setselectedClassTarget("link") //"link" or "linkparent"
-	pages.init()
-	</script>
+    </div><!-- / class=wrap -->
 	<?php
+	
+	a5_nav_js();
 		
 	}
 	
@@ -898,9 +826,9 @@ class A5_CustomLoginPage {
 		
 		# collecting variables
 		
-		if (self::$options['version'] !='1.5') :
+		if (self::$options['version'] !='1.5.1') :
 			
-			self::$options['version']='1.5';
+			self::$options['version']='1.5.1';
 			update_option('clp_options', self::$options);
 			
 		endif;
@@ -1138,6 +1066,7 @@ class A5_CustomLoginPage {
 	}
 	
 	function clp_css_template() {
+		
 		   if (get_query_var('clpfile') == 'css') :
 				   
 				   header('Content-type: text/css');
