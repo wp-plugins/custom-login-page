@@ -17,7 +17,7 @@ jQuery(document).ready(function(){
 		var body_img_pos = jQuery("#body_img_pos").val();
 		var body_bg_color1 = jQuery("#body_bg_color1").val();
 		var body_bg_color2 = jQuery("#body_bg_color2").val();
-		var body_text_color = jQuery("#body_text_color").val();
+		var body_bg_size = jQuery("#body_bg_size").val();
 		var mainnonce = jQuery("#mainnonce").val();
 		var _wp_http_referer = jQuery("#main_form #_wp_http_referer").val();
 		var data = {
@@ -35,7 +35,7 @@ jQuery(document).ready(function(){
 			body_img_pos: body_img_pos,
 			body_bg_color1: body_bg_color1,
 			body_bg_color2: body_bg_color2,
-			body_text_color: body_text_color,
+			body_bg_size: body_bg_size,
 			mainnonce: mainnonce,
 			_wp_http_referer: _wp_http_referer
 		};
@@ -222,9 +222,11 @@ jQuery(document).ready(function(){
 		var loggedout_text_color = jQuery("#loggedout_text_color").val();
 		var loggedout_bg_color = jQuery("#loggedout_bg_color").val();
 		var loggedout_border_color = jQuery("#loggedout_border_color").val();
+		var loggedout_transparency = jQuery("#loggedout_transparency").val();
 		var error_text_color = jQuery("#error_text_color").val();
 		var error_bg_color = jQuery("#error_bg_color").val();
 		var error_border_color = jQuery("#error_border_color").val();
+		var error_transparency = jQuery("#error_transparency").val();
 		var error_custom_message = jQuery("#error_custom_message").val();
 		var input_text_color = jQuery("#input_text_color").val();
 		var input_bg_color = jQuery("#input_bg_color").val();
@@ -237,9 +239,11 @@ jQuery(document).ready(function(){
 			loggedout_text_color: loggedout_text_color,
 			loggedout_bg_color: loggedout_bg_color,
 			loggedout_border_color: loggedout_border_color,
+			loggedout_transparency: loggedout_transparency,
 			error_text_color: error_text_color,
 			error_bg_color: error_bg_color,
 			error_border_color: error_border_color,
+			error_transparency: error_transparency,			
 			error_custom_message: error_custom_message,
 			input_text_color: input_text_color,
 			input_bg_color: input_bg_color,

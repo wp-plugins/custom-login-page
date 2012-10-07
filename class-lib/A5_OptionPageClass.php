@@ -6,13 +6,15 @@
  *
  * @ A5 Plugin Framework
  *
- * Gets all sort of input fields for the flexible A5 settings pages
+ * Gets all sort of input fields and containers for the flexible A5 settings pages
+ *
+ * The fields are used in the Wp Settings and the Widgets Settings as well
  *
  */
 
 class A5_OptionPage {
 	
-	const version = '1.0';
+	const version = '1.0.1';
 	
 	public $page_item;
 	
@@ -31,20 +33,21 @@ class A5_OptionPage {
 		$step = ($step) ? ' step="'.$step.'"' : '';
 		$size = ($size) ? ' size="'.$size.'"' : '';
 		$class = ($class) ? ' class="'.$class.'"' : '';
-		$label = ($label) ? '<label for="'.$field_name.'">'.$label.'</label>' : '';
+		$label = ($label) ? '<label for="'.$field_id.'">'.$label.'</label>' : '';
+		$multiple = ($multiple) ? ' multiple="multiple"' : '';
 
 
 		switch ($type) :
 		
 			case 'textarea' :
 			
-				$output = $eol.$tab.$label.$eol.$tab.'<textarea'.$class.' name="'.$field_name.'" id="'.$field_name.'"'.$cols.$rows.$style.'>'.$value.'</textarea>';
+				$output = $eol.$tab.$label.$eol.$tab.'<textarea'.$class.' name="'.$field_name.'" id="'.$field_id.'"'.$cols.$rows.$style.'>'.$value.'</textarea>';
 			
 				break;
 				
 			case 'checkbox' :
 			
-				$output = $eol.$tab.$label.$eol.$tab.'<input'.$class.' name="'.$field_name.'" id="'.$field_name.'" type="checkbox" value="1" '.checked( 1, $value, false ).' '.$style.'/>';
+				$output = $eol.$tab.'<input'.$class.' name="'.$field_name.'" id="'.$field_id.'" type="checkbox" value="1" '.checked( 1, $value, false ).' '.$style.'/>'.$eol.$tab.$label;
 			
 				break;
 				
@@ -54,7 +57,7 @@ class A5_OptionPage {
 			
 				foreach ($text as $id => $label) :
 			
-					$output .= $eol.$tab.'<label for="'.$field_name.'-'.$id.'">'.$eol.$tab.$label.'</label>'.$eol.$tab.'<input'.$class.' id="'.$field_name.'-'.$id.'" name="'.$field_name.'" type="radio" value="'.$options[$id].'" '.checked( $options[$id], $value, false ).' '.$style.'/><br />';
+					$output .= $eol.$tab.'<input'.$class.' id="'.$field_id.'-'.$id.'" name="'.$field_name.'" type="radio" value="'.$options[$id].'" '.checked( $options[$id], $value, false ).' '.$style.'/>'.$eol.$tab.'<label for="'.$field_id.'-'.$id.'">'.$eol.$tab.$label.'</label><br />';
 					
 				endforeach;
 			
@@ -62,13 +65,15 @@ class A5_OptionPage {
 				
 			case 'select' :
 			
-				$output = $eol.$tab.$label.$eol.$tab.'<select name="'.$field_name.'" id="'.$field_name.'"'.$class.$style.'>';
+				$output = $eol.$tab.$label.$eol.$tab.'<select name="'.$field_name.'" id="'.$field_id.'"'.$class.$style.$multiple.'>';
 				
-				if ($default) $output .= $eol.$tab.'<option value="" '.selected( $value, false, false ).'>'.$default.'</option>';
+				if ($default) $output .= $eol.$tab.'<option value="" '.selected( $value[0], false, false ).'>'.$default.'</option>';
 				
 				foreach ($options as $option) :
 				
-					$output .= '<option value="'.$option[0].'" '.selected( $value, $option[0], false ).' >'.$option[1].'</option>';
+					$selected = (in_array($option[0], $value)) ? ' selected="selected"' : '';
+				
+					$output .= $eol.$tab.'<option value="'.$option[0].'"'.$selected.' >'.$option[1].'</option>';
 				
 				endforeach;
 				
@@ -83,13 +88,13 @@ class A5_OptionPage {
 				
 				foreach ($options as $option) :
 				
-					$output .= '<label for="'.$option[0].'">'.$eol.$tab.'<input id="'.$option[0].'" name="'.$option[0].'" type="checkbox" value="1" '.checked( 1, $option[1], false ).$class.$style.' />&nbsp;'.$option[2].$eol.$tab.'</label><br />'.$eol.$tab;
+					$output .= '<label for="'.$field_id.$option[0].'">'.$eol.$tab.'<input id="'.$field_id.$option[0].'" name="'.$field_name.'['.$option[0].']" type="checkbox" value="1" '.checked( 1, $option[1], false ).$class.$style.' />&nbsp;'.$option[2].$eol.$tab.'</label><br />'.$eol.$tab;
 					
 				endforeach;
 				
 				$output .= $eol.'</p>'.$eol;
 				
-				$output .= ($checkall) ? '<p>'.$eol.$tab.'<input id="checkall" name="'.$name_base.'[checkall]" type="checkbox"'.$class.$style.' />&nbsp;'.$checkall.$eol.'</p>'.$eol.'</fieldset>'.$eol : $eol.'</fieldset>'.$eol;
+				$output .= ($checkall) ? '<p>'.$eol.$tab.'<input id="'.$field_id.'checkall" name="'.$field_name.'[checkall]" type="checkbox"'.$class.$style.' />&nbsp;'.$checkall.$eol.'</p>'.$eol.'</fieldset>'.$eol : $eol.'</fieldset>'.$eol;
 			
 				break;
 				
@@ -97,7 +102,7 @@ class A5_OptionPage {
 			
 				$output = $eol.'<script type="text/javascript"><!--'.$eol.'jQuery(document).ready(function() {';
 																										   
-				foreach ($field_name as $field) :
+				foreach ($field_id as $field) :
 				
 					$output .= $eol.$tab.'jQuery("#'.$field.'").autoResize();';
 				
@@ -109,7 +114,7 @@ class A5_OptionPage {
 				
 			default :
 			
-				$output = $eol.$tab.$label.$eol.$tab.'<input name="'.$field_name.'" id="'.$field_name.'" type="'.$type.'" value="'.$value.'"'.$min.$max.$step.$size.$class.$style.' />'.$eol;
+				$output = $eol.$tab.$label.$eol.$tab.'<input name="'.$field_name.'" id="'.$field_id.'" type="'.$type.'" value="'.$value.'"'.$min.$max.$step.$size.$class.$style.' />'.$eol;
 			
 				break;
 		

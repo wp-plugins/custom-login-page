@@ -39,6 +39,11 @@ We are planning some more advanced features in the future such as
 
 == Changelog ==
 
+= 1.6 =
+
+* Fixed a bug preventing the option page from showing
+* Added a couple of options to make the login form and the message containers disappear without loosing the actual input fields and texts
+
 = 1.5.2 =
 
 * Missing stylesheet fixed
