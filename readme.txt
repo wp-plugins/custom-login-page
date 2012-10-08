@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 1.5.2
+Stable tag: 1.6
 
 Style your login page differently.
 
@@ -114,3 +114,7 @@ Better Spanish translation and no flashing WP-logo
 = 1.5.2 =
 
 Missing stylesheet fixed
+
+= 1.6 =
+
+Bugfix and new functionality
