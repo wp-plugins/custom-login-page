@@ -8,12 +8,16 @@ jQuery(document).ready(function(){
 		var logo = jQuery("#logo").val();
 		var url = jQuery("#url").val();
 		var title = jQuery("#title").val();
+		var logo_width = jQuery("#logo_width").val();
+		var logo_height = jQuery("#logo_height").val();
+		var h1_width = jQuery("#h1_width").val();
+		var h1_height = jQuery("#h1_height").val();
 		var body_background = jQuery("#body_background").val();
 		var body_img_repeat = jQuery("#body_img_repeat").val();
 		var body_img_pos = jQuery("#body_img_pos").val();
 		var body_bg_color1 = jQuery("#body_bg_color1").val();
 		var body_bg_color2 = jQuery("#body_bg_color2").val();
-		var body_text_color = jQuery("#body_text_color").val();
+		var body_bg_size = jQuery("#body_bg_size").val();
 		var mainnonce = jQuery("#mainnonce").val();
 		var _wp_http_referer = jQuery("#main_form #_wp_http_referer").val();
 		var data = {
@@ -22,21 +26,25 @@ jQuery(document).ready(function(){
 			logo: logo,
 			url: url,
 			title: title,
+			logo_width: logo_width,
+			logo_height: logo_height,
+			h1_width: h1_width,
+			h1_height: h1_height,
 			body_background: body_background,
 			body_img_repeat: body_img_repeat,
 			body_img_pos: body_img_pos,
 			body_bg_color1: body_bg_color1,
 			body_bg_color2: body_bg_color2,
-			body_text_color: body_text_color,
+			body_bg_size: body_bg_size,
 			mainnonce: mainnonce,
 			_wp_http_referer: _wp_http_referer
 		};
 		jQuery("#main_save").hide();
-		jQuery(".main-save").show();
+		jQuery(".main_save").show();
 		jQuery.post(ajaxurl, data,
 		function(response){
 			jQuery("#mainmsg").html(response);
-			jQuery(".main-save").hide();
+			jQuery(".main_save").hide();
 			jQuery("#main_save").show();
 		});
 	return false;
@@ -53,6 +61,7 @@ jQuery(document).ready(function(){
 		var logindiv_bg_color1 = jQuery("#logindiv_bg_color1").val();
 		var logindiv_bg_color2 = jQuery("#logindiv_bg_color2").val();
 		var logindiv_text_color = jQuery("#logindiv_text_color").val();
+		var logindiv_transparency = jQuery("#logindiv_transparency").val();
 		var logindiv_border_style = jQuery("#logindiv_border_style").val();
 		var logindiv_border_width = jQuery("#logindiv_border_width").val();
 		var logindiv_border_color = jQuery("#logindiv_border_color").val();
@@ -63,7 +72,11 @@ jQuery(document).ready(function(){
 		var logindiv_shadow_color = jQuery("#logindiv_shadow_color").val();		
 		var logindiv_left = jQuery("#logindiv_left").val();
 		var logindiv_top = jQuery("#logindiv_top").val();
-		var logindiv_margin = jQuery("#logindiv_margin").val();
+		var logindiv_width = jQuery("#logindiv_width").val();
+		var logindiv_height = jQuery("#logindiv_height").val();
+		var logindiv_padding = jQuery("#logindiv_padding").val();
+		
+		
 		var logindivnonce = jQuery("#logindivnonce").val();
 		var _wp_http_referer = jQuery("#logindiv_form #_wp_http_referer").val();
 		var data = {
@@ -75,6 +88,7 @@ jQuery(document).ready(function(){
 			logindiv_bg_color1: logindiv_bg_color1,
 			logindiv_bg_color2: logindiv_bg_color2,
 			logindiv_text_color: logindiv_text_color,
+			logindiv_transparency: logindiv_transparency,
 			logindiv_border_style: logindiv_border_style,
 			logindiv_border_width: logindiv_border_width,
 			logindiv_border_color: logindiv_border_color,
@@ -85,7 +99,9 @@ jQuery(document).ready(function(){
 			logindiv_shadow_color: logindiv_shadow_color,
 			logindiv_left: logindiv_left,
 			logindiv_top: logindiv_top,
-			logindiv_margin: logindiv_margin,
+			logindiv_width: logindiv_width,
+			logindiv_height: logindiv_height,
+			logindiv_padding: logindiv_padding,
 			logindivnonce: logindivnonce,
 			_wp_http_referer: _wp_http_referer
 		};
@@ -111,10 +127,13 @@ jQuery(document).ready(function(){
 		var loginform_bg_color1 = jQuery("#loginform_bg_color1").val();
 		var loginform_bg_color2 = jQuery("#loginform_bg_color2").val();
 		var loginform_text_color = jQuery("#loginform_text_color").val();
+		var loginform_transparency = jQuery("#loginform_transparency").val();
 		var loginform_border_style = jQuery("#loginform_border_style").val();
 		var loginform_border_width = jQuery("#loginform_border_width").val();
 		var loginform_border_color = jQuery("#loginform_border_color").val();
 		var loginform_border_round = jQuery("#loginform_border_round").val();
+		var loginform_margin = jQuery("#loginform_margin").val();
+		var loginform_padding = jQuery("#loginform_padding").val();
 		var loginform_shadow_x = jQuery("#loginform_shadow_x").val();
 		var loginform_shadow_y = jQuery("#loginform_shadow_y").val();
 		var loginform_shadow_softness = jQuery("#loginform_shadow_softness").val();
@@ -130,10 +149,13 @@ jQuery(document).ready(function(){
 			loginform_bg_color1: loginform_bg_color1,
 			loginform_bg_color2: loginform_bg_color2,
 			loginform_text_color: loginform_text_color,
+			loginform_transparency: loginform_transparency,
 			loginform_border_style: loginform_border_style,
 			loginform_border_width: loginform_border_width,
 			loginform_border_color: loginform_border_color,
 			loginform_border_round: loginform_border_round,
+			loginform_margin: loginform_margin,
+			loginform_padding: loginform_padding,
 			loginform_shadow_x: loginform_shadow_x,
 			loginform_shadow_y: loginform_shadow_y,
 			loginform_shadow_softness: loginform_shadow_softness,
@@ -200,9 +222,11 @@ jQuery(document).ready(function(){
 		var loggedout_text_color = jQuery("#loggedout_text_color").val();
 		var loggedout_bg_color = jQuery("#loggedout_bg_color").val();
 		var loggedout_border_color = jQuery("#loggedout_border_color").val();
+		var loggedout_transparency = jQuery("#loggedout_transparency").val();
 		var error_text_color = jQuery("#error_text_color").val();
 		var error_bg_color = jQuery("#error_bg_color").val();
 		var error_border_color = jQuery("#error_border_color").val();
+		var error_transparency = jQuery("#error_transparency").val();
 		var error_custom_message = jQuery("#error_custom_message").val();
 		var input_text_color = jQuery("#input_text_color").val();
 		var input_bg_color = jQuery("#input_bg_color").val();
@@ -215,9 +239,11 @@ jQuery(document).ready(function(){
 			loggedout_text_color: loggedout_text_color,
 			loggedout_bg_color: loggedout_bg_color,
 			loggedout_border_color: loggedout_border_color,
+			loggedout_transparency: loggedout_transparency,
 			error_text_color: error_text_color,
 			error_bg_color: error_bg_color,
 			error_border_color: error_border_color,
+			error_transparency: error_transparency,			
 			error_custom_message: error_custom_message,
 			input_text_color: input_text_color,
 			input_bg_color: input_bg_color,

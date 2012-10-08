@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 1.4.1
+Stable tag: 1.6
 
 Style your login page differently.
 
@@ -39,9 +39,26 @@ We are planning some more advanced features in the future such as
 
 == Changelog ==
 
+= 1.6 =
+
+* Fixed a bug preventing the option page from showing
+* Added a couple of options to make the login form and the message containers disappear without loosing the actual input fields and texts
+
+= 1.5.2 =
+
+* Missing stylesheet fixed
+
+= 1.5.1 =
+
+* Better Spanish translation and no flashing WP-logo
+
+= 1.5 =
+
+* Login container and login form can now be resized and positioned; size of the logo can be changed
+
 = 1.4.1 =
 
-* Spanish translation added
+* Spanish translation added thanks to [Jorge Ballesteros](http://profiles.wordpress.org/jballesterosruiz/)
 
 = 1.4 =
 
@@ -85,3 +102,19 @@ You can now enter a custom error message
 = 1.4.1 =
 
 Spanish translation added
+
+= 1.5 =
+
+Login container and login form can now be resized and positioned; size of the logo can be changed
+
+= 1.5.1 =
+
+Better Spanish translation and no flashing WP-logo
+
+= 1.5.2 =
+
+Missing stylesheet fixed
+
+= 1.6 =
+
+Bugfix and new functionality
