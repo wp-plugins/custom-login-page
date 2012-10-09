@@ -1,7 +1,7 @@
 === A5 Custom Login Page ===
 Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA
-Tags: custom login, brand login, customize, brand, login, login page, own look
+Tags: custom login, brand login, customize, brand, login, login page, own look, multisite
 Requires at least: 3.1
 Tested up to: 3.5
 Stable tag: 1.6
@@ -10,7 +10,7 @@ Style your login page differently.
 
 == Description ==
 
-If you are working for a customer or you just want to set a page for a community (band, choir etc.) they might appreciate their own logo at the login screen. With this plugin, you can even go further and style your whole login page according to your needs. At the moment, there is only the way for 'dummies' to style the page, but in a future version you will be able to enter some css code yourself and the final goal is, also to offer the possibility to copy an entire stylesheet into the plugin, to have the most freedom of styling and changing the items on your loginscreen.
+If you are working for a customer or you just want to set a page for a community (band, choir etc.) they might appreciate their own logo at the login screen. With this plugin, you can even go further and style your whole login page according to your needs. At the moment, there is only the way for 'dummies' to style the page, but in a future version you will be able to enter some css code yourself and the final goal is, also to offer the possibility to copy an entire stylesheet into the plugin, to have the most freedom of styling and changing the items on your loginscreen. Since version 1.7 the A5 Custom Login Page is also for a WP networksetup.
 
 == Installation ==
 
@@ -38,6 +38,11 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 1.7 =
+
+* Fixed a bug with login form transparency
+* Added a multisite functionality
 
 = 1.6 =
 
@@ -118,3 +123,7 @@ Missing stylesheet fixed
 = 1.6 =
 
 Bugfix and new functionality
+
+= 1.7 =
+
+Fixed a bug with login form transparency; added a multisite functionality

@@ -51,30 +51,64 @@ if (!function_exists('a5_option_page_version')) require_once CLP_PATH.'includes/
 
 class A5_CustomLoginPage {
 	
-	static $options;
+	private static $options;
 	
 	const language_file = 'custom-login-page';
 	
 	function A5_CustomLoginPage(){
 		
-		self::$options = get_option('clp_options');
-		
 		register_activation_hook(__FILE__, array($this, 'start_clp')); 
 		register_deactivation_hook(__FILE__, array($this, 'unset_clp'));	
 		
-		add_filter('plugin_row_meta', array($this, 'clp_register_links'),10,2);
-		add_filter('plugin_action_links', array($this, 'clp_plugin_action_links'), 10, 2 );
+		add_filter('plugin_row_meta', array($this, 'clp_register_links'), 10, 2);
+		add_filter('plugin_action_links', array($this, 'clp_plugin_action_links'), 10, 2);
 		
 		add_action('login_head', array($this, 'clp_login_css'));
-		add_action('admin_menu', array($this, 'clp_admin_menu'));
 		add_action('admin_init', array($this, 'clp_register_admin_extras'));
 		add_action('admin_enqueue_scripts', array($this, 'clp_admin_css'));
 		add_action('wp_ajax_clp_save_settings', array($this, 'clp_save_settings'));
 		add_action('init', array($this, 'clp_add_rewrite'));
 		add_action('template_redirect', array($this, 'clp_css_template'));
 		
+		if (is_multisite()) :
+		
+			$plugins = get_site_option('active_sitewide_plugins');
+			
+			if (isset($plugins[plugin_basename(__FILE__)])) :
+		
+				add_action('network_admin_menu', array($this, 'clp_site_admin_menu'));
+				
+				self::$options = get_site_option('clp_options');
+				
+				if (self::$options['version'] !='1.6') :
+				
+					self::$options['version']='1.6';
+					
+					update_site_option('clp_options', self::$options);
+					
+				endif;
+				
+			endif;
+			
+		else:
+			
+			add_action('admin_menu', array($this, 'clp_admin_menu'));
+			
+			self::$options = get_option('clp_options');
+			
+			if (self::$options['version'] !='1.6') :
+				
+				self::$options['version']='1.6';
+				
+				update_option('clp_options', self::$options);
+				
+			endif;
+		
+		endif;
+		
 		if (!empty(self::$options['url'])) add_filter('login_headerurl', array($this, 'clp_headerurl'));
 		if (!empty(self::$options['title'])) add_filter('login_headertitle', array($this, 'clp_headertitle'));
+		if (!empty(self::$options['error_custom_message'])) add_filter('login_errors', array($this, 'clp_custom_error'));
 		
 		/**
 		 *
@@ -164,7 +198,17 @@ class A5_CustomLoginPage {
 	 */
 	function start_clp() {
 		
-		add_option('clp_options', array('version' => '1.5.2'));
+		$screen = get_current_screen();
+		
+		if (is_multisite() && $screen->is_network) :
+		
+			add_site_option('clp_options', array('version' => '1.6'));
+			
+		else:
+		
+			add_option('clp_options', array('version' => '1.6'));
+			
+		endif;
 	
 	}
 	
@@ -175,7 +219,17 @@ class A5_CustomLoginPage {
 	 */
 	function unset_clp() {
 		
-		delete_option('clp_options');
+		$screen = get_current_screen();
+		
+		if (is_multisite() && $screen->is_network) :
+		
+			delete_site_option('clp_options');
+			
+		else:
+		
+			delete_option('clp_options');
+			
+		endif;
 		
 	}
 	
@@ -188,6 +242,17 @@ class A5_CustomLoginPage {
 		
 		add_theme_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', array($this, 'clp_options_page'));	
 		
+	}
+	
+	/**
+	 *
+	 * Creating Multisite Settings Page
+	 *
+	 */
+	function clp_site_admin_menu() {
+		
+		add_menu_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', array($this, 'clp_options_page'), plugins_url('adseasy-plus/img/a5-icon-16.png'));	
+		
 	}	
 	
 	/**
@@ -196,8 +261,6 @@ class A5_CustomLoginPage {
 	 *
 	 */
 	function clp_register_admin_extras() {
-		 
-		 self::$options=get_option('clp_options');
 		 
 		 wp_register_style('a5-admin', plugins_url('/css/a5-admin-css.css', __FILE__), false, self::$options['version'], 'all');
 		 wp_register_script('clp-admin-script', plugins_url('/js/clp-admin.js', __FILE__), array('jquery'), self::$options['version'], true);
@@ -213,7 +276,7 @@ class A5_CustomLoginPage {
 	 */
 	function clp_admin_css($hook) {
 		
-		if ($hook != 'appearance_page_clp-settings') return;
+		if ($hook != 'appearance_page_clp-settings' && $hook != 'toplevel_page_clp-settings') return;
 		
 		wp_enqueue_style('a5-admin');
 		wp_enqueue_script('clp-admin-script');
@@ -641,7 +704,16 @@ class A5_CustomLoginPage {
 				self::$options['body_bg_color2'] = $_POST['body_bg_color2'];
 				self::$options['body_bg_size'] = $_POST['body_bg_size'];
 								
-				update_option('clp_options', self::$options);
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+				
 				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
 			
 			endif;
@@ -680,7 +752,16 @@ class A5_CustomLoginPage {
 				self::$options['logindiv_height'] = $_POST['logindiv_height'];
 				self::$options['logindiv_padding'] = $_POST['logindiv_padding'];
 				
-				update_option('clp_options', self::$options);
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+				
 				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
 			
 			endif;
@@ -716,7 +797,16 @@ class A5_CustomLoginPage {
 				self::$options['loginform_shadow_softness'] = $_POST['loginform_shadow_softness'];
 				self::$options['loginform_shadow_color'] = $_POST['loginform_shadow_color'];
 				
-				update_option('clp_options', self::$options);
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+				
 				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
 			
 			endif;
@@ -743,7 +833,16 @@ class A5_CustomLoginPage {
 				self::$options['btn_hover_text_color'] = $_POST['btn_hover_text_color'];
 				self::$options['btn_hover_border_color'] = $_POST['btn_hover_border_color'];
 				
-				update_option('clp_options', self::$options);
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+				
 				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
 			
 			endif;
@@ -774,7 +873,16 @@ class A5_CustomLoginPage {
 				self::$options['input_bg_color'] = $_POST['input_bg_color'];
 				self::$options['input_border_color'] = $_POST['input_border_color'];
 				
-				update_option('clp_options', self::$options);
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+				
 				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
 			
 			endif;
@@ -805,7 +913,16 @@ class A5_CustomLoginPage {
 				self::$options['hover_shadow_softness'] = $_POST['hover_shadow_softness'];
 				self::$options['hover_shadow_color'] = $_POST['hover_shadow_color'];
 				
-				update_option('clp_options', self::$options);
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+					
 				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
 			
 			endif;
@@ -829,13 +946,6 @@ class A5_CustomLoginPage {
 	function clp_get_the_style() {
 		
 		# collecting variables
-		
-		if (self::$options['version'] !='1.5.2') :
-			
-			self::$options['version']='1.5.2';
-			update_option('clp_options', self::$options);
-			
-		endif;
 		
 		$eol = "\r\n";
 		
@@ -939,7 +1049,7 @@ class A5_CustomLoginPage {
 		
 		if (self::$options['loginform_transparency'] == 0) :
 		
-			$loginform_style = 'background: transparent;'.$eol.'border: none;'.$eol.'-webkit-box-shadow: none;'.$eol.'-moz-box-shadow: none;'.$eol.'box-shadow: none;'.$eol;
+			$loginform_style = 'background: transparent;'.$eol;
 		
 		else:
 			
@@ -963,24 +1073,25 @@ class A5_CustomLoginPage {
 				$loginform_style .= 'opacity: '.(self::$options['loginform_transparency']/100).';'.$eol;
 			endif;
 			
-			if (!empty(self::$options['loginform_background'])) $loginform_style .= 'background-image: url('.self::$options['loginform_background'].');'.$eol;
-			if (!empty(self::$options['loginform_img_repeat'])) $loginform_style .= 'background-repeat: '.self::$options['loginform_img_repeat'].';'.$eol;
-			if (!empty(self::$options['loginform_img_pos'])) $loginform_style .= 'background-position: '.self::$options['loginform_img_pos'].';'.$eol;
-			if (!empty(self::$options['loginform_border_style'])) $loginform_style .= 'border: '.self::$options['loginform_border_style'].' '.self::$options['loginform_border_width'].'px '.self::$options['loginform_border_color'].';'.$eol;
-			if (!empty(self::$options['loginform_border_round'])) :
-				
-				$loginform_style .= '-webkit-border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
-				$loginform_style .= '-moz-border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
-				$loginform_style .= 'border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
-				
-			endif;
-			if (!empty(self::$options['loginform_shadow_x']) || self::$options['loginform_shadow_x']=='0') :
-				
-				$loginform_style .= '-webkit-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;
-				$loginform_style .= '-moz-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;;
-				$loginform_style .= 'box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;
-			endif;
-		
+		endif;
+			
+		if (!empty(self::$options['loginform_background'])) $loginform_style .= 'background-image: url('.self::$options['loginform_background'].');'.$eol;
+		if (!empty(self::$options['loginform_img_repeat'])) $loginform_style .= 'background-repeat: '.self::$options['loginform_img_repeat'].';'.$eol;
+		if (!empty(self::$options['loginform_img_pos'])) $loginform_style .= 'background-position: '.self::$options['loginform_img_pos'].';'.$eol;
+		if (!empty(self::$options['loginform_border_style']) && !empty(self::$options['loginform_border_width'])) $loginform_style .= 'border: '.self::$options['loginform_border_style'].' '.self::$options['loginform_border_width'].'px '.self::$options['loginform_border_color'].';'.$eol;
+		if (self::$options['loginform_border_style'] == 'none') $loginform_style .= 'border: medium none;'.$eol;
+		if (!empty(self::$options['loginform_border_round'])) :
+			
+			$loginform_style .= '-webkit-border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
+			$loginform_style .= '-moz-border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
+			$loginform_style .= 'border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
+			
+		endif;
+		if (!empty(self::$options['loginform_shadow_x']) || self::$options['loginform_shadow_x']=='0') :
+			
+			$loginform_style .= '-webkit-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;
+			$loginform_style .= '-moz-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;;
+			$loginform_style .= 'box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;
 		endif;
 		
 		if (!empty(self::$options['loginform_margin'])) $loginform_style .= 'margin: '.self::$options['loginform_margin'].';'.$eol;
@@ -997,7 +1108,8 @@ class A5_CustomLoginPage {
 		
 		if (self::$options['loggedout_transparency'] == 0) :
 		
-			$loggedout_style = 'background: transparent;'.$eol.'border: none;'.$eol.'-webkit-box-shadow: none;'.$eol.'-moz-box-shadow: none;'.$eol.'box-shadow: none;'.$eol;
+			$loggedout_style = 'background: transparent;'.$eol.'border: none;'.$eol.'box-shadow: none;'.$eol;
+			
 			if (!empty(self::$options['loggedout_text_color'])) :
 			
 				$loggedout_style .= 'color: '.self::$options['loggedout_text_color'].';'.$eol;
@@ -1006,16 +1118,17 @@ class A5_CustomLoginPage {
 		
 		else :
 		
-			if (!empty(self::$options['loggedout_text_color'])) $loggedout_style = 'color: '.self::$options['loggedout_text_color'].';'.$eol;
-			if (!empty(self::$options['loggedout_bg_color'])) $loggedout_style .= 'background-color: '.self::$options['loggedout_bg_color'].';'.$eol;
-			if (!empty(self::$options['loggedout_border_color'])) $loggedout_style .= 'border-color: '.self::$options['loggedout_border_color'].';'.$eol;
+			if (!empty(self::$options['loggedout_bg_color'])) $loggedout_style = 'background-color: '.self::$options['loggedout_bg_color'].';'.$eol;
 			if (!empty(self::$options['loggedout_transparency'])) :
-				$loggedout_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['logindiv_transparency'].')";'.$eol;
-				$loggedout_style .= 'filter: alpha(Opacity='.self::$options['logindiv_transparency'].');'.$eol;
-				$loggedout_style .= '-moz-opacity: '.(self::$options['logindiv_transparency']/100).';'.$eol;
-				$loggedout_style .= '-khtml-opacity: '.(self::$options['logindiv_transparency']/100).';'.$eol;
-				$loggedout_style .= 'opacity: '.(self::$options['logindiv_transparency']/100).';'.$eol;
+				$loggedout_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['loggedout_transparency'].')";'.$eol;
+				$loggedout_style .= 'filter: alpha(Opacity='.self::$options['loggedout_transparency'].');'.$eol;
+				$loggedout_style .= '-moz-opacity: '.(self::$options['loggedout_transparency']/100).';'.$eol;
+				$loggedout_style .= '-khtml-opacity: '.(self::$options['loggedout_transparency']/100).';'.$eol;
+				$loggedout_style .= 'opacity: '.(self::$options['loggedout_transparency']/100).';'.$eol;
 			endif;
+		
+			if (!empty(self::$options['loggedout_text_color'])) $loggedout_style .= 'color: '.self::$options['loggedout_text_color'].';'.$eol;
+			if (!empty(self::$options['loggedout_border_color'])) $loggedout_style .= 'border-color: '.self::$options['loggedout_border_color'].';'.$eol;
 			
 		endif;
 		
@@ -1023,7 +1136,8 @@ class A5_CustomLoginPage {
 		
 		if (self::$options['error_transparency'] == 0) :
 		
-			$error_style = 'background: transparent !important;'.$eol.'border: none !important;'.$eol.'-webkit-box-shadow: none !important;'.$eol.'-moz-box-shadow: none !important;'.$eol.'box-shadow: none !important;'.$eol;
+			$error_style = 'background: transparent;'.$eol.'border: none;'.$eol.'box-shadow: none;'.$eol;
+			
 			if (!empty(self::$options['error_text_color'])) :
 			
 				$error_style .= 'color: '.self::$options['error_text_color'].';'.$eol;
@@ -1032,16 +1146,17 @@ class A5_CustomLoginPage {
 		
 		else :
 		
-			if (!empty(self::$options['error_text_color'])) $error_style = 'color: '.self::$options['error_text_color'].';'.$eol;
-			if (!empty(self::$options['error_bg_color'])) $error_style .= 'background-color: '.self::$options['error_bg_color'].' !important;'.$eol;
-			if (!empty(self::$options['error_border_color'])) $error_style .= 'border-color: '.self::$options['error_border_color'].' !important;'.$eol;
+			if (!empty(self::$options['error_bg_color'])) $error_style = 'background-color: '.self::$options['error_bg_color'].';'.$eol;
 			if (!empty(self::$options['error_transparency'])) :
-				$error_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['logindiv_transparency'].')" !important;'.$eol;
-				$error_style .= 'filter: alpha(Opacity='.self::$options['logindiv_transparency'].') !important;'.$eol;
-				$error_style .= '-moz-opacity: '.(self::$options['logindiv_transparency']/100).' !important;'.$eol;
-				$error_style .= '-khtml-opacity: '.(self::$options['logindiv_transparency']/100).' !important;'.$eol;
-				$error_style .= 'opacity: '.(self::$options['logindiv_transparency']/100).' !important;'.$eol;
+				$error_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['error_transparency'].')";'.$eol;
+				$error_style .= 'filter: alpha(Opacity='.self::$options['error_transparency'].');'.$eol;
+				$error_style .= '-moz-opacity: '.(self::$options['error_transparency']/100).';'.$eol;
+				$error_style .= '-khtml-opacity: '.(self::$options['error_transparency']/100).';'.$eol;
+				$error_style .= 'opacity: '.(self::$options['error_transparency']/100).';'.$eol;
 			endif;
+			
+			if (!empty(self::$options['error_text_color'])) $error_style .= 'color: '.self::$options['error_text_color'].';'.$eol;
+			if (!empty(self::$options['error_border_color'])) $error_style .= 'border-color: '.self::$options['error_border_color'].';'.$eol;
 			
 		endif;
 		
@@ -1107,7 +1222,7 @@ class A5_CustomLoginPage {
 		if(!empty($loginform_style)) $clp_css.='.login form {'.$eol.$loginform_style.'}'.$eol;
 		if(!empty($label_style)) $clp_css.='#loginform label, #lostpasswordform label, #registerform label {'.$eol.$label_style.'}'.$eol;
 		if(!empty($loggedout_style)) $clp_css.='.login .message {'.$eol.$loggedout_style.'}'.$eol;
-		if(!empty($error_style)) $clp_css.='#login_error {'.$eol.$error_style.'}'.$eol;
+		if(!empty($error_style)) $clp_css.='.login #login_error {'.$eol.$error_style.'}'.$eol;
 		if(!empty($input_style)) $clp_css.='.input {'.$eol.$input_style.'}'.$eol;
 		if(!empty($link_style)) :
 			$clp_css.='.login #nav {'.$eol.'color: '.self::$options['link_text_color'].' !important;'.$eol.'text-shadow: none !important;'.$eol.'}'.$eol;

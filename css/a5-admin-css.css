@@ -204,7 +204,7 @@ input.save-tab {
 	width: 200px;
 	height: 30px;
 	font-weight:bold;
-	font-size:3em;
+	font-size:1.3em;
 	border:solid 2px;
 }
 input.reset-tab { 
