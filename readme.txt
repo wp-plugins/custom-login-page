@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite
 Requires at least: 3.1
 Tested up to: 3.5
-Stable tag: 1.6
+Stable tag: 1.7
 
 Style your login page differently.
 
@@ -42,7 +42,7 @@ We are planning some more advanced features in the future such as
 = 1.7 =
 
 * Fixed a bug with login form transparency
-* Added a multisite functionality
+* Added multisite functionality
 
 = 1.6 =
 
