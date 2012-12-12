@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.7.1
+Version: 1.7.2
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -80,11 +80,25 @@ class A5_CustomLoginPage {
 				
 				self::$options = get_site_option('clp_options');
 				
-				if (self::$options['version'] !='1.7.1') :
+				if (self::$options['version'] !='1.7.2') :
 				
-					self::$options['version']='1.7.1';
+					self::$options['version']='1.7.2';
 					
 					update_site_option('clp_options', self::$options);
+					
+				endif;
+				
+			else:
+			
+				add_action('admin_menu', array($this, 'clp_admin_menu'));
+			
+				self::$options = get_option('clp_options');
+				
+				if (self::$options['version'] !='1.7.2') :
+					
+					self::$options['version']='1.7.2';
+					
+					update_option('clp_options', self::$options);
 					
 				endif;
 				
@@ -96,9 +110,9 @@ class A5_CustomLoginPage {
 			
 			self::$options = get_option('clp_options');
 			
-			if (self::$options['version'] !='1.7.1') :
+			if (self::$options['version'] !='1.7.2') :
 				
-				self::$options['version']='1.7.1';
+				self::$options['version']='1.7.2';
 				
 				update_option('clp_options', self::$options);
 				
@@ -202,11 +216,11 @@ class A5_CustomLoginPage {
 		
 		if (is_multisite() && $screen->is_network) :
 		
-			add_site_option('clp_options', array('version' => '1.7.1'));
+			add_site_option('clp_options', array('version' => '1.7.2'));
 			
 		else:
 		
-			add_option('clp_options', array('version' => '1.7.1'));
+			add_option('clp_options', array('version' => '1.7.2'));
 			
 		endif;
 	
