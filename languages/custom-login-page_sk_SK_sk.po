@@ -1,0 +1,525 @@
+# Copyright (C) 2012 A5 Custom Login Page
+# This file is distributed under the same license as the A5 Custom Login Page package.
+msgid ""
+msgstr ""
+"Project-Id-Version: A5 Custom Login Page 1.4.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-login-page\n"
+"POT-Creation-Date: 2012-08-16 05:52:15+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2012-12-19 00:15+0200\n"
+"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: custom-login-page.php:82
+msgid "FAQ"
+msgstr "FAQ"
+
+#: custom-login-page.php:83
+msgid "Donate"
+msgstr "Darovať"
+
+#: custom-login-page.php:94 custom-login-page.php:235
+msgid "Settings"
+msgstr "Nastavenia"
+
+#: custom-login-page.php:221
+msgid "Saving..."
+msgstr "Ukladanie..."
+
+#: custom-login-page.php:245 custom-login-page.php:317
+msgid "Body"
+msgstr "Telo"
+
+#: custom-login-page.php:246 custom-login-page.php:384
+msgid "Login Container"
+msgstr "Prihlásenie kontajner"
+
+#: custom-login-page.php:247 custom-login-page.php:479
+msgid "Login Form"
+msgstr "Prihlasovací formulár"
+
+#: custom-login-page.php:248
+msgid "Button"
+msgstr "Tlačidlo"
+
+#: custom-login-page.php:249
+msgid "Messages and Input Fields"
+msgstr "Správy a vstupné polia"
+
+#: custom-login-page.php:250 custom-login-page.php:641
+msgid "Links"
+msgstr "Odkazy"
+
+#: custom-login-page.php:260
+msgid "Logo URL"
+msgstr "Logo URL"
+
+#: custom-login-page.php:262
+msgid "URL to link to"
+msgstr "URL odkaz na"
+
+#: custom-login-page.php:264
+msgid "Title tag of the logo"
+msgstr "Názov značky loga"
+
+#: custom-login-page.php:268
+msgid "Logo"
+msgstr "Logo"
+
+#: custom-login-page.php:270
+msgid ""
+"You can enter the url of the logo, that you want to have in place of the WP "
+"logo on the login screen. Just upload any picture (best is a png or gif with "
+"transparent background) via the uploader on the Media section and copy the "
+"url of that file here."
+msgstr ""
+"Môžete zadať adresu URL loga, ktoré chcete mať v mieste WP loga na "
+"prihlasovacej obrazovke. Stačí nahrať akýkoľvek obrázok (najlepšie je png "
+"alebo gif s priehľadným pozadím) pomocou nahral na sekcii Media a skopírujte "
+"adresu URL tohto súboru tu."
+
+#: custom-login-page.php:271
+msgid "In the URL field, you enter the URL to which the logo should link."
+msgstr "Do poľa URL zadáte adresu URL, na ktorú by mal odkaz logo."
+
+#: custom-login-page.php:272 custom-login-page.php:292
+#: custom-login-page.php:320 custom-login-page.php:390
+#: custom-login-page.php:411 custom-login-page.php:486
+#: custom-login-page.php:523 custom-login-page.php:550
+#: custom-login-page.php:569 custom-login-page.php:585
+#: custom-login-page.php:644
+msgid ""
+"You can leave any of the fields empty to keep the default settings of "
+"Wordpress."
+msgstr ""
+"Môžete zanechať niektorý z polí vyprázdniť, aby predvolené nastavenia "
+"Wordpress."
+
+#: custom-login-page.php:278
+msgid "Width of the Logo (in px)"
+msgstr "Šírka loga (v px)"
+
+#: custom-login-page.php:280
+msgid "Height of the Logo (in px)"
+msgstr "Výška logo (v px)"
+
+#: custom-login-page.php:282
+msgid "Width of the Logo Container (in px)"
+msgstr "Šírka kontajnera Logo (v px)"
+
+#: custom-login-page.php:284
+msgid "Height of the Logo Container (in px)"
+msgstr "Výška Logo nádoby (v px)"
+
+#: custom-login-page.php:288
+msgid "Position and Size of the Logo"
+msgstr "Poloha a veľkosť loga"
+
+#: custom-login-page.php:290
+msgid ""
+"If your logo is larger than the default WP-logo (274px by 63px), you can "
+"enter the width and the height of it here."
+msgstr ""
+"Ak vaše logo je väčšia ako predvolený WP-logo (274px by 63px), môžete zadať "
+"šírku a výšku to tu."
+
+#: custom-login-page.php:291
+msgid ""
+"The width and height of the logo-container are by default 326px and 67px. "
+"They are used to move the Logo around, since the background-position is "
+"always &#39;center top&#39;."
+msgstr ""
+"Ak váza logo JE väčšia ako predvolený WP-logo (274px by 63px), mozem zadať "
+"šírku výšku do vlaku."
+
+#: custom-login-page.php:298 custom-login-page.php:336
+#: custom-login-page.php:427
+msgid "Background Picture"
+msgstr "Obrázok pozadia"
+
+#: custom-login-page.php:300 custom-login-page.php:338
+#: custom-login-page.php:429
+msgid "Background Repeat"
+msgstr "Pozadia Repeat"
+
+#: custom-login-page.php:302 custom-login-page.php:340
+#: custom-login-page.php:431
+msgid "default"
+msgstr "predvolené"
+
+#: custom-login-page.php:307 custom-login-page.php:345
+#: custom-login-page.php:436
+msgid "Position of the Background Picture"
+msgstr "Poloha obrázka pozadia"
+
+#: custom-login-page.php:309 custom-login-page.php:347
+#: custom-login-page.php:438 custom-login-page.php:502
+#: custom-login-page.php:541 custom-login-page.php:558
+#: custom-login-page.php:577
+msgid "Background Colour"
+msgstr "Farba pozadia"
+
+#: custom-login-page.php:311 custom-login-page.php:349
+#: custom-login-page.php:440 custom-login-page.php:504
+msgid "Second Background Colour (for Gradient)"
+msgstr "Druhá farba pozadia (pre Gradient)"
+
+#: custom-login-page.php:313 custom-login-page.php:351
+#: custom-login-page.php:442 custom-login-page.php:506
+#: custom-login-page.php:539 custom-login-page.php:556
+#: custom-login-page.php:575 custom-login-page.php:601
+msgid "Text Colour"
+msgstr "Farby textu"
+
+#: custom-login-page.php:318
+msgid ""
+"You can enter the url of the background picture, that you want to have on "
+"the login page. Just upload any picture via the uploader on the Media "
+"section and copy the url of that file here. Leave it empty, if you don&#39;t "
+"want a picture. Background images are tiled by default. You can select the "
+"direction of repeating the image or to not repeat it. The position of the "
+"image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
+msgstr ""
+"Môžete zadať adresu URL na pozadí obrázku, ktoré chcete mať na prihlasovacej "
+"stránke. Stačí nahrať akýkoľvek obrázok cez nahral na sekcii Media a "
+"skopírujte adresu URL tohto súboru tu. Nechaj to prázdne, ak nechcete "
+"obrázok. Obrázky na pozadí sú obložené v predvolenom nastavení. Môžete si "
+"vybrať smer opakovanie obrazu, alebo je opakovať. Pozícia obrazu môže byť "
+"niečo ako '100px 50% \"alebo\" centrum hore \"."
+
+#: custom-login-page.php:319
+msgid ""
+"In the last section, you choose the background colour and the colour of the "
+"text in the html body element. If you give two background colours, you can "
+"create a gradient. Colour no. 1 will always be up."
+msgstr ""
+"V poslednej časti si môžete zvoliť farbu pozadia a farbu textu v HTML "
+"elementu body. Ak dávať dve farby pozadia, môžete vytvoriť prechod. Farba "
+"nie. 1 bude vždy."
+
+#: custom-login-page.php:326 custom-login-page.php:417
+#: custom-login-page.php:492 custom-login-page.php:529
+#: custom-login-page.php:591 custom-login-page.php:650
+msgid "Save Changes"
+msgstr "Uložiť zmeny"
+
+#: custom-login-page.php:327 custom-login-page.php:418
+#: custom-login-page.php:493 custom-login-page.php:530
+#: custom-login-page.php:592 custom-login-page.php:651
+msgid "Save style"
+msgstr "Uložiť štýl"
+
+#: custom-login-page.php:353 custom-login-page.php:444
+msgid "Transparency (in percent)"
+msgstr "Transparentnosť (v percentách)"
+
+#: custom-login-page.php:355 custom-login-page.php:446
+msgid "Border Style"
+msgstr "Štýl orámovania"
+
+#: custom-login-page.php:357 custom-login-page.php:448
+msgid "choose a border style"
+msgstr "Vyberte štýl orámovania"
+
+#: custom-login-page.php:368 custom-login-page.php:459
+msgid "Border Width (in px)"
+msgstr "Šírka orámovania (v px)"
+
+#: custom-login-page.php:370 custom-login-page.php:461
+#: custom-login-page.php:508 custom-login-page.php:543
+#: custom-login-page.php:560 custom-login-page.php:579
+msgid "Border Colour"
+msgstr "Farba orámovania"
+
+#: custom-login-page.php:372 custom-login-page.php:463
+msgid "Rounded Corners (in px)"
+msgstr "Zaoblenými rohmi (v px)"
+
+#: custom-login-page.php:374 custom-login-page.php:469
+#: custom-login-page.php:612 custom-login-page.php:631
+msgid "Shadow (x-direction in px)"
+msgstr "Tieň (x-smer v px)"
+
+#: custom-login-page.php:376 custom-login-page.php:471
+#: custom-login-page.php:614 custom-login-page.php:633
+msgid "Shadow (y-direction in px)"
+msgstr "Tieň (y-smer v px)"
+
+#: custom-login-page.php:378 custom-login-page.php:473
+#: custom-login-page.php:616 custom-login-page.php:635
+msgid "Shadow (softness in px)"
+msgstr "Tieň (mäkkosť v px)"
+
+#: custom-login-page.php:380 custom-login-page.php:475
+#: custom-login-page.php:618 custom-login-page.php:637
+msgid "Shadow Colour"
+msgstr "Farba tieňa"
+
+#: custom-login-page.php:386
+msgid ""
+"You can enter the url of the background picture, that you want to have on "
+"the login container. Just upload any picture via the uploader on the Media "
+"section and copy the url of that file here. Leave it empty, if you don&#39;t "
+"want a picture. Background images are tiled by default. You can select the "
+"direction of repeating the image or to not repeat it. The position of the "
+"image can be something like &#39;100px 50%&#39; or &#39;center top&#39;."
+msgstr ""
+"Môžete zadať adresu URL na pozadí obrázku, ktoré chcete mať na prihlasovacej "
+"kontajnera. Stačí nahrať akýkoľvek obrázok cez nahral na sekcii Media a "
+"skopírujte adresu URL tohto súboru tu. Nechaj to prázdne, ak nechcete "
+"obrázok. Obrázky na pozadí sú obložené v predvolenom nastavení. Môžete si "
+"vybrať smer opakovanie obrazu, alebo je opakovať. Pozícia obrazu môže byť "
+"niečo ako '100px 50% \"alebo\" centrum hore \"."
+
+#: custom-login-page.php:387
+msgid ""
+"In the next section, you choose the background colour and the colour of the "
+"text in the login container. If you give two background colours, you can "
+"create a gradient. Colour no. 1 will always be up."
+msgstr ""
+"V ďalšej časti si môžete zvoliť farbu pozadia a farbu textu v prihlasovacom "
+"kontajnera. Ak dávať dve farby pozadia, môžete vytvoriť prechod. Farba nie. "
+"1 bude vždy."
+
+#: custom-login-page.php:388 custom-login-page.php:483
+msgid ""
+"Choose a border, if wanting one. Define style, width and whether or not, you "
+"want to have rounded corners (is not supported by all browsers)."
+msgstr ""
+"Vyberte si hranice, ak chcú jeden. Definovať štýl, šírku a či alebo nie, "
+"chcete mať zaoblené rohy (nie je podporovaný všetkými prehliadačmi)."
+
+#: custom-login-page.php:389
+msgid ""
+"At last, give the container a shadow (is not supported by all browsers)."
+msgstr ""
+"Konečne, dať kontajner tieň (nie je podporovaný všetkými prehliadačmi)."
+
+#: custom-login-page.php:396
+msgid "Position (x-direction in px)"
+msgstr "Pozíciu (x-smer v px)"
+
+#: custom-login-page.php:398
+msgid "Position (y-direction in px)"
+msgstr "Pozícia (y-smer v px)"
+
+#: custom-login-page.php:400
+msgid "Width (in px)"
+msgstr "Šírka (v px)"
+
+#: custom-login-page.php:402
+msgid "Height (in px)"
+msgstr "Výška (v px)"
+
+#: custom-login-page.php:404 custom-login-page.php:467
+msgid "Padding"
+msgstr "Čalúnenie"
+
+#: custom-login-page.php:408
+msgid "Position and Size of the Login Container"
+msgstr "Poloha a veľkosť nádoby prihlásenie"
+
+#: custom-login-page.php:409
+msgid ""
+"Here you can give the whole login container a position. If you enter "
+"&#39;0&#39; in both of the fields, it will be in the top left corner of the "
+"screen."
+msgstr ""
+"Tu si môžete dať celému prihlásiť kontajner pozíciu. Ak zadáte '0 'obe "
+"polia, bude v ľavom hornom rohu obrazovky."
+
+#: custom-login-page.php:410
+msgid ""
+"The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the "
+"default padding of the login container)."
+msgstr ""
+"Padding sa, rovnako ako hodnota css. Tj. '144px 0 0 \"(čo je predvolené "
+"Čalúnenie prihlásenie kontajnera)."
+
+#: custom-login-page.php:465
+msgid "Margin"
+msgstr "Rozpätie"
+
+#: custom-login-page.php:481
+msgid ""
+"You can enter the url of the background picture, that you want to have in "
+"the login form. Just upload any picture via the uploader on the Media "
+"section and copy the url of that file here. Leave it empty, if you don&#39;t "
+"want a picture. Background images are tiled by default. You can select the "
+"direction of repeating the image or to not repeat it. The position of the "
+"image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
+msgstr ""
+"Môžete zadať adresu URL na pozadí obrázku, ktoré chcete mať v prihlasovacom "
+"formulári. Stačí nahrať akýkoľvek obrázok cez nahral na sekcii Media a "
+"skopírujte adresu URL tohto súboru tu. Nechaj to prázdne, ak nechcete "
+"obrázok. Obrázky na pozadí sú obložené v predvolenom nastavení. Môžete si "
+"vybrať smer opakovanie obrazu, alebo je opakovať. Pozícia obrazu môže byť "
+"niečo ako '100px 50% \"alebo\" centrum hore \"."
+
+#: custom-login-page.php:482
+msgid ""
+"In the next section, you choose the background colour and the colour of the "
+"text in the login form. If you give two background colours, you can create a "
+"gradient. Colour no. 1 will always be up."
+msgstr ""
+"V ďalšej časti si môžete zvoliť farbu pozadia a farbu textu v prihlasovacom "
+"formulári. Ak dávať dve farby pozadia, môžete vytvoriť prechod. Farba nie. 1 "
+"bude vždy."
+
+#: custom-login-page.php:484
+msgid ""
+"Margin and Padding are given as css values. The form has a left margin of "
+"8px by default and a padding of 26px 24px 46px. By changing the top and the "
+"bottom padding, you can stretch the form in its length."
+msgstr ""
+"Marža a Padding sú, rovnako ako hodnoty css. Formulár má ľavý okraj 8px v "
+"predvolenom nastavení a polstrovanie na 26px 24px 46px. Zmenou horné a "
+"spodné odsadenie, môžete natiahnuť formulár v jeho dĺžky."
+
+#: custom-login-page.php:485
+msgid "At last, give the form a shadow (is not supported by all browsers)."
+msgstr "Konečne, dávajú formu tieň (nie je podporovaný všetkými prehliadačmi)."
+
+#: custom-login-page.php:510
+msgid "Hover Background Colour"
+msgstr "Vznášať sa farba pozadia"
+
+#: custom-login-page.php:512
+msgid "Second Hover Background Colour (for Gradient)"
+msgstr "Druhá farba Hover pozadia (pre Gradient)"
+
+#: custom-login-page.php:514
+msgid "Hover Text Colour"
+msgstr "Hover farby textu"
+
+#: custom-login-page.php:516
+msgid "Hover Border Colour"
+msgstr "Hover farby orámovania"
+
+#: custom-login-page.php:520
+msgid "Submit Button"
+msgstr "Tlačidlo Odoslať"
+
+#: custom-login-page.php:522
+msgid ""
+"Enter the background, text and border colour of the submit button here. The "
+"button will look static if you don&#39;t give values for the hover state of "
+"it. If you want to have a gradient, enter two background colours. The first "
+"one will be up then."
+msgstr ""
+"Zadajte pozadia, textu a hranice farbu tlačidla submit tu. Tlačidlo bude "
+"vyzerať statická, ak nedáte hodnoty pre stav hover nej. Ak chcete mať "
+"prechod, zadajte dve farby pozadia. Prvý z nich bude sa potom."
+
+#: custom-login-page.php:547
+msgid "Logged Out Message"
+msgstr "Odhlásili správu"
+
+#: custom-login-page.php:549
+msgid ""
+"This changes the colours of the text container, that appears, when you have "
+"successfully logged out."
+msgstr ""
+"Tým sa zmení farby textového kontajnera, ktoré sa objavia, keď ste úspešne "
+"odhlásený."
+
+#: custom-login-page.php:562 custom-login-page.php:566
+msgid "Error Message"
+msgstr "Chybové hlásenie"
+
+#: custom-login-page.php:567
+msgid ""
+"This changes the colours of the text container, that appears, when you get "
+"an error logging in."
+msgstr ""
+"Tým sa zmení farby textového kontajnera, ktorá sa zobrazí, keď sa dostanete "
+"k chybe prihlásenie"
+
+#: custom-login-page.php:568
+msgid ""
+"Furthermore, you can enter your own error message here. By default, "
+"Wordpress says that either the username or the password is wrong, which is "
+"perhaps a hint to foreigners that you don&#39;t wish to give."
+msgstr ""
+"Okrem toho si môžete zadať svoj ​​vlastný chybovú správu. V predvolenom "
+"nastavení, Wordpress hovorí, že buď užívateľské meno alebo heslo je zlé, čo "
+"je možno náznak pre cudzincov, ktoré si neprajete, aby."
+
+#: custom-login-page.php:583
+msgid "Input Fields"
+msgstr "Vstupných polí"
+
+#: custom-login-page.php:584
+msgid ""
+"This changes the colours of the name and password fields of the log in form."
+msgstr "Tým sa zmení farby mena a hesla odbory protokolu vo forme."
+
+#: custom-login-page.php:603
+msgid "Text Decoration"
+msgstr "Text dekorácie"
+
+#: custom-login-page.php:605 custom-login-page.php:624
+msgid "choose a text decoration"
+msgstr "vybrať text dekorácie"
+
+#: custom-login-page.php:620
+msgid "Hover Colour"
+msgstr "Hover farby"
+
+#: custom-login-page.php:622
+msgid "Hover Text Decoration"
+msgstr "Hover Text dekorácie"
+
+#: custom-login-page.php:643
+msgid ""
+"Style the links by giving a text colour, text decoration and shadow for the "
+"link and the hover style."
+msgstr ""
+"Štýl väzby tým, že farbu textu, textové dekorácie a tieň pre odkaz a štýl "
+"hover."
+
+#: custom-login-page.php:685 custom-login-page.php:717
+#: custom-login-page.php:756 custom-login-page.php:792
+#: custom-login-page.php:819 custom-login-page.php:848
+msgid "Error in Datatransfer."
+msgstr "Chyba v Datatransfer."
+
+#: custom-login-page.php:704 custom-login-page.php:743
+#: custom-login-page.php:779 custom-login-page.php:806
+#: custom-login-page.php:835 custom-login-page.php:866
+msgid "Settings saved"
+msgstr "Nastavenia uložené"
+
+#. Plugin Name of the plugin/theme
+msgid "A5 Custom Login Page"
+msgstr "A5 Vlastné prihlasovaciu stránku"
+
+#. Plugin URI of the plugin/theme
+msgid ""
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
+"page"
+msgstr ""
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
+"pagehttp://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-"
+"login-page"
+
+#. Description of the plugin/theme
+msgid ""
+"Just customize your login page (or that of your community etc.) by giving "
+"the WP login page a different look, with your own logo and special colours "
+"and styles."
+msgstr ""
+"Stačí upraviť svoje prihlasovacie stránku (alebo že vaše komunity a pod) "
+"tým, že WP prihlasovacia stránka odlišný vzhľad, s vlastným logom a "
+"špeciálnych farieb a štýlov."
+
+#. Author of the plugin/theme
+msgid "Waldemar Stoffel"
+msgstr "Waldemar Stoffel"
+
+#. Author URI of the plugin/theme
+msgid "http://www.waldemarstoffel.com"
+msgstr "http://www.waldemarstoffel.com"

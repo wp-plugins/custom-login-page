@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.7
+Version: 1.7.3
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -34,6 +34,9 @@ Text Domain: custom-login-page
  * 
  * Thx to Jorge Ballesteros - http://motivando.me
  * for the translation into Spanish
+ *
+ * Thx to Branco Radenovich - http://webhostinggeeks.com/blog
+ * fo the translation into Slovak
  *
  * ------------------------------------------------------
  */
@@ -80,11 +83,25 @@ class A5_CustomLoginPage {
 				
 				self::$options = get_site_option('clp_options');
 				
-				if (self::$options['version'] !='1.7') :
+				if (self::$options['version'] !='1.7.2') :
 				
-					self::$options['version']='1.7';
+					self::$options['version']='1.7.2';
 					
 					update_site_option('clp_options', self::$options);
+					
+				endif;
+				
+			else:
+			
+				add_action('admin_menu', array($this, 'clp_admin_menu'));
+			
+				self::$options = get_option('clp_options');
+				
+				if (self::$options['version'] !='1.7.2') :
+					
+					self::$options['version']='1.7.2';
+					
+					update_option('clp_options', self::$options);
 					
 				endif;
 				
@@ -96,9 +113,9 @@ class A5_CustomLoginPage {
 			
 			self::$options = get_option('clp_options');
 			
-			if (self::$options['version'] !='1.7') :
+			if (self::$options['version'] !='1.7.2') :
 				
-				self::$options['version']='1.7';
+				self::$options['version']='1.7.2';
 				
 				update_option('clp_options', self::$options);
 				
@@ -202,11 +219,11 @@ class A5_CustomLoginPage {
 		
 		if (is_multisite() && $screen->is_network) :
 		
-			add_site_option('clp_options', array('version' => '1.7'));
+			add_site_option('clp_options', array('version' => '1.7.2'));
 			
 		else:
 		
-			add_option('clp_options', array('version' => '1.7'));
+			add_option('clp_options', array('version' => '1.7.2'));
 			
 		endif;
 	
@@ -251,7 +268,7 @@ class A5_CustomLoginPage {
 	 */
 	function clp_site_admin_menu() {
 		
-		add_menu_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', array($this, 'clp_options_page'), plugins_url('adseasy-plus/img/a5-icon-16.png'));	
+		add_menu_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', array($this, 'clp_options_page'), plugins_url('custom-login-page/img/a5-icon-16.png'));	
 		
 	}	
 	
@@ -1047,7 +1064,7 @@ class A5_CustomLoginPage {
 		
 		# .login form
 		
-		if (self::$options['loginform_transparency'] == 0) :
+		if (self::$options['loginform_transparency'] == '0') :
 		
 			$loginform_style = 'background: transparent;'.$eol;
 		
@@ -1106,7 +1123,7 @@ class A5_CustomLoginPage {
 		
 		# .login .message
 		
-		if (self::$options['loggedout_transparency'] == 0) :
+		if (self::$options['loggedout_transparency'] == '0') :
 		
 			$loggedout_style = 'background: transparent;'.$eol.'border: none;'.$eol.'box-shadow: none;'.$eol;
 			
@@ -1134,7 +1151,7 @@ class A5_CustomLoginPage {
 		
 		# #login_error
 		
-		if (self::$options['error_transparency'] == 0) :
+		if (self::$options['error_transparency'] == '0') :
 		
 			$error_style = 'background: transparent;'.$eol.'border: none;'.$eol.'box-shadow: none;'.$eol;
 			
