@@ -1,4 +1,4 @@
-# Copyright (C) 2012 A5 Custom Login Page
+# Copyright (C) 2013 A5 Custom Login Page
 # This file is distributed under the same license as the A5 Custom Login Page package.
 msgid ""
 msgstr ""
@@ -8,69 +8,85 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2012-08-16 16:01+0200\n"
+"PO-Revision-Date: 2013-01-13 23:58+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Atelier 5 <stoffel@atelier-fuenf.de>\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Language: de_DE\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: custom-login-page.php:82
+#: custom-login-page.php:151
 msgid "FAQ"
 msgstr "FAQ"
 
-#: custom-login-page.php:83
+#: custom-login-page.php:152
 msgid "Donate"
 msgstr "Spenden"
 
-#: custom-login-page.php:94 custom-login-page.php:235
+#: custom-login-page.php:163 custom-login-page.php:341
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: custom-login-page.php:221
+#: custom-login-page.php:327
 msgid "Saving..."
 msgstr "Speichere..."
 
-#: custom-login-page.php:245 custom-login-page.php:317
+#. #-#-#-#-#  plugin.pot (A5 Custom Login Page 1.7.3)  #-#-#-#-#
+#. Plugin URI of the plugin/theme
+#: custom-login-page.php:340
+msgid ""
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
+"page"
+msgstr "http://blog.atelier-fuenf.de/wordpressplugins/a5-custom-login-page"
+
+#: custom-login-page.php:348 custom-login-page.php:455
 msgid "Body"
 msgstr "Body"
 
-#: custom-login-page.php:246 custom-login-page.php:384
+#: custom-login-page.php:349 custom-login-page.php:500
 msgid "Login Container"
 msgstr "Login Container"
 
-#: custom-login-page.php:247 custom-login-page.php:479
+#: custom-login-page.php:350 custom-login-page.php:569
 msgid "Login Form"
 msgstr "Login Formular"
 
-#: custom-login-page.php:248
+#: custom-login-page.php:351
 msgid "Button"
 msgstr "Button"
 
-#: custom-login-page.php:249
+#: custom-login-page.php:352
 msgid "Messages and Input Fields"
 msgstr "Berichte und Inputfelder"
 
-#: custom-login-page.php:250 custom-login-page.php:641
+#: custom-login-page.php:353 custom-login-page.php:712
 msgid "Links"
 msgstr "Links"
 
-#: custom-login-page.php:260
+#: custom-login-page.php:354
+msgid "Import / Export"
+msgstr "Import / Export"
+
+#: custom-login-page.php:374
 msgid "Logo URL"
 msgstr "URL des Logos"
 
-#: custom-login-page.php:262
+#: custom-login-page.php:375
 msgid "URL to link to"
 msgstr "URL, zu der verlinkt werden soll"
 
-#: custom-login-page.php:264
+#: custom-login-page.php:376
 msgid "Title tag of the logo"
 msgstr "Title Tag des Logos"
 
-#: custom-login-page.php:268
-msgid "Logo"
-msgstr "Logo"
+#: custom-login-page.php:381
+msgid ""
+"You can leave any of the fields empty to keep the default settings of "
+"Wordpress."
+msgstr ""
+"Du kannst jedes Feld leer lassen, um das WP Standardlayout zu verwenden."
 
-#: custom-login-page.php:270
+#: custom-login-page.php:385
 msgid ""
 "You can enter the url of the logo, that you want to have in place of the WP "
 "logo on the login screen. Just upload any picture (best is a png or gif with "
@@ -82,45 +98,33 @@ msgstr ""
 "transparentem Hintergrund) mit dem Uploader in der Mediathek hoch und "
 "Kopiere die Url der Datei in dieses Feld."
 
-#: custom-login-page.php:271
+#: custom-login-page.php:386
 msgid "In the URL field, you enter the URL to which the logo should link."
 msgstr ""
 "Im URL Feld gibst du die URL an, auf die verlinkt werden soll, wenn man auf "
 "das Logo klickt."
 
-#: custom-login-page.php:272 custom-login-page.php:292
-#: custom-login-page.php:320 custom-login-page.php:390
-#: custom-login-page.php:411 custom-login-page.php:486
-#: custom-login-page.php:523 custom-login-page.php:550
-#: custom-login-page.php:569 custom-login-page.php:585
-#: custom-login-page.php:644
-msgid ""
-"You can leave any of the fields empty to keep the default settings of "
-"Wordpress."
-msgstr ""
-"Du kannst jedes Feld leer lassen, um das WP Standardlayout zu verwenden."
+#: custom-login-page.php:389
+msgid "Logo"
+msgstr "Logo"
 
-#: custom-login-page.php:278
+#: custom-login-page.php:395
 msgid "Width of the Logo (in px)"
 msgstr "Breite des Logos (in px)"
 
-#: custom-login-page.php:280
+#: custom-login-page.php:396
 msgid "Height of the Logo (in px)"
 msgstr "Höhe des Logos (in px)"
 
-#: custom-login-page.php:282
+#: custom-login-page.php:397
 msgid "Width of the Logo Container (in px)"
 msgstr "Breite des Logo Containers (in px)"
 
-#: custom-login-page.php:284
+#: custom-login-page.php:398
 msgid "Height of the Logo Container (in px)"
 msgstr "Höhe des Logo Containers (in px)"
 
-#: custom-login-page.php:288
-msgid "Position and Size of the Logo"
-msgstr "Position und Größe des Logos"
-
-#: custom-login-page.php:290
+#: custom-login-page.php:405
 msgid ""
 "If your logo is larger than the default WP-logo (274px by 63px), you can "
 "enter the width and the height of it here."
@@ -128,7 +132,7 @@ msgstr ""
 "Falls dein Logo größer als das WP-Standard-Logo ist (274px x 63px), kannst "
 "du Breite und Höhe hier angeben."
 
-#: custom-login-page.php:291
+#: custom-login-page.php:406
 msgid ""
 "The width and height of the logo-container are by default 326px and 67px. "
 "They are used to move the Logo around, since the background-position is "
@@ -138,53 +142,97 @@ msgstr ""
 "werden benutzt, um das Logo zu positionieren, da die background-position "
 "immer &#39;center top&#39; ist."
 
-#: custom-login-page.php:298 custom-login-page.php:336
-#: custom-login-page.php:427
+#: custom-login-page.php:409
+msgid "Position and Size of the Logo"
+msgstr "Position und Größe des Logos"
+
+#: custom-login-page.php:417 custom-login-page.php:483
+#: custom-login-page.php:548
+msgid "Rounded Corners (in px)"
+msgstr "Abgerundete Ecken (in px)"
+
+#: custom-login-page.php:418 custom-login-page.php:484
+#: custom-login-page.php:551 custom-login-page.php:693
+#: custom-login-page.php:699
+msgid "Shadow (x-direction in px)"
+msgstr "Schatten (x-Richtung in px)"
+
+#: custom-login-page.php:419 custom-login-page.php:485
+#: custom-login-page.php:552 custom-login-page.php:694
+#: custom-login-page.php:700
+msgid "Shadow (y-direction in px)"
+msgstr "Schatten (y-Richtung in px)"
+
+#: custom-login-page.php:420 custom-login-page.php:486
+#: custom-login-page.php:553 custom-login-page.php:695
+#: custom-login-page.php:701
+msgid "Shadow (softness in px)"
+msgstr "Softeffekt (in px)"
+
+#: custom-login-page.php:421 custom-login-page.php:487
+#: custom-login-page.php:554 custom-login-page.php:696
+#: custom-login-page.php:702
+msgid "Shadow Colour"
+msgstr "Schattenfarbe"
+
+#: custom-login-page.php:428
+msgid ""
+"Here you can style the logo a bit. Give it a shadow or round corners if you "
+"like"
+msgstr ""
+"Hier kannst du dein Logo ein wenig stylen. Gib ihm einen Schatten oder "
+"abgerundete Ecken."
+
+#: custom-login-page.php:431
+msgid "Styling of the Logo"
+msgstr "Styling des Logos"
+
+#: custom-login-page.php:439 custom-login-page.php:473
+#: custom-login-page.php:538
 msgid "Background Picture"
 msgstr "Hintergrundbild"
 
-#: custom-login-page.php:300 custom-login-page.php:338
-#: custom-login-page.php:429
+#: custom-login-page.php:440 custom-login-page.php:474
+#: custom-login-page.php:539
 msgid "Background Repeat"
 msgstr "Wiederholung des Hintergrundbildes"
 
-#: custom-login-page.php:302 custom-login-page.php:340
-#: custom-login-page.php:431
+#: custom-login-page.php:440 custom-login-page.php:474
+#: custom-login-page.php:539
 msgid "default"
 msgstr "standard"
 
-#: custom-login-page.php:307 custom-login-page.php:345
-#: custom-login-page.php:436
+#: custom-login-page.php:441 custom-login-page.php:475
+#: custom-login-page.php:540
 msgid "Position of the Background Picture"
 msgstr "Position des Hintergrundbildes"
 
-#: custom-login-page.php:309 custom-login-page.php:347
-#: custom-login-page.php:438 custom-login-page.php:502
-#: custom-login-page.php:541 custom-login-page.php:558
-#: custom-login-page.php:577
+#: custom-login-page.php:442 custom-login-page.php:476
+#: custom-login-page.php:541 custom-login-page.php:585
+#: custom-login-page.php:620 custom-login-page.php:641
+#: custom-login-page.php:662
 msgid "Background Colour"
 msgstr "Hintergrundfarbe"
 
-#: custom-login-page.php:311 custom-login-page.php:349
-#: custom-login-page.php:440 custom-login-page.php:504
+#: custom-login-page.php:443 custom-login-page.php:477
+#: custom-login-page.php:542 custom-login-page.php:586
 msgid "Second Background Colour (for Gradient)"
 msgstr "Zweite Hintergrundfarbe (für einen Verlauf)"
 
-#: custom-login-page.php:313 custom-login-page.php:351
-#: custom-login-page.php:442 custom-login-page.php:506
-#: custom-login-page.php:539 custom-login-page.php:556
-#: custom-login-page.php:575 custom-login-page.php:601
-msgid "Text Colour"
-msgstr "Textfarbe"
+#: custom-login-page.php:444
+msgid "Background Size"
+msgstr "Hintergrund Größe"
 
-#: custom-login-page.php:318
+#: custom-login-page.php:451
 msgid ""
 "You can enter the url of the background picture, that you want to have on "
 "the login page. Just upload any picture via the uploader on the Media "
 "section and copy the url of that file here. Leave it empty, if you don&#39;t "
 "want a picture. Background images are tiled by default. You can select the "
 "direction of repeating the image or to not repeat it. The position of the "
-"image can be something like &#39;100px 50%&#39; or &#39center top&#39;."
+"image can be something like &#39;100px 50%&#39; or &#39center top&#39;. If "
+"you want the background picture to cover the whole screen, put &#39;"
+"cover&#39; as size. Otherwise, fill in any css (like &#39;auto 150px&#39;)."
 msgstr ""
 "Hier kannst du die URL des Bildes angeben, das du auf dem Login Screen haben "
 "willst. Lade einfach ein Bild (am besten im png oder gif Format mit "
@@ -194,9 +242,11 @@ msgstr ""
 "wiederholt. Du kannst die Richtung, in der das Bild wiederholt werden soll "
 "angeben, oder ob das Bild überhaupt wiederholt werden soll. Die Position "
 "kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px "
-"50%&#39; oder &#39center top&#39;."
+"50%&#39; oder &#39center top&#39;. Wenn das Hintergrundbild "
+"bildschirmfüllend sein soll, gebe &#39;cover&#39; als Größe ein. Ansonsten "
+"geht jegliches CSS (z.B. &#39;auto 150px&#39;)."
 
-#: custom-login-page.php:319
+#: custom-login-page.php:452
 msgid ""
 "In the last section, you choose the background colour and the colour of the "
 "text in the html body element. If you give two background colours, you can "
@@ -206,65 +256,50 @@ msgstr ""
 "html body Element. Wenn du zwei Farben angibst, kannst du einen Verlauf "
 "kreieren. Farbe Nr. 1 wird dabei immer oben sein."
 
-#: custom-login-page.php:326 custom-login-page.php:417
-#: custom-login-page.php:492 custom-login-page.php:529
-#: custom-login-page.php:591 custom-login-page.php:650
+#: custom-login-page.php:459 custom-login-page.php:526
+#: custom-login-page.php:573 custom-login-page.php:607
+#: custom-login-page.php:677 custom-login-page.php:716
+#: custom-login-page.php:744
 msgid "Save Changes"
 msgstr "Änderungen übernehmen"
 
-#: custom-login-page.php:327 custom-login-page.php:418
-#: custom-login-page.php:493 custom-login-page.php:530
-#: custom-login-page.php:592 custom-login-page.php:651
+#: custom-login-page.php:459 custom-login-page.php:526
+#: custom-login-page.php:573 custom-login-page.php:607
+#: custom-login-page.php:677 custom-login-page.php:716
 msgid "Save style"
 msgstr "Stil speichern"
 
-#: custom-login-page.php:353 custom-login-page.php:444
+#: custom-login-page.php:478 custom-login-page.php:543
+#: custom-login-page.php:587 custom-login-page.php:619
+#: custom-login-page.php:640 custom-login-page.php:661
+#: custom-login-page.php:691
+msgid "Text Colour"
+msgstr "Textfarbe"
+
+#: custom-login-page.php:479 custom-login-page.php:544
+#: custom-login-page.php:622 custom-login-page.php:643
 msgid "Transparency (in percent)"
 msgstr "Transparenz (in Prozent)"
 
-#: custom-login-page.php:355 custom-login-page.php:446
+#: custom-login-page.php:480 custom-login-page.php:545
 msgid "Border Style"
 msgstr "Stil des Rahmens"
 
-#: custom-login-page.php:357 custom-login-page.php:448
+#: custom-login-page.php:480 custom-login-page.php:545
 msgid "choose a border style"
 msgstr "Wähle einen Stil für den Rahmen"
 
-#: custom-login-page.php:368 custom-login-page.php:459
+#: custom-login-page.php:481 custom-login-page.php:546
 msgid "Border Width (in px)"
 msgstr "Rahmenbreite (in px)"
 
-#: custom-login-page.php:370 custom-login-page.php:461
-#: custom-login-page.php:508 custom-login-page.php:543
-#: custom-login-page.php:560 custom-login-page.php:579
+#: custom-login-page.php:482 custom-login-page.php:547
+#: custom-login-page.php:588 custom-login-page.php:621
+#: custom-login-page.php:642 custom-login-page.php:663
 msgid "Border Colour"
 msgstr "Rahmenfarbe"
 
-#: custom-login-page.php:372 custom-login-page.php:463
-msgid "Rounded Corners (in px)"
-msgstr "Abgerundete Ecken (in px)"
-
-#: custom-login-page.php:374 custom-login-page.php:469
-#: custom-login-page.php:612 custom-login-page.php:631
-msgid "Shadow (x-direction in px)"
-msgstr "Schatten (x-Richtung in px)"
-
-#: custom-login-page.php:376 custom-login-page.php:471
-#: custom-login-page.php:614 custom-login-page.php:633
-msgid "Shadow (y-direction in px)"
-msgstr "Schatten (y-Richtung in px)"
-
-#: custom-login-page.php:378 custom-login-page.php:473
-#: custom-login-page.php:616 custom-login-page.php:635
-msgid "Shadow (softness in px)"
-msgstr "Softeffekt (in px)"
-
-#: custom-login-page.php:380 custom-login-page.php:475
-#: custom-login-page.php:618 custom-login-page.php:637
-msgid "Shadow Colour"
-msgstr "Schattenfarbe"
-
-#: custom-login-page.php:386
+#: custom-login-page.php:494
 msgid ""
 "You can enter the url of the background picture, that you want to have on "
 "the login container. Just upload any picture via the uploader on the Media "
@@ -283,7 +318,7 @@ msgstr ""
 "kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px "
 "50%&#39; oder &#39center top&#39;."
 
-#: custom-login-page.php:387
+#: custom-login-page.php:495
 msgid ""
 "In the next section, you choose the background colour and the colour of the "
 "text in the login container. If you give two background colours, you can "
@@ -293,7 +328,7 @@ msgstr ""
 "den Login Container wählen. Wenn du zwei Farben angibst, kannst du einen "
 "Verlauf kreieren. Farbe Nr. 1 wird immer oben sein."
 
-#: custom-login-page.php:388 custom-login-page.php:483
+#: custom-login-page.php:496 custom-login-page.php:563
 msgid ""
 "Choose a border, if wanting one. Define style, width and whether or not, you "
 "want to have rounded corners (is not supported by all browsers)."
@@ -302,38 +337,38 @@ msgstr ""
 "und ob du abgerundete Ecken haben willst (wird nicht von allen Browsern "
 "erkannt)."
 
-#: custom-login-page.php:389
+#: custom-login-page.php:497
 msgid ""
 "At last, give the container a shadow (is not supported by all browsers)."
 msgstr ""
 "Zum Schluss gib dem Container einen Schatten (wird nicht von allen Browsern "
 "erkannt)."
 
-#: custom-login-page.php:396
+#: custom-login-page.php:506
 msgid "Position (x-direction in px)"
 msgstr "Position (x-Richtung in px)"
 
-#: custom-login-page.php:398
+#: custom-login-page.php:507
 msgid "Position (y-direction in px)"
 msgstr "Position (y-Richtung in px)"
 
-#: custom-login-page.php:400
+#: custom-login-page.php:508
 msgid "Width (in px)"
 msgstr "Breite (in px)"
 
-#: custom-login-page.php:402
+#: custom-login-page.php:509
 msgid "Height (in px)"
 msgstr "Höhe (in px)"
 
-#: custom-login-page.php:404 custom-login-page.php:467
+#: custom-login-page.php:510 custom-login-page.php:550
 msgid "Padding"
 msgstr "Padding"
 
-#: custom-login-page.php:408
+#: custom-login-page.php:517 custom-login-page.php:522
 msgid "Position and Size of the Login Container"
 msgstr "Position und Größe des Login Containers"
 
-#: custom-login-page.php:409
+#: custom-login-page.php:518
 msgid ""
 "Here you can give the whole login container a position. If you enter "
 "&#39;0&#39; in both of the fields, it will be in the top left corner of the "
@@ -342,7 +377,7 @@ msgstr ""
 "Hier kannst du den Login Container positionieren. Wenn du &#39;0&#39; in "
 "beide Felder eingibst, wird er in der linken oberen Ecke sein."
 
-#: custom-login-page.php:410
+#: custom-login-page.php:519
 msgid ""
 "The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the "
 "default padding of the login container)."
@@ -350,11 +385,11 @@ msgstr ""
 "Padding wird als CSS-Wert angegeben. Z.B. &#39;144px 0 0&#39; (was der "
 "Standardwert von Wordpress für den Login Container ist)."
 
-#: custom-login-page.php:465
+#: custom-login-page.php:549
 msgid "Margin"
 msgstr "Margin"
 
-#: custom-login-page.php:481
+#: custom-login-page.php:561
 msgid ""
 "You can enter the url of the background picture, that you want to have in "
 "the login form. Just upload any picture via the uploader on the Media "
@@ -373,7 +408,7 @@ msgstr ""
 "kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px "
 "50%&#39; oder &#39center top&#39;."
 
-#: custom-login-page.php:482
+#: custom-login-page.php:562
 msgid ""
 "In the next section, you choose the background colour and the colour of the "
 "text in the login form. If you give two background colours, you can create a "
@@ -383,7 +418,7 @@ msgstr ""
 "das Login Formular wählen. Wenn du zwei Farben angibst, kannst du einen "
 "Verlauf kreieren. Farbe Nr. 1 wird immer oben sein."
 
-#: custom-login-page.php:484
+#: custom-login-page.php:564 custom-login-page.php:565
 msgid ""
 "Margin and Padding are given as css values. The form has a left margin of "
 "8px by default and a padding of 26px 24px 46px. By changing the top and the "
@@ -393,33 +428,29 @@ msgstr ""
 "margin-left: 8px&#39; als Standardwert und Padding 26px 24px 46px. Durch "
 "Änderung der oberen und unteren Padding kann das Formular gedehnt werden."
 
-#: custom-login-page.php:485
+#: custom-login-page.php:566
 msgid "At last, give the form a shadow (is not supported by all browsers)."
 msgstr ""
 "Zum Schluss gib dem Formular einen Schatten (wird nicht von allen Browsern "
 "erkannt)."
 
-#: custom-login-page.php:510
+#: custom-login-page.php:589
 msgid "Hover Background Colour"
 msgstr "Hintergrundfarbe für den Hovereffekt"
 
-#: custom-login-page.php:512
+#: custom-login-page.php:590
 msgid "Second Hover Background Colour (for Gradient)"
 msgstr "Zweite Hintergrundfarbe für den Hovereffekt (für einen Verlauf)"
 
-#: custom-login-page.php:514
+#: custom-login-page.php:591 custom-login-page.php:697
 msgid "Hover Text Colour"
 msgstr "Textfarbe für den Hovereffekt"
 
-#: custom-login-page.php:516
+#: custom-login-page.php:592
 msgid "Hover Border Colour"
 msgstr "Rahmenfarbe für den Hovereffekt"
 
-#: custom-login-page.php:520
-msgid "Submit Button"
-msgstr "Anmelden Knopf"
-
-#: custom-login-page.php:522
+#: custom-login-page.php:600
 msgid ""
 "Enter the background, text and border colour of the submit button here. The "
 "button will look static if you don&#39;t give values for the hover state of "
@@ -431,67 +462,78 @@ msgstr ""
 "Hovereffekt eingibst. Wenn du einen Verlauf haben möchtest, gib zwei "
 "Hintergrundfarben ein. Die erste wird dann oben sein."
 
-#: custom-login-page.php:547
+#: custom-login-page.php:603
+msgid "Submit Button"
+msgstr "Anmelden Knopf"
+
+#: custom-login-page.php:623
+msgid "Logout Message"
+msgstr "Meldung beim Abmelden"
+
+#: custom-login-page.php:630
+msgid ""
+"This changes the the text container, that appears, when you have "
+"successfully logged out."
+msgstr ""
+"Hier änderst du den Textcontainer, der beim erfolgreichen Abmelden erscheint."
+
+#: custom-login-page.php:631
+msgid ""
+"Furthermore, you can enter your own logout message here. You can make your "
+"blog a bit more personal like that."
+msgstr ""
+"Außerdem kannst du hier deine Eigene Meldung für die Abmeldung eingeben. Du "
+"kannst dein Blog so ein wenig persönlicher machen."
+
+#: custom-login-page.php:634
 msgid "Logged Out Message"
 msgstr "Meldung beim Ausloggen"
 
-#: custom-login-page.php:549
-msgid ""
-"This changes the colours of the text container, that appears, when you have "
-"successfully logged out."
-msgstr ""
-"Hier änderst du die Farben des Textcontainers, der beim erfolgreichen "
-"Abmelden erscheint."
-
-#: custom-login-page.php:562 custom-login-page.php:566
+#: custom-login-page.php:644 custom-login-page.php:655
 msgid "Error Message"
-msgstr "Felhlermeldung"
+msgstr "Fehlermeldung"
 
-#: custom-login-page.php:567
+#: custom-login-page.php:651
 msgid ""
-"This changes the colours of the text container, that appears, when you get "
-"an error logging in."
+"This changes the text container, that appears, when you get an error logging "
+"in."
 msgstr ""
-"Hier änderst du die Farben des Textcontainers, der bei einem Fehler beim "
-"Anmelden erscheint."
+"Hier änderst du den Textcontainer, der bei einem Fehler beim Anmelden "
+"erscheint."
 
-#: custom-login-page.php:568
+#: custom-login-page.php:652
 msgid ""
 "Furthermore, you can enter your own error message here. By default, "
 "Wordpress says that either the username or the password is wrong, which is "
 "perhaps a hint to foreigners that you don&#39;t wish to give."
 msgstr ""
 "Außerdem kannst du hier deine eigene Fehlermeldung eingeben. Standardmäßig "
-"teilt Wordpress mit, dass entweder der Username oder das Passwort falsch "
+"teilt Wordpress mit, dass entweder der Benutzername oder das Passwort falsch "
 "ist, eine Information, die du vielleicht nicht preisgeben willst."
 
-#: custom-login-page.php:583
-msgid "Input Fields"
-msgstr "Eingabefelder"
-
-#: custom-login-page.php:584
+#: custom-login-page.php:670
 msgid ""
 "This changes the colours of the name and password fields of the log in form."
 msgstr ""
 "Hier änderst du die Farben der Eingabefelder für Benutzername und Passwort."
 
-#: custom-login-page.php:603
+#: custom-login-page.php:673
+msgid "Input Fields"
+msgstr "Eingabefelder"
+
+#: custom-login-page.php:692
 msgid "Text Decoration"
 msgstr "Textdekoration"
 
-#: custom-login-page.php:605 custom-login-page.php:624
+#: custom-login-page.php:692 custom-login-page.php:698
 msgid "choose a text decoration"
 msgstr "Wähle eine Textdekoration"
 
-#: custom-login-page.php:620
-msgid "Hover Colour"
-msgstr "Farbe für den Hovereffekt"
-
-#: custom-login-page.php:622
+#: custom-login-page.php:698
 msgid "Hover Text Decoration"
 msgstr "Textdekoration für den Hovereffekt"
 
-#: custom-login-page.php:643
+#: custom-login-page.php:709
 msgid ""
 "Style the links by giving a text colour, text decoration and shadow for the "
 "link and the hover style."
@@ -499,28 +541,68 @@ msgstr ""
 "Style die Links und Hovereffekte durch eine Textfarbe und -dekoration. "
 "Außerdem kannst du einen Schatten wählen."
 
-#: custom-login-page.php:685 custom-login-page.php:717
-#: custom-login-page.php:756 custom-login-page.php:792
-#: custom-login-page.php:819 custom-login-page.php:848
+#: custom-login-page.php:727
+msgid "Export Settings"
+msgstr "Einstellungen Exportieren"
+
+#: custom-login-page.php:728
+msgid ""
+"Export the current A5 Custom Login Page settings and download them as a text "
+"file. This text file can be imported into this or another A5 Custom Login "
+"Page installation:"
+msgstr ""
+"Exportiere deine A5 Custom Login Page Einstellungen und lade sie als "
+"Textdatei herunter. Diese Datei kann später in diese oder jede andere "
+"Installation der A5 Custom Login Page importiert werden."
+
+#: custom-login-page.php:729
+msgid "Export &amp; Download"
+msgstr "Exportieren &amp; Herunterladen "
+
+#: custom-login-page.php:730
+msgid "The file will be named"
+msgstr "Dies wird der Dateiname sein:"
+
+#: custom-login-page.php:730
+msgid ""
+"After you downloaded it, you can (but don&#39;t need to) rename the file to "
+"something more meaningful."
+msgstr ""
+"Du kannst (musst aber nicht) den Namen nach dem Herunterladen in etwas "
+"sinnvolleres ändern."
+
+#: custom-login-page.php:736 custom-login-page.php:744
+msgid "Import Settings"
+msgstr "Einstellungen Importieren"
+
+#: custom-login-page.php:737
+msgid "This will overlay any existing setting, you already have."
+msgstr "Das wird alle Einstellungen, die du hast, überschreiben."
+
+#: custom-login-page.php:774 custom-login-page.php:820
+#: custom-login-page.php:868 custom-login-page.php:913
+#: custom-login-page.php:949 custom-login-page.php:990
+#: custom-login-page.php:1041
 msgid "Error in Datatransfer."
 msgstr "Fehler im Datentransfer."
 
-#: custom-login-page.php:704 custom-login-page.php:743
-#: custom-login-page.php:779 custom-login-page.php:806
-#: custom-login-page.php:835 custom-login-page.php:866
+#: custom-login-page.php:807 custom-login-page.php:855
+#: custom-login-page.php:900 custom-login-page.php:936
+#: custom-login-page.php:977 custom-login-page.php:1017
 msgid "Settings saved"
 msgstr "Einstellungen gespeichert."
+
+#: custom-login-page.php:1051
+msgid "This doesn&#39;t seem to be a valid settings file."
+msgstr "Das scheint keine gültige Datei zu sein."
+
+#: custom-login-page.php:1067
+msgid "Settings successfully imported."
+msgstr "Einstellungen erfolgreich importiert."
 
 #. Plugin Name of the plugin/theme
 msgid "A5 Custom Login Page"
 msgstr "A5 Custom Login Page"
-
-#. Plugin URI of the plugin/theme
-msgid ""
-"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
-"page"
-msgstr ""
-"http://blog.atelier-fuenf.de/plugins-fur-wordpress/a5-custom-login-page"
 
 #. Description of the plugin/theme
 msgid ""
