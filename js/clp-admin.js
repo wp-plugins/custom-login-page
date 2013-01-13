@@ -12,6 +12,11 @@ jQuery(document).ready(function(){
 		var logo_height = jQuery("#logo_height").val();
 		var h1_width = jQuery("#h1_width").val();
 		var h1_height = jQuery("#h1_height").val();
+		var h1_corner = jQuery("#h1_corner").val();
+		var h1_shadow_x = jQuery("#h1_shadow_x").val();
+		var h1_shadow_y = jQuery("#h1_shadow_y").val();
+		var h1_shadow_softness = jQuery("#h1_shadow_softness").val();
+		var h1_shadow_color = jQuery("#h1_shadow_color").val();
 		var body_background = jQuery("#body_background").val();
 		var body_img_repeat = jQuery("#body_img_repeat").val();
 		var body_img_pos = jQuery("#body_img_pos").val();
@@ -30,6 +35,11 @@ jQuery(document).ready(function(){
 			logo_height: logo_height,
 			h1_width: h1_width,
 			h1_height: h1_height,
+			h1_corner: h1_corner,
+			h1_shadow_x: h1_shadow_x,
+			h1_shadow_y: h1_shadow_y,
+			h1_shadow_softness: h1_shadow_softness,
+			h1_shadow_color: h1_shadow_color,
 			body_background: body_background,
 			body_img_repeat: body_img_repeat,
 			body_img_pos: body_img_pos,
@@ -223,6 +233,7 @@ jQuery(document).ready(function(){
 		var loggedout_bg_color = jQuery("#loggedout_bg_color").val();
 		var loggedout_border_color = jQuery("#loggedout_border_color").val();
 		var loggedout_transparency = jQuery("#loggedout_transparency").val();
+		var logout_custom_message = jQuery("#logout_custom_message").val();
 		var error_text_color = jQuery("#error_text_color").val();
 		var error_bg_color = jQuery("#error_bg_color").val();
 		var error_border_color = jQuery("#error_border_color").val();
@@ -240,6 +251,7 @@ jQuery(document).ready(function(){
 			loggedout_bg_color: loggedout_bg_color,
 			loggedout_border_color: loggedout_border_color,
 			loggedout_transparency: loggedout_transparency,
+			logout_custom_message: logout_custom_message,
 			error_text_color: error_text_color,
 			error_bg_color: error_bg_color,
 			error_border_color: error_border_color,
@@ -309,5 +321,29 @@ jQuery(document).ready(function(){
 		});
 	return false;
 	});
+	
+//import settings file
+
+	jQuery("#impex_form").submit(function()	{
+		var clp_import = jQuery("#clp_import").val();
+		var impexnonce = jQuery("#impexnonce").val();
+		var _wp_http_referer = jQuery("#impex_form #_wp_http_referer").val();
+		var data = {
+			action: 'clp_import_settings',
+			clp_import: clp_import,
+			impexnonce: impexnonce,
+			_wp_http_referer: _wp_http_referer
+		};
+		jQuery("#impex_save").hide();
+		jQuery(".impex_save").show();
+		jQuery.post(ajaxurl, data,
+		function(response){
+			jQuery('#clp_import').val('');
+			jQuery("#impexmsg").html(response);
+			jQuery(".impex_save").hide();
+			jQuery("#impex_save").show();
+		});
+	return false;
+	});	
 	
 });

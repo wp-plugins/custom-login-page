@@ -28,7 +28,7 @@ We are planning some more advanced features in the future such as
 
 * freedom to enter your own pieces of css instead of using the plugin's interface
 
-* posibility to just copy paste your entire stylesheet
+* possibility to just copy paste your entire stylesheet
 
 == Screenshots ==
 
@@ -39,9 +39,14 @@ We are planning some more advanced features in the future such as
 
 == Changelog ==
 
+= 1.8 =
+
+* More options for the logo added
+* Import / export settings added
+
 = 1.7.3 =
 
-* Slovak translation added
+* Slovak translation added thanks to [Branco Radenovich](http://webhostinggeeks.com/blog/)
 
 = 1.7.2 =
 
@@ -151,3 +156,7 @@ Small bugfix for multisite use
 = 1.7.3 =
 
 Slovak translation added
+
+= 1.8 =
+
+More options for the logo added

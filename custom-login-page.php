@@ -36,7 +36,7 @@ Text Domain: custom-login-page
  * for the translation into Spanish
  *
  * Thx to Branco Radenovich - http://webhostinggeeks.com/blog
- * fo the translation into Slovak
+ * for the translation into Slovak
  *
  * ------------------------------------------------------
  */
@@ -49,8 +49,9 @@ Text Domain: custom-login-page
 if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) die('Sorry, you don&#39;t have direct access to this page.');
 
 define( 'CLP_PATH', plugin_dir_path(__FILE__) );
+if (!class_exists('A5_FormField')) require_once CLP_PATH.'class-lib/A5_FormFieldClass.php';
 if (!class_exists('A5_OptionPage')) require_once CLP_PATH.'class-lib/A5_OptionPageClass.php';
-if (!function_exists('a5_option_page_version')) require_once CLP_PATH.'includes/admin-pages.php';
+if (!function_exists('a5_textarea')) require_once CLP_PATH.'includes/A5_field-functions.php';
 
 class A5_CustomLoginPage {
 	
@@ -58,7 +59,7 @@ class A5_CustomLoginPage {
 	
 	const language_file = 'custom-login-page';
 	
-	function A5_CustomLoginPage(){
+	function __construct(){
 		
 		register_activation_hook(__FILE__, array($this, 'start_clp')); 
 		register_deactivation_hook(__FILE__, array($this, 'unset_clp'));	
@@ -70,6 +71,7 @@ class A5_CustomLoginPage {
 		add_action('admin_init', array($this, 'clp_register_admin_extras'));
 		add_action('admin_enqueue_scripts', array($this, 'clp_admin_css'));
 		add_action('wp_ajax_clp_save_settings', array($this, 'clp_save_settings'));
+		add_action('wp_ajax_clp_import_settings', array($this, 'clp_import_settings'));
 		add_action('init', array($this, 'clp_add_rewrite'));
 		add_action('template_redirect', array($this, 'clp_css_template'));
 		
@@ -83,9 +85,9 @@ class A5_CustomLoginPage {
 				
 				self::$options = get_site_option('clp_options');
 				
-				if (self::$options['version'] !='1.7.2') :
+				if (self::$options['version'] !='1.7.3') :
 				
-					self::$options['version']='1.7.2';
+					self::$options['version']='1.7.3';
 					
 					update_site_option('clp_options', self::$options);
 					
@@ -97,9 +99,9 @@ class A5_CustomLoginPage {
 			
 				self::$options = get_option('clp_options');
 				
-				if (self::$options['version'] !='1.7.2') :
+				if (self::$options['version'] !='1.7.3') :
 					
-					self::$options['version']='1.7.2';
+					self::$options['version']='1.7.3';
 					
 					update_option('clp_options', self::$options);
 					
@@ -113,9 +115,9 @@ class A5_CustomLoginPage {
 			
 			self::$options = get_option('clp_options');
 			
-			if (self::$options['version'] !='1.7.2') :
+			if (self::$options['version'] !='1.7.3') :
 				
-				self::$options['version']='1.7.2';
+				self::$options['version']='1.7.3';
 				
 				update_option('clp_options', self::$options);
 				
@@ -126,6 +128,7 @@ class A5_CustomLoginPage {
 		if (!empty(self::$options['url'])) add_filter('login_headerurl', array($this, 'clp_headerurl'));
 		if (!empty(self::$options['title'])) add_filter('login_headertitle', array($this, 'clp_headertitle'));
 		if (!empty(self::$options['error_custom_message'])) add_filter('login_errors', array($this, 'clp_custom_error'));
+		if (!empty(self::$options['logout_custom_message'])) add_filter('login_messages', array($this, 'clp_custom_logout'));
 		
 		/**
 		 *
@@ -198,6 +201,17 @@ class A5_CustomLoginPage {
 	
 	/**
 	 *
+	 * Changes the Logout Message
+	 *
+	 */
+	function clp_custom_logout() {
+	
+		return self::$options['logout_custom_message'];
+		
+	}
+	
+	/**
+	 *
 	 * Adds the style sheet to the login page
 	 *
 	 */
@@ -219,11 +233,11 @@ class A5_CustomLoginPage {
 		
 		if (is_multisite() && $screen->is_network) :
 		
-			add_site_option('clp_options', array('version' => '1.7.2'));
+			add_site_option('clp_options', array('version' => '1.7.3'));
 			
 		else:
 		
-			add_option('clp_options', array('version' => '1.7.2'));
+			add_option('clp_options', array('version' => '1.7.3'));
 			
 		endif;
 	
@@ -329,15 +343,19 @@ class A5_CustomLoginPage {
 	<table>
 	<tr>
 	<td valign="top" width="200">
-	
-	<ul id="a5-pagetabs">
-		<li><a href="#" id="main-tab" rel="main" class="selected"><?php _e('Body', self::language_file); ?></a></li>
-		<li><a href="#" id="logindiv-tab" rel="logindiv"><?php _e('Login Container', self::language_file); ?></a></li>
-		<li><a href="#" id="loginform-tab" rel="loginform"><?php _e('Login Form', self::language_file); ?></a></li>
-		<li><a href="#" id="button-tab" rel="button"><?php _e('Button', self::language_file); ?></a></li>
-		<li><a href="#" id="message-tab" rel="message"><?php _e('Messages and Input Fields', self::language_file); ?></a></li>
-		<li><a href="#" id="link-tab" rel="link"><?php _e('Links', self::language_file); ?></a></li>
-	</ul>
+    	<?php
+    	
+			$tabs[] = array('main', __('Body', self::language_file), true);
+			$tabs[] = array('logindiv', __('Login Container', self::language_file));
+			$tabs[] = array('loginform', __('Login Form', self::language_file));
+			$tabs[] = array('button', __('Button', self::language_file));
+			$tabs[] = array('message', __('Messages and Input Fields', self::language_file));
+			$tabs[] = array('link', __('Links', self::language_file));
+			$tabs[] = array('impex', __('Import / Export', self::language_file));
+			
+			a5_navigation('a5-pagetabs', $tabs);
+		
+		?>
 	
 	</td>
 	<td valign="top" width="100%">
@@ -353,9 +371,9 @@ class A5_CustomLoginPage {
 			
 		$fields = array (
 		
-		a5_text_field('logo', 'logo', self::$options['logo'], __('Logo URL', self::language_file), 40, 'width: 95%;'),
-		a5_url_field('url', 'url', self::$options['url'], __('URL to link to', self::language_file), 40, 'width: 95%;'),
-		a5_text_field('title', 'title', self::$options['title'], __('Title tag of the logo', self::language_file), 40, 'width: 95%;')
+		a5_text_field('logo', 'logo', self::$options['logo'], __('Logo URL', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_url_field('url', 'url', self::$options['url'], __('URL to link to', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('title', 'title', self::$options['title'], __('Title tag of the logo', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -374,10 +392,10 @@ class A5_CustomLoginPage {
 		  
 		$fields = array(
 		
-		a5_number_field('logo_width', 'logo_width', self::$options['logo_width'], __('Width of the Logo (in px)', self::language_file), false, 1),
-		a5_number_field('logo_height', 'logo_height', self::$options['logo_height'], __('Height of the Logo (in px)', self::language_file), false, 1),
-		a5_number_field('h1_width', 'h1_width', self::$options['h1_width'], __('Width of the Logo Container (in px)', self::language_file), false, 1),
-		a5_number_field('h1_height', 'h1_height', self::$options['h1_height'], __('Height of the Logo Container (in px)', self::language_file), false, 1)
+		a5_number_field('logo_width', 'logo_width', self::$options['logo_width'], __('Width of the Logo (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logo_height', 'logo_height', self::$options['logo_height'], __('Height of the Logo (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_width', 'h1_width', self::$options['h1_width'], __('Width of the Logo Container (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_height', 'h1_height', self::$options['h1_height'], __('Height of the Logo Container (in px)', self::language_file), array('step' => 1), false)
 		);
 		
 		a5_container_left($fields);
@@ -391,19 +409,39 @@ class A5_CustomLoginPage {
 		a5_container_right(__('Position and Size of the Logo', self::language_file), $text, $special);
 		  
 		a5_next_section();
-			
-		$options = array(array('no-repeat', 'no-repeat'), array('repeat-x', 'repeat-x'), array('repeat-y', 'repeat-y'));
 		
 		$class = "color {hash:true,caps:false,required:false,pickerPosition:'right'}";
 		
 		$fields = array(
 		
-		a5_text_field('body_background', 'body_background', self::$options['body_background'], __('Background Picture', self::language_file), 40, 'width: 95%;'),
-		a5_select('body_img_repeat', 'body_img_repeat', self::$options['body_img_repeat'], $options, __('Background Repeat', self::language_file), __('default', self::language_file), 'width: 135px;'),
-		a5_text_field('body_img_pos', 'body_img_pos', self::$options['body_img_pos'], __('Position of the Background Picture', self::language_file), 40, 'width: 95%;'),
-		a5_text_field('body_bg_color1', 'body_bg_color1', self::$options['body_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('body_bg_color2', 'body_bg_color2', self::$options['body_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
-		a5_text_field('body_bg_size', 'body_bg_size', self::$options['body_bg_size'], __('Background Size', self::language_file), 40, 'width :95%;')
+		a5_number_field('h1_corner', 'h1_corner', self::$options['h1_corner'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_shadow_x', 'h1_shadow_x', self::$options['h1_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_shadow_y', 'h1_shadow_y', self::$options['h1_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_shadow_softness', 'h1_shadow_softness', self::$options['h1_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('h1_shadow_color', 'h1_shadow_color', self::$options['h1_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
+		);
+		
+		a5_container_left($fields);
+		
+		$text = array(
+		
+		__('Here you can style the logo a bit. Give it a shadow or round corners if you like', self::language_file)
+		);
+		
+		a5_container_right(__('Styling of the Logo', self::language_file), $text, $special);
+		  
+		a5_next_section();
+			
+		$options = array(array('no-repeat', 'no-repeat'), array('repeat-x', 'repeat-x'), array('repeat-y', 'repeat-y'));
+		
+		$fields = array(
+		
+		a5_text_field('body_background', 'body_background', self::$options['body_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_select('body_img_repeat', 'body_img_repeat', $options, self::$options['body_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
+		a5_text_field('body_img_pos', 'body_img_pos', self::$options['body_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('body_bg_color1', 'body_bg_color1', self::$options['body_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('body_bg_color2', 'body_bg_color2', self::$options['body_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('body_bg_size', 'body_bg_size', self::$options['body_bg_size'], __('Background Size', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -418,7 +456,7 @@ class A5_CustomLoginPage {
 		  
 		a5_close_section();
 		
-		a5_submit_button('main_save', __('Save Changes'), __('Save style', self::language_file));
+		a5_submit_container('main_save', __('Save Changes'), __('Save style', self::language_file));
 		  
 		// login container
 		
@@ -432,21 +470,21 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('logindiv_background', 'logindiv_background', self::$options['logindiv_background'], __('Background Picture', self::language_file), 40, 'width: 95%;'),
-		a5_select('logindiv_img_repeat', 'logindiv_img_repeat', self::$options['logindiv_img_repeat'], $options, __('Background Repeat', self::language_file), __('default', self::language_file), 'width: 135px;'),
-		a5_text_field('logindiv_img_pos', 'logindiv_img_pos', self::$options['logindiv_img_pos'], __('Position of the Background Picture', self::language_file), 40, 'width: 95%;'),
-		a5_text_field('logindiv_bg_color1', 'logindiv_bg_color1', self::$options['logindiv_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('logindiv_bg_color2', 'logindiv_bg_color2', self::$options['logindiv_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
-		a5_text_field('logindiv_text_color', 'logindiv_text_color', self::$options['logindiv_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_number_field('logindiv_transparency', 'logindiv_transparency', self::$options['logindiv_transparency'], __('Transparency (in percent)', self::language_file), false, 1, 0, 100),
-		a5_select('logindiv_border_style', 'logindiv_border_style', self::$options['logindiv_border_style'], $border_style, __('Border Style', self::language_file), __('choose a border style', self::language_file), 'width: 220px;'),
-		a5_number_field('logindiv_border_width', 'logindiv_border_width', self::$options['logindiv_border_width'], __('Border Width (in px)', self::language_file), false, 1),
-		a5_text_field('logindiv_border_color', 'logindiv_border_color', self::$options['logindiv_border_color'], __('Border Colour', self::language_file), false, false, $class),
-		a5_number_field('logindiv_border_round', 'logindiv_border_round', self::$options['logindiv_border_round'], __('Rounded Corners (in px)', self::language_file), false, 1),
-		a5_number_field('logindiv_shadow_x', 'logindiv_shadow_x', self::$options['logindiv_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
-		a5_number_field('logindiv_shadow_y', 'logindiv_shadow_y', self::$options['logindiv_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
-		a5_number_field('logindiv_shadow_softness', 'logindiv_shadow_softness', self::$options['logindiv_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
-		a5_text_field('logindiv_shadow_color', 'logindiv_shadow_color', self::$options['logindiv_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class)
+		a5_text_field('logindiv_background', 'logindiv_background', self::$options['logindiv_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_select('logindiv_img_repeat', 'logindiv_img_repeat', $options, self::$options['logindiv_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
+		a5_text_field('logindiv_img_pos', 'logindiv_img_pos', self::$options['logindiv_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('logindiv_bg_color1', 'logindiv_bg_color1', self::$options['logindiv_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('logindiv_bg_color2', 'logindiv_bg_color2', self::$options['logindiv_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('logindiv_text_color', 'logindiv_text_color', self::$options['logindiv_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('logindiv_transparency', 'logindiv_transparency', self::$options['logindiv_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_select('logindiv_border_style', 'logindiv_border_style', $border_style, self::$options['logindiv_border_style'], __('Border Style', self::language_file), __('choose a border style', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('logindiv_border_width', 'logindiv_border_width', self::$options['logindiv_border_width'], __('Border Width (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('logindiv_border_color', 'logindiv_border_color', self::$options['logindiv_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('logindiv_border_round', 'logindiv_border_round', self::$options['logindiv_border_round'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_shadow_x', 'logindiv_shadow_x', self::$options['logindiv_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_shadow_y', 'logindiv_shadow_y', self::$options['logindiv_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_shadow_softness', 'logindiv_shadow_softness', self::$options['logindiv_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('logindiv_shadow_color', 'logindiv_shadow_color', self::$options['logindiv_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
 		);
 
 		a5_container_left($fields);
@@ -465,11 +503,11 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_number_field('logindiv_left', 'logindiv_left', self::$options['logindiv_left'], __('Position (x-direction in px)', self::language_file), false, 1),
-		a5_number_field('logindiv_top', 'logindiv_top', self::$options['logindiv_top'], __('Position (y-direction in px)', self::language_file), false, 1),
-		a5_number_field('logindiv_width', 'logindiv_width', self::$options['logindiv_width'], __('Width (in px)', self::language_file), false, 1),
-		a5_number_field('logindiv_height', 'logindiv_height', self::$options['logindiv_height'], __('Height (in px)', self::language_file), false, 1),
-		a5_text_field('logindiv_padding', 'logindiv_padding', self::$options['logindiv_padding'], __('Padding', self::language_file))
+		a5_number_field('logindiv_left', 'logindiv_left', self::$options['logindiv_left'], __('Position (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_top', 'logindiv_top', self::$options['logindiv_top'], __('Position (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_width', 'logindiv_width', self::$options['logindiv_width'], __('Width (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_height', 'logindiv_height', self::$options['logindiv_height'], __('Height (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('logindiv_padding', 'logindiv_padding', self::$options['logindiv_padding'], __('Padding', self::language_file), false, false)
 		);
 		
 		a5_container_left($fields);
@@ -485,7 +523,7 @@ class A5_CustomLoginPage {
 
 		a5_close_section();
 		
-		a5_submit_button('logindiv_save', __('Save Changes'), __('Save style', self::language_file));
+		a5_submit_container('logindiv_save', __('Save Changes'), __('Save style', self::language_file));
 		
 		//loginform
 		
@@ -497,23 +535,23 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('loginform_background', 'loginform_background', self::$options['loginform_background'], __('Background Picture', self::language_file), 40, 'width: 95%;'),
-		a5_select('loginform_img_repeat', 'loginform_img_repeat', self::$options['loginform_img_repeat'], $options, __('Background Repeat', self::language_file), __('default', self::language_file), 'width: 135px;'),
-		a5_text_field('loginform_img_pos', 'loginform_img_pos', self::$options['loginform_img_pos'], __('Position of the Background Picture', self::language_file), 40, 'width: 95%;'),
-		a5_text_field('loginform_bg_color1', 'loginform_bg_color1', self::$options['loginform_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('loginform_bg_color2', 'loginform_bg_color2', self::$options['loginform_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
-		a5_text_field('loginform_text_color', 'loginform_text_color', self::$options['loginform_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_number_field('loginform_transparency', 'loginform_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), false, 1, 0, 100),
-		a5_select('loginform_border_style', 'loginform_border_style', self::$options['loginform_border_style'], $border_style, __('Border Style', self::language_file), __('choose a border style', self::language_file), 'width: 220px;'),
-		a5_number_field('loginform_border_width', 'loginform_border_width', self::$options['loginform_border_width'], __('Border Width (in px)', self::language_file), false, 1),
-		a5_text_field('loginform_border_color', 'loginform_border_color', self::$options['loginform_border_color'], __('Border Colour', self::language_file), false, false, $class),
-		a5_number_field('loginform_border_round', 'loginform_border_round', self::$options['loginform_border_round'], __('Rounded Corners (in px)', self::language_file), false, 1),
-		a5_text_field('loginform_margin', 'loginform_margin', self::$options['loginform_margin'], __('Margin', self::language_file)),
-		a5_text_field('loginform_padding', 'loginform_padding', self::$options['loginform_padding'], __('Padding', self::language_file)),
-		a5_number_field('loginform_shadow_x', 'loginform_shadow_x', self::$options['loginform_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
-		a5_number_field('loginform_shadow_y', 'loginform_shadow_y', self::$options['loginform_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
-		a5_number_field('loginform_shadow_softness', 'loginform_shadow_softness', self::$options['loginform_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
-		a5_text_field('loginform_shadow_color', 'loginform_shadow_color', self::$options['loginform_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class)
+		a5_text_field('loginform_background', 'loginform_background', self::$options['loginform_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_select('loginform_img_repeat', 'loginform_img_repeat', $options, self::$options['loginform_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
+		a5_text_field('loginform_img_pos', 'loginform_img_pos', self::$options['loginform_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('loginform_bg_color1', 'loginform_bg_color1', self::$options['loginform_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('loginform_bg_color2', 'loginform_bg_color2', self::$options['loginform_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('loginform_text_color', 'loginform_text_color', self::$options['loginform_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('loginform_transparency', 'loginform_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_select('loginform_border_style', 'loginform_border_style', $border_style, self::$options['loginform_border_style'], __('Border Style', self::language_file), __('choose a border style', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('loginform_border_width', 'loginform_border_width', self::$options['loginform_border_width'], __('Border Width (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('loginform_border_color', 'loginform_border_color', self::$options['loginform_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('loginform_border_round', 'loginform_border_round', self::$options['loginform_border_round'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('loginform_margin', 'loginform_margin', self::$options['loginform_margin'], __('Margin', self::language_file), false, false),
+		a5_text_field('loginform_padding', 'loginform_padding', self::$options['loginform_padding'], __('Padding', self::language_file), false, false),
+		a5_number_field('loginform_shadow_x', 'loginform_shadow_x', self::$options['loginform_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('loginform_shadow_y', 'loginform_shadow_y', self::$options['loginform_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('loginform_shadow_softness', 'loginform_shadow_softness', self::$options['loginform_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('loginform_shadow_color', 'loginform_shadow_color', self::$options['loginform_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
 		);
 		
 		a5_container_left($fields);
@@ -532,7 +570,7 @@ class A5_CustomLoginPage {
 		
 		a5_close_section();
 		
-		a5_submit_button('loginform_save', __('Save Changes'), __('Save style', self::language_file));
+		a5_submit_container('loginform_save', __('Save Changes'), __('Save style', self::language_file));
 
 		// button
 		
@@ -544,14 +582,14 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('button_bg_color1', 'button_bg_color1', self::$options['button_bg_color1'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('button_bg_color2', 'button_bg_color2', self::$options['button_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), false, false, $class),
-		a5_text_field('button_text_color', 'button_text_color', self::$options['button_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_text_field('button_border_color', 'button_border_color', self::$options['button_border_color'], __('Border Colour', self::language_file), false, false, $class),
-		a5_text_field('btn_hover_bg_color1', 'btn_hover_bg_color1', self::$options['btn_hover_bg_color1'], __('Hover Background Colour', self::language_file), false, false, $class),
-		a5_text_field('btn_hover_bg_color2', 'btn_hover_bg_color2', self::$options['btn_hover_bg_color2'], __('Second Hover Background Colour (for Gradient)', self::language_file), false, false, $class),
-		a5_text_field('btn_hover_text_color', 'btn_hover_text_color', self::$options['btn_hover_text_color'], __('Hover Text Colour', self::language_file), false, false, $class),
-		a5_text_field('btn_hover_border_color', 'btn_hover_border_color', self::$options['btn_hover_border_color'], __('Hover Border Colour', self::language_file), false, false, $class),
+		a5_text_field('button_bg_color1', 'button_bg_color1', self::$options['button_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('button_bg_color2', 'button_bg_color2', self::$options['button_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('button_text_color', 'button_text_color', self::$options['button_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('button_border_color', 'button_border_color', self::$options['button_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_bg_color1', 'btn_hover_bg_color1', self::$options['btn_hover_bg_color1'], __('Hover Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_bg_color2', 'btn_hover_bg_color2', self::$options['btn_hover_bg_color2'], __('Second Hover Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_text_color', 'btn_hover_text_color', self::$options['btn_hover_text_color'], __('Hover Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_border_color', 'btn_hover_border_color', self::$options['btn_hover_border_color'], __('Hover Border Colour', self::language_file), array('class' => $class), false),
 		
 		);
 		
@@ -566,7 +604,7 @@ class A5_CustomLoginPage {
 		
 		a5_close_section();
 		
-		a5_submit_button('button_save', __('Save Changes'), __('Save style', self::language_file));
+		a5_submit_container('button_save', __('Save Changes'), __('Save style', self::language_file));
 		
 		// messages
 		
@@ -578,17 +616,19 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('loggedout_text_color', 'loggedout_text_color', self::$options['loggedout_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_text_field('loggedout_bg_color', 'loggedout_bg_color', self::$options['loggedout_bg_color'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('loggedout_border_color', 'loggedout_border_color', self::$options['loggedout_border_color'], __('Border Colour', self::language_file), false, false, $class),
-		a5_number_field('loggedout_transparency', 'loggedout_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), false, 1, 0, 100)
+		a5_text_field('loggedout_text_color', 'loggedout_text_color', self::$options['loggedout_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('loggedout_bg_color', 'loggedout_bg_color', self::$options['loggedout_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('loggedout_border_color', 'loggedout_border_color', self::$options['loggedout_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('loggedout_transparency', 'loggedout_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_text_field('logout_custom_message', 'logout_custom_message', self::$options['logout_custom_message'], __('Logout Message', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
 		
 		$text = array(
 		
-		__('This changes the the text container, that appears, when you have successfully logged out.', self::language_file)
+		__('This changes the the text container, that appears, when you have successfully logged out.', self::language_file),
+		__('Furthermore, you can enter your own logout message here. You can make your blog a bit more personal like that.', self::language_file)
 		);
 		
 		a5_container_right(__('Logged Out Message', self::language_file), $text, $special, array('messagemsg', 2));
@@ -597,11 +637,11 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('error_text_color', 'error_text_color', self::$options['error_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_text_field('error_bg_color', 'error_bg_color', self::$options['error_bg_color'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('error_bg_color', 'error_bg_color', self::$options['error_bg_color'], __('Border Colour', self::language_file), false, false, $class),
-		a5_number_field('error_transparency', 'error_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), false, 1, 0, 100),
-		a5_text_field('error_custom_message', 'error_custom_message', self::$options['error_custom_message'], __('Error Message', self::language_file), 40, 'width: 95%')
+		a5_text_field('error_text_color', 'error_text_color', self::$options['error_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('error_bg_color', 'error_bg_color', self::$options['error_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('error_bg_color', 'error_bg_color', self::$options['error_bg_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('error_transparency', 'error_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_text_field('error_custom_message', 'error_custom_message', self::$options['error_custom_message'], __('Error Message', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -618,9 +658,9 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('input_text_color', 'input_text_color', self::$options['input_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_text_field('input_bg_color', 'input_bg_color', self::$options['input_bg_color'], __('Background Colour', self::language_file), false, false, $class),
-		a5_text_field('input_border_color', 'input_border_color', self::$options['input_border_color'], __('Border Colour', self::language_file), false, false, $class)
+		a5_text_field('input_text_color', 'input_text_color', self::$options['input_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('input_bg_color', 'input_bg_color', self::$options['input_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('input_border_color', 'input_border_color', self::$options['input_border_color'], __('Border Colour', self::language_file), array('class' => $class), false)
 		);
 		
 		a5_container_left($fields);
@@ -634,7 +674,7 @@ class A5_CustomLoginPage {
 		
 		a5_close_section();
 		
-		a5_submit_button('message_save', __('Save Changes'), __('Save style', self::language_file));
+		a5_submit_container('message_save', __('Save Changes'), __('Save style', self::language_file));
 		
 		// links
 		
@@ -648,18 +688,18 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('link_text_color', 'link_text_color', self::$options['link_text_color'], __('Text Colour', self::language_file), false, false, $class),
-		a5_select('link_textdecoration', 'link_textdecoration', self::$options['link_textdecoration'], $textdeco, __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), 'width: 220px;'),
-		a5_number_field('link_shadow_x', 'link_shadow_x', self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
-		a5_number_field('link_shadow_y', 'link_shadow_y', self::$options['link_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
-		a5_number_field('link_shadow_softness', 'link_shadow_softness', self::$options['link_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
-		a5_text_field('link_shadow_color', 'link_shadow_color', self::$options['link_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class),
-		a5_text_field('hover_text_color', 'hover_text_color', self::$options['hover_text_color'], __('Hover Text Colour', self::language_file), false, false, $class),
-		a5_select('hover_textdecoration', 'hover_textdecoration', self::$options['hover_textdecoration'], $textdeco, __('Hover Text Decoration', self::language_file), __('choose a text decoration', self::language_file), 'width: 220px;'),
-		a5_number_field('hover_shadow_x', 'hover_shadow_x', self::$options['hover_shadow_x'], __('Shadow (x-direction in px)', self::language_file), false, 1),
-		a5_number_field('hover_shadow_y', 'hover_shadow_y', self::$options['hover_shadow_y'], __('Shadow (y-direction in px)', self::language_file), false, 1),
-		a5_number_field('hover_shadow_softness', 'hover_shadow_softness', self::$options['hover_shadow_softness'], __('Shadow (softness in px)', self::language_file), false, 1),
-		a5_text_field('hover_shadow_color', 'hover_shadow_color', self::$options['hover_shadow_color'], __('Shadow Colour', self::language_file), false, false, $class)
+		a5_text_field('link_text_color', 'link_text_color', self::$options['link_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_select('link_textdecoration', 'link_textdecoration', $textdeco, self::$options['link_textdecoration'], __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('link_shadow_x', 'link_shadow_x', self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('link_shadow_y', 'link_shadow_y', self::$options['link_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('link_shadow_softness', 'link_shadow_softness', self::$options['link_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('link_shadow_color', 'link_shadow_color', self::$options['link_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('hover_text_color', 'hover_text_color', self::$options['hover_text_color'], __('Hover Text Colour', self::language_file), array('class' => $class), false),
+		a5_select('hover_textdecoration', 'hover_textdecoration', $textdeco, self::$options['hover_textdecoration'], __('Hover Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('hover_shadow_x', 'hover_shadow_x', self::$options['hover_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('hover_shadow_y', 'hover_shadow_y', self::$options['hover_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('hover_shadow_softness', 'hover_shadow_softness', self::$options['hover_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('hover_shadow_color', 'hover_shadow_color', self::$options['hover_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
 		);
 		
 		a5_container_left($fields);
@@ -673,11 +713,39 @@ class A5_CustomLoginPage {
 		
 		a5_close_section();
 		
-		a5_submit_button('link_save', __('Save Changes'), __('Save style', self::language_file));
+		a5_submit_container('link_save', __('Save Changes'), __('Save style', self::language_file));
 		
-		a5_close_page();
+		a5_next_page('impex');
+		
+		// impex (do better!!!)
+		
+		a5_open_section();
 		
 		?>
+          <div class="a5-option-container-full">
+			<?php wp_nonce_field('save_impex','impexnonce'); ?>
+			<h2><?php _e('Export Settings'); ?></h2>
+			<p><?php _e('Export the current A5 Custom Login Page settings and download them as a text file. This text file can be imported into this or another A5 Custom Login Page installation:'); ?></p>
+			<p><?php echo '<a class="button" href="' . get_bloginfo('url') . '/?clpfile=export" id="settings-download"><strong>'. __('Export &amp; Download') .'</strong> A5 Custom Login Page Settings File</a>'; ?></p>
+			<p><?php echo __('The file will be named').' <code>a5-clp-' . str_replace('.','-', $_SERVER['SERVER_NAME']) . '-' . date('y') . date('m') . date('d') . '.txt</code>. '.__('After you downloaded it, you can (but don&#39;t need to) rename the file to something more meaningful.'); ?></p>
+			<div id="impexmsg"></div>
+		  </div>
+		  </div>
+		  <div class="a5-option-container">
+		  <div class="a5-option-container-full">
+			<h2><?php _e('Import Settings'); ?></h2>
+			<p class="error"><?php _e('This will overlay any existing setting, you already have.'); ?></p>
+			<p><textarea name="clp_import" cols="80" rows="10" id="clp_import"></textarea></p>
+		  </div>
+		  <?php
+		  	
+			a5_close_section();
+		  
+		  	a5_submit_container('impex_save', __('Save Changes'), __('Import Settings', self::language_file));
+			
+			a5_close_page();
+		  
+		  ?>
 	</td>
 	</tr>
 	</table>
@@ -714,6 +782,11 @@ class A5_CustomLoginPage {
 				self::$options['logo_height'] = $_POST['logo_height'];
 				self::$options['h1_width'] = $_POST['h1_width'];
 				self::$options['h1_height'] = $_POST['h1_height'];
+				self::$options['h1_corner'] = $_POST['h1_corner'];
+				self::$options['h1_shadow_x'] = $_POST['h1_shadow_x'];
+				self::$options['h1_shadow_y'] = $_POST['h1_shadow_y'];
+				self::$options['h1_shadow_softness'] = $_POST['h1_shadow_softness'];
+				self::$options['h1_shadow_color'] = $_POST['h1_shadow_color'];
 				self::$options['body_background'] = $_POST['body_background'];
 				self::$options['body_img_repeat'] = $_POST['body_img_repeat'];
 				self::$options['body_img_pos'] = $_POST['body_img_pos'];
@@ -881,6 +954,7 @@ class A5_CustomLoginPage {
 				self::$options['loggedout_bg_color'] = $_POST['loggedout_bg_color'];
 				self::$options['loggedout_border_color'] = $_POST['loggedout_border_color'];
 				self::$options['loggedout_transparency'] = $_POST['loggedout_transparency'];
+				self::$options['logout_custom_message'] = $_POST['logout_custom_message'];
 				self::$options['error_text_color'] = $_POST['error_text_color'];
 				self::$options['error_bg_color'] = $_POST['error_bg_color'];
 				self::$options['error_border_color'] = $_POST['error_border_color'];
@@ -957,6 +1031,53 @@ class A5_CustomLoginPage {
 	
 	/**
 	 *
+	 * importing the settings
+	 *
+	 */
+	function clp_import_settings() {
+		
+		if (!wp_verify_nonce($_POST['impexnonce'],'save_impex')) :
+		
+			$output = '<p class="error">'.__('Error in Datatransfer.', self::language_file).'</p>';
+			
+		else:
+		
+			$clp_import_options = stripslashes($_POST['clp_import']);
+			
+			self::$options = json_decode($clp_import_options, true);
+			
+			if (self::$options['log'] != 'original A5 CLP file') :
+			
+				$msg = '<p class="error">'.__('This doesn&#39;t seem to be a valid settings file.').'</p>';
+			
+			else:
+			
+				unset(self::$options['log']);
+				
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+				
+				$msg = '<p class="save">'.__('Settings successfully imported.').'</p>';
+			
+			endif;
+			
+		endif;
+		
+		echo $msg;
+		
+		die();
+		
+	}
+	
+	/**
+	 *
 	 * Printing the dss
 	 *
 	 */
@@ -1007,6 +1128,22 @@ class A5_CustomLoginPage {
 			$h1_style .= 'background-size: '.$bg_width.'px '.$bg_height.'px;'.$eol;
 			$h1_style .= 'width: '.$h1_width.'px;'.$eol;
 			$h1_style .= 'height: '.$h1_height.'px;'.$eol;
+			
+			if (!empty(self::$options['h1_corner'])) :
+			
+				$h1_style .= '-webkit-border-radius: '.self::$options['h1_corner'].'px;'.$eol;
+				$h1_style .= '-moz-border-radius: '.self::$options['h1_corner'].'px;'.$eol;
+				$h1_style .= 'border-radius: '.self::$options['h1_corner'].'px;'.$eol;
+				
+			endif;
+			
+			if (!empty(self::$options['h1_shadow_x']) || self::$options['h1_shadow_x']=='0') :
+				
+				$h1_style .= '-webkit-box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';'.$eol;
+				$h1_style .= '-moz-box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';'.$eol;;
+				$h1_style .= 'box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';'.$eol;
+				
+			endif;
 			
 		endif;	
 		
@@ -1278,19 +1415,36 @@ class A5_CustomLoginPage {
 	 *
 	 */
 	function clp_add_rewrite() {
-		   global $wp;
-		   $wp->add_query_var('clpfile');
+	   global $wp;
+	   $wp->add_query_var('clpfile');
 	}
 	
 	function clp_css_template() {
 		
-		   if (get_query_var('clpfile') == 'css') :
-				   
-				   header('Content-type: text/css');
-				   echo $this->clp_get_the_style();
-				   
-				   exit;
-		   endif;
+		$clpfile = get_query_var('clpfile');
+		
+		if ('css' == $clpfile) :
+		   
+			header('Content-type: text/css');
+			echo $this->clp_get_the_style();
+			
+			exit;
+		
+		endif;
+	   
+		if ('export' == $clpfile) :
+		
+			self::$options['log'] = 'original A5 CLP file';
+			
+			header('Content-Description: File Transfer');
+			header('Content-Disposition: attachment; filename="a5-clp-' . str_replace('.','-', $_SERVER['SERVER_NAME']) . '-' . date('Y') . date('m') . date('d') . '.txt"');
+			header('Content-Type: text/plain; charset=utf-8');
+			
+			echo json_encode(self::$options);
+			
+			exit;
+		
+		endif;
 	}
 	
 } // end of class

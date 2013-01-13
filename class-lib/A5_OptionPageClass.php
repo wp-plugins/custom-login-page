@@ -14,127 +14,9 @@
 
 class A5_OptionPage {
 	
-	const version = '1.0.1';
+	private $page_item;
 	
-	public $page_item;
-	
-	public function input_field($args){
-		
-		extract($args);
-		
-		$eol = "\r\n";
-		$tab = "\t";
-		
-		$style = ($style) ? ' style="'.$style.'"' : '';
-		$cols = ($cols) ? ' cols="'.$cols.'"' : '';
-		$rows = ($rows) ? ' rows="'.$rows.'"' : '';
-		$min = ($min) ? ' min="'.$min.'"' : '';
-		$max = ($max) ? ' max="'.$max.'"' : '';
-		$step = ($step) ? ' step="'.$step.'"' : '';
-		$size = ($size) ? ' size="'.$size.'"' : '';
-		$class = ($class) ? ' class="'.$class.'"' : '';
-		$label = ($label) ? '<label for="'.$field_id.'">'.$label.'</label>' : '';
-		$multiple = ($multiple) ? ' multiple="multiple"' : '';
-
-
-		switch ($type) :
-		
-			case 'textarea' :
-			
-				$output = $eol.$tab.$label.$eol.$tab.'<textarea'.$class.' name="'.$field_name.'" id="'.$field_id.'"'.$cols.$rows.$style.'>'.$value.'</textarea>';
-			
-				break;
-				
-			case 'checkbox' :
-			
-				$output = $eol.$tab.'<input'.$class.' name="'.$field_name.'" id="'.$field_id.'" type="checkbox" value="1" '.checked( 1, $value, false ).' '.$style.'/>'.$eol.$tab.$label;
-			
-				break;
-				
-			case 'radio' :
-			
-				$output = '';
-			
-				foreach ($text as $id => $label) :
-			
-					$output .= $eol.$tab.'<input'.$class.' id="'.$field_id.'-'.$id.'" name="'.$field_name.'" type="radio" value="'.$options[$id].'" '.checked( $options[$id], $value, false ).' '.$style.'/>'.$eol.$tab.'<label for="'.$field_id.'-'.$id.'">'.$eol.$tab.$label.'</label><br />';
-					
-				endforeach;
-			
-				break;
-				
-			case 'select' :
-			
-				$output = $eol.$tab.$label.$eol.$tab.'<select name="'.$field_name.'" id="'.$field_id.'"'.$class.$style.$multiple.'>';
-				
-				if ($default) $output .= $eol.$tab.'<option value="" '.selected( $value[0], false, false ).'>'.$default.'</option>';
-				
-				foreach ($options as $option) :
-				
-					$selected = (in_array($option[0], $value)) ? ' selected="selected"' : '';
-				
-					$output .= $eol.$tab.'<option value="'.$option[0].'"'.$selected.' >'.$option[1].'</option>';
-				
-				endforeach;
-				
-				$output .= $eol.$tab.'</select>';
-			
-				break;
-				
-			case 'checkgroup' :
-			
-				$output = ($text) ? '<p>'.$text.'</p>' : '';
-				$output .= $eol.'<fieldset>'.$eol.'<p>'.$eol.$tab;
-				
-				foreach ($options as $option) :
-				
-					$output .= '<label for="'.$field_id.$option[0].'">'.$eol.$tab.'<input id="'.$field_id.$option[0].'" name="'.$field_name.'['.$option[0].']" type="checkbox" value="1" '.checked( 1, $option[1], false ).$class.$style.' />&nbsp;'.$option[2].$eol.$tab.'</label><br />'.$eol.$tab;
-					
-				endforeach;
-				
-				$output .= $eol.'</p>'.$eol;
-				
-				$output .= ($checkall) ? '<p>'.$eol.$tab.'<input id="'.$field_id.'checkall" name="'.$field_name.'[checkall]" type="checkbox"'.$class.$style.' />&nbsp;'.$checkall.$eol.'</p>'.$eol.'</fieldset>'.$eol : $eol.'</fieldset>'.$eol;
-			
-				break;
-				
-			case 'resize' :
-			
-				$output = $eol.'<script type="text/javascript"><!--'.$eol.'jQuery(document).ready(function() {';
-																										   
-				foreach ($field_id as $field) :
-				
-					$output .= $eol.$tab.'jQuery("#'.$field.'").autoResize();';
-				
-				endforeach;
-				
-				$output .= $eol.'});'.$eol.'--></script>'.$eol;
-			
-				break;
-				
-			default :
-			
-				$output = $eol.$tab.$label.$eol.$tab.'<input name="'.$field_name.'" id="'.$field_id.'" type="'.$type.'" value="'.$value.'"'.$min.$max.$step.$size.$class.$style.' />'.$eol;
-			
-				break;
-		
-		endswitch;
-		
-		$this->page_item = ($space) ? '<p>'.$output.$eol.'</p>'.$eol : $output;
-		
-		if ($echo === true) : 
-		
-			echo $this->page_item;
-			
-		else : 
-		
-			return $this->page_item;
-			
-		endif;
-		
-	} // input fields
-	
-	function container($args){
+	public function open_container($args){
 		
 		extract($args);
 		
@@ -160,5 +42,318 @@ class A5_OptionPage {
 	} // container
 	
 } // A5_OptionPage
+
+/***************************************************************************************************
+ 
+	List of page functions with their parameters:
+	
+	a5_navigation($id, array($tabs), [$echo])
+
+	a5_open_page($id, [$echo])
+	
+	a5_next_page($id, [$echo])
+	
+	a5_close_page([$echo])
+	
+	a5_open_section([$echo])
+	
+	a5_next_section([$echo])
+	
+	a5_close_section([$echo])
+	
+	a5_container_left(array($fields), [$echo])
+	
+	a5_container_right($headline, array($text), [$special], [array($message, $priority)], [$echo])
+	
+	a5_container_full($headline, array($text), [$special], [array($message, $priority)], [$echo]) ¡¡¡to do!!!
+	
+	a5_submit_container($name, $button_text, [$text], [$echo])
+	
+	a5_nav_js([$echo])
+	
+/**************************************************************************************************/
+
+$a5_option_page = new A5_OptionPage;
+
+/**
+ *
+ * navigation menu
+ *
+ */
+
+function a5_navigation($id, $menuitems, $echo = true){
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	$menu = $eol.'<ul id="'.$id.'">';
+	
+	foreach ($menuitems as $menuitem) :
+	
+		$class = (true === $menuitem[2]) ? ' class="selected"' : '';
+		
+		$menu .= $eol.$tab.'<li><a href="#" id="'.$menuitem[0].'-tab" rel="'.$menuitem[0].'"'.$class.'>'.$menuitem[1].'</a></li>';
+	
+	endforeach;
+	
+	$menu .= $eol.'</ul>';
+	
+	if ($echo === false) return $menu;
+	
+	echo $menu;
+	
+}
+
+/**
+ *
+ * open a page
+ *
+ */
+ 
+function a5_open_page($id, $echo = true){
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	global $a5_option_page;
+	
+	$args = array ( 'id' => $id,
+					'class' => 'tabcontent',
+					'echo' => false
+					);
+	
+	$page_start = $a5_option_page->open_container($args).' <!-- page \''.$id.'\' -->';
+	
+	$page_start.= $eol.$tab.'<form method="post" name="'.$id.'_form" id="'.$id.'_form" action="">';
+	
+	if ($echo === false) return $page_start;
+	
+	echo $page_start;
+	
+}
+
+/**
+ *
+ * change to next page
+ *
+ */
+ 
+function a5_next_page($id, $echo = true){
+	
+	$output = a5_close_page(false).a5_open_page($id, false);
+	
+	if ($echo === false) return $output;
+	
+	echo $output;
+	
+}
+
+/**
+ *
+ * close page
+ *
+ */
+ 
+function a5_close_page($echo = true){
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	$page_end = $eol.$tab.'</form>'.$eol.$tab.'</div> <!-- / page -->';
+	
+	if ($echo === false) return $page_end;
+	
+	echo $page_end;
+	
+}
+
+/**
+ *
+ * open a section
+ *
+ */
+ 
+function a5_open_section($echo = true){
+	
+	global $a5_option_page;
+	
+	$args = array ( 'class' => 'a5-option-container',
+					'echo' => $echo
+					);
+	
+	$section_begin = $a5_option_page->open_container($args).' <!-- section -->';
+	
+	if ($echo === false) return $section_begin;
+	
+	echo $section_begin;
+	
+}
+
+/**
+ *
+ * change to next section
+ *
+ */
+ 
+function a5_next_section($echo = true){
+	
+	$output = a5_close_section(false).a5_open_section(false);
+	
+	if ($echo === false) return $output;
+	
+	echo $output;
+	
+}
+
+/**
+ *
+ * close section
+ *
+ */
+ 
+function a5_close_section($echo = true){
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	$section_end = $eol.$tab.'</div> <!-- / section -->';
+	
+	if ($echo === false) return $section_end;
+	
+	echo $section_end;
+	
+}
+
+/**
+ *
+ * building the left container
+ *
+ */
+ 
+function a5_container_left($fields, $echo = true){
+	
+	global $a5_option_page;
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	$args = array ( 'class' => 'a5-option-container-left',
+					'echo' => false
+					);
+	
+	$container = $a5_option_page->open_container($args);
+	
+	foreach ($fields as $field) $container.=$field;
+	
+	$container.=$eol.$tab.'</div>';
+	
+	if ($echo === false) return $container;
+		
+	echo $container;
+	
+}
+
+/**
+ *
+ * building the right container
+ *
+ */
+ 
+function a5_container_right($headline, $text, $special = false, $message = false, $echo = true){
+	
+	global $a5_option_page;
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	if ($message !== false) :
+	
+		$count = 2;
+	
+		$priority = $message[1];
+	
+		$message = $eol.$tab.'<div id="'.$message[0].'"></div>';
+		
+	endif;
+	
+	$special = ($special) ? $eol.$tab.'<p><i>'.$special.'</i></p>' : '';
+	
+	$args = array ( 'class' => 'a5-option-container-right',
+					'echo' => false
+					);
+	
+	$container = $a5_option_page->open_container($args);
+	
+	if ($priority == 1) $container.=$message;
+	
+	$container.=$eol.$tab.'<h2>'.$headline.'</h2>';
+	
+	if ($priority == 2) $container.=$message;
+	
+	foreach ($text as $schnummschnick) :
+	
+		$container.=$eol.$tab.'<p>'.$schnummschnick.'</p>';
+		
+		$count++;
+		
+		if ($priority == $count) $container.=$message;
+		
+	endforeach;
+	
+	$container.=$special;
+					
+	$container.=$eol.$tab.'</div>';
+	
+	$container.=$eol.$tab.'<div style="clear: both;"></div>';
+	
+	if ($echo === false) return $container;
+		
+	echo $container;
+	
+}
+
+/**
+ *
+ * the submit section
+ *
+ */
+ 
+function a5_submit_container($name, $button_text, $text = false, $echo = true){
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	$text = ($text) ? $eol.$tab.'<span style="font-weight: bold; color:#243e1f">'.$text.'</span>' : '';
+	
+	$output = $eol.$tab.'<div id="submit-container"> <!-- submit -->'.$eol.$tab.'<p class="submit">'.$eol.$tab;
+	$output.= '<input class="save-tab" name="'.$name.'" id="'.$name.'" value="'.$button_text.'" type="submit">'.$eol.$tab;
+	$output.= '<img src="'.admin_url('/images/wpspin_light.gif').'" alt="" class="'.$name.'" style="display: none;" />'.$eol.$tab;
+	$output.= $text.'</p>'.$eol.$tab.'</div> <!-- / submit -->';
+	
+	if ($echo === false) return $output;
+		
+	echo $output;
+	
+}
+
+/**
+ *
+ * the javascript at the end of the whole thing
+ *
+ */
+function a5_nav_js($plugin_shortname, $echo = true){
+	
+	$eol = "\r\n";
+	$tab = "\t";
+	
+	$output = $eol.$tab.'<script type="text/javascript">'.$eol.$tab.'var pages=new ddtabcontent("'.$plugin_shortname.'-pagetabs") //enter ID of Tab Container';
+	$output.= $eol.$tab.'pages.setpersist(true) //toogle persistence of the tabs&#39; state'.$eol.$tab.'pages.setselectedClassTarget("link") //"link" or "linkparent"';
+	$output.= $eol.$tab.'pages.init()'.$eol.$tab.'</script>'.$eol.$tab;
+	
+	if ($echo === false) return $output;
+		
+	echo $output;
+	
+}
 
 ?>
