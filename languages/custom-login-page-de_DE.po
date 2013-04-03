@@ -8,7 +8,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-01-13 23:58+0200\n"
+"PO-Revision-Date: 2013-04-03 14:31+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Atelier 5 <stoffel@atelier-fuenf.de>\n"
 "X-Poedit-SourceCharset: utf-8\n"
@@ -124,6 +124,10 @@ msgstr "Breite des Logo Containers (in px)"
 msgid "Height of the Logo Container (in px)"
 msgstr "Höhe des Logo Containers (in px)"
 
+#: custom-login-page.php:399
+msgid "Margin of the Logo Container (CSS)"
+msgstr "Margin des Logo Containers (CSS)"
+
 #: custom-login-page.php:405
 msgid ""
 "If your logo is larger than the default WP-logo (274px by 63px), you can "
@@ -141,6 +145,15 @@ msgstr ""
 "Breite und Höhe des Logo Containers sind standardmäßig 326px und 67px. Sie "
 "werden benutzt, um das Logo zu positionieren, da die background-position "
 "immer &#39;center top&#39; ist."
+
+#: custom-login-page.php:408
+msgid ""
+"With the margin of the logo, you can position the logo more precisely. Give "
+"a CSS value here, i.e. %s to locate it 180 px left."
+msgstr ""
+"Mit der Margin des Logos kannst du das Logo noch genauer platzieren. Gib "
+"hier einen CSS-Wert ein. Z.B. %s, um das Logo -180 px links von der Mitte zu "
+"positionieren."
 
 #: custom-login-page.php:409
 msgid "Position and Size of the Logo"
@@ -533,6 +546,10 @@ msgstr "Wähle eine Textdekoration"
 msgid "Hover Text Decoration"
 msgstr "Textdekoration für den Hovereffekt"
 
+#: custom-login-page.php:705
+msgid "Font Size"
+msgstr "Schriftgröße"
+
 #: custom-login-page.php:709
 msgid ""
 "Style the links by giving a text colour, text decoration and shadow for the "
@@ -540,6 +557,10 @@ msgid ""
 msgstr ""
 "Style die Links und Hovereffekte durch eine Textfarbe und -dekoration. "
 "Außerdem kannst du einen Schatten wählen."
+
+#: custom-login-page.php:713
+msgid "For the font size, give a css value, such as %1$s or %2$s."
+msgstr "Gib einen CSS-Wert für die Schriftgröße ein, z.B %1$s oder %2$s."
 
 #: custom-login-page.php:727
 msgid "Export Settings"
