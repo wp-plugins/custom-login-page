@@ -12,6 +12,7 @@ jQuery(document).ready(function(){
 		var logo_height = jQuery("#logo_height").val();
 		var h1_width = jQuery("#h1_width").val();
 		var h1_height = jQuery("#h1_height").val();
+		var h1_margin = jQuery("#h1_margin").val();
 		var h1_corner = jQuery("#h1_corner").val();
 		var h1_shadow_x = jQuery("#h1_shadow_x").val();
 		var h1_shadow_y = jQuery("#h1_shadow_y").val();
@@ -35,6 +36,7 @@ jQuery(document).ready(function(){
 			logo_height: logo_height,
 			h1_width: h1_width,
 			h1_height: h1_height,
+			h1_margin: h1_margin,
 			h1_corner: h1_corner,
 			h1_shadow_x: h1_shadow_x,
 			h1_shadow_y: h1_shadow_y,
@@ -290,7 +292,8 @@ jQuery(document).ready(function(){
 		var hover_shadow_x = jQuery("#hover_shadow_x").val();
 		var hover_shadow_y = jQuery("#hover_shadow_y").val();
 		var hover_shadow_softness = jQuery("#hover_shadow_softness").val();
-		var hover_shadow_color = jQuery("#hover_shadow_color").val();		
+		var hover_shadow_color = jQuery("#hover_shadow_color").val();
+		var link_size = jQuery("#link_size").val();		
 		var linknonce = jQuery("#linknonce").val();
 		var _wp_http_referer = jQuery("#link_form #_wp_http_referer").val();
 		var data = {
@@ -308,6 +311,7 @@ jQuery(document).ready(function(){
 			hover_shadow_y: hover_shadow_y,
 			hover_shadow_softness: hover_shadow_softness,
 			hover_shadow_color: hover_shadow_color,
+			link_size: link_size,
 			linknonce: linknonce,
 			_wp_http_referer: _wp_http_referer
 		};

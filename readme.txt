@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite
 Requires at least: 3.1
 Tested up to: 3.6
-Stable tag: 1.8.1
+Stable tag: 1.9
 
 Style your login page differently.
 
@@ -38,6 +38,10 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 1.9 =
+
+* More options for the logo added
 
 = 1.8.1 =
 
@@ -168,3 +172,7 @@ More options for the logo added
 = 1.8.1 =
 
 Slovak translation updated
+
+= 1.9 =
+
+More options for the logo added

@@ -24,14 +24,14 @@ class A5_FormField {
 		$eol = "\r\n";
 		$tab = "\t";
 		
-		$id = ($field_id) ? ' id="'.$field_id.'"' : '';
-		$label = ($label) ? '<label for="'.$field_id.'">'.$label.'</label>' : '';
-		$name = ($field_name) ? ' name="'.$field_name.'"' : '';
+		$id = (isset($field_id)) ? ' id="'.$field_id.'"' : '';
+		$label = (isset($label)) ? '<label for="'.$field_id.'">'.$label.'</label>' : '';
+		$name = (isset($field_name)) ? ' name="'.$field_name.'"' : '';
 		$atts = '';
 		
 		// wrapping the fiel into paragraph tags, if wanted
 		
-		if ($attributes['space']) :
+		if (isset($attributes['space'])) :
 			
 			$space = true;
 			
@@ -41,7 +41,7 @@ class A5_FormField {
 		
 		// getting all extra attributes to the fields (there is no sanitizing at the moment)
 		
-		if ($attributes) foreach ($attributes as $attribute => $attr_value) $atts .= ' '.$attribute.'="'.$attr_value.'"';
+		if (isset($attributes)) foreach ($attributes as $attribute => $attr_value) $atts .= ' '.$attribute.'="'.$attr_value.'"';
 		
 		// getting different types of input elements	
 		
@@ -55,9 +55,11 @@ class A5_FormField {
 				
 			case 'select' :
 			
+				if (empty($value)) $value[0] = false;
+			
 				$this->formfield = '<select'.$name.$id.$atts.'>';
 				
-				if ($default) $this->formfield .= $eol.$tab.'<option value="" '.selected( $value[0], false, false ).'>'.$default.'</option>';
+				if (isset($default)) $this->formfield .= $eol.$tab.'<option value="" '.selected( $value[0], false, false ).'>'.$default.'</option>';
 				
 				foreach ($options as $option) :
 				
@@ -87,11 +89,11 @@ class A5_FormField {
 				
 			default :
 			
-				$field_type = ($type) ? ' type="'.$type.'"' : ' type="text"';
+				$field_type = (isset($type)) ? ' type="'.$type.'"' : ' type="text"';
 				
 				if ('img' != $type) :
 				
-					$value = ($value) ? ' value="'.$value.'"' : ' value=""';
+					$value = (isset($value)) ? ' value="'.$value.'"' : ' value=""';
 					
 				endif;
 				
@@ -103,7 +105,7 @@ class A5_FormField {
 		
 		$this->formfield = (!strstr($type, 'checkbox') && !strstr($type, 'radio')) ? $eol.$tab.$label.$eol.$tab.$this->formfield : $eol.$tab.$this->formfield.$eol.$tab.$label;
 		
-		$this->formfield = ($space) ? '<p>'.$this->formfield.$eol.'</p>'.$eol : $this->formfield;
+		$this->formfield = (isset($space)) ? '<p>'.$this->formfield.$eol.'</p>'.$eol : $this->formfield;
 		
 		return $this->formfield;
 		

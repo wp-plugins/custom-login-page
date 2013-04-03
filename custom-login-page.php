@@ -85,9 +85,9 @@ class A5_CustomLoginPage {
 				
 				self::$options = get_site_option('clp_options');
 				
-				if (self::$options['version'] !='1.7.3') :
+				if (self::$options['version'] !='1.8.1') :
 				
-					self::$options['version']='1.7.3';
+					self::$options['version']='1.8.1';
 					
 					update_site_option('clp_options', self::$options);
 					
@@ -99,9 +99,9 @@ class A5_CustomLoginPage {
 			
 				self::$options = get_option('clp_options');
 				
-				if (self::$options['version'] !='1.7.3') :
+				if (self::$options['version'] !='1.8.1') :
 					
-					self::$options['version']='1.7.3';
+					self::$options['version']='1.8.1';
 					
 					update_option('clp_options', self::$options);
 					
@@ -115,9 +115,9 @@ class A5_CustomLoginPage {
 			
 			self::$options = get_option('clp_options');
 			
-			if (self::$options['version'] !='1.7.3') :
+			if (self::$options['version'] !='1.8.1') :
 				
-				self::$options['version']='1.7.3';
+				self::$options['version']='1.8.1';
 				
 				update_option('clp_options', self::$options);
 				
@@ -233,11 +233,11 @@ class A5_CustomLoginPage {
 		
 		if (is_multisite() && $screen->is_network) :
 		
-			add_site_option('clp_options', array('version' => '1.7.3'));
+			add_site_option('clp_options', array('version' => '1.8.1'));
 			
 		else:
 		
-			add_option('clp_options', array('version' => '1.7.3'));
+			add_option('clp_options', array('version' => '1.8.1'));
 			
 		endif;
 	
@@ -371,9 +371,9 @@ class A5_CustomLoginPage {
 			
 		$fields = array (
 		
-		a5_text_field('logo', 'logo', self::$options['logo'], __('Logo URL', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_url_field('url', 'url', self::$options['url'], __('URL to link to', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_text_field('title', 'title', self::$options['title'], __('Title tag of the logo', self::language_file), array('style' => 'width: 95%;'), false)
+		a5_text_field('logo', 'logo', @self::$options['logo'], __('Logo URL', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_url_field('url', 'url', @self::$options['url'], __('URL to link to', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('title', 'title', @self::$options['title'], __('Title tag of the logo', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -392,10 +392,11 @@ class A5_CustomLoginPage {
 		  
 		$fields = array(
 		
-		a5_number_field('logo_width', 'logo_width', self::$options['logo_width'], __('Width of the Logo (in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logo_height', 'logo_height', self::$options['logo_height'], __('Height of the Logo (in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('h1_width', 'h1_width', self::$options['h1_width'], __('Width of the Logo Container (in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('h1_height', 'h1_height', self::$options['h1_height'], __('Height of the Logo Container (in px)', self::language_file), array('step' => 1), false)
+		a5_number_field('logo_width', 'logo_width', @self::$options['logo_width'], __('Width of the Logo (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logo_height', 'logo_height', @self::$options['logo_height'], __('Height of the Logo (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_width', 'h1_width', @self::$options['h1_width'], __('Width of the Logo Container (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_height', 'h1_height', @self::$options['h1_height'], __('Height of the Logo Container (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('h1_margin', 'h1_margin', @self::$options['h1_margin'], __('Margin of the Logo Container (CSS)', self::language_file), array(), false)
 		);
 		
 		a5_container_left($fields);
@@ -403,7 +404,8 @@ class A5_CustomLoginPage {
 		$text = array(
 		
 		__('If your logo is larger than the default WP-logo (274px by 63px), you can enter the width and the height of it here.', self::language_file),
-		__('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file)
+		__('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file),
+		sprintf(__('With the margin of the logo, you can position the logo more precisely. Give a CSS value here, i.e. %s to locate it 180 px left.', self::language_file), '&#39;0 0 0 -180px&#39;')
 		);
 		
 		a5_container_right(__('Position and Size of the Logo', self::language_file), $text, $special);
@@ -414,11 +416,11 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_number_field('h1_corner', 'h1_corner', self::$options['h1_corner'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('h1_shadow_x', 'h1_shadow_x', self::$options['h1_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('h1_shadow_y', 'h1_shadow_y', self::$options['h1_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('h1_shadow_softness', 'h1_shadow_softness', self::$options['h1_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('h1_shadow_color', 'h1_shadow_color', self::$options['h1_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
+		a5_number_field('h1_corner', 'h1_corner', @self::$options['h1_corner'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_shadow_x', 'h1_shadow_x', @self::$options['h1_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_shadow_y', 'h1_shadow_y', @self::$options['h1_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('h1_shadow_softness', 'h1_shadow_softness', @self::$options['h1_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('h1_shadow_color', 'h1_shadow_color', @self::$options['h1_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
 		);
 		
 		a5_container_left($fields);
@@ -436,12 +438,12 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('body_background', 'body_background', self::$options['body_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_select('body_img_repeat', 'body_img_repeat', $options, self::$options['body_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
-		a5_text_field('body_img_pos', 'body_img_pos', self::$options['body_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_text_field('body_bg_color1', 'body_bg_color1', self::$options['body_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('body_bg_color2', 'body_bg_color2', self::$options['body_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
-		a5_text_field('body_bg_size', 'body_bg_size', self::$options['body_bg_size'], __('Background Size', self::language_file), array('style' => 'width: 95%;'), false)
+		a5_text_field('body_background', 'body_background', @self::$options['body_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_select('body_img_repeat', 'body_img_repeat', $options, @self::$options['body_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
+		a5_text_field('body_img_pos', 'body_img_pos', @self::$options['body_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('body_bg_color1', 'body_bg_color1', @self::$options['body_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('body_bg_color2', 'body_bg_color2', @self::$options['body_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('body_bg_size', 'body_bg_size', @self::$options['body_bg_size'], __('Background Size', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -470,21 +472,21 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('logindiv_background', 'logindiv_background', self::$options['logindiv_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_select('logindiv_img_repeat', 'logindiv_img_repeat', $options, self::$options['logindiv_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
-		a5_text_field('logindiv_img_pos', 'logindiv_img_pos', self::$options['logindiv_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_text_field('logindiv_bg_color1', 'logindiv_bg_color1', self::$options['logindiv_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('logindiv_bg_color2', 'logindiv_bg_color2', self::$options['logindiv_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
-		a5_text_field('logindiv_text_color', 'logindiv_text_color', self::$options['logindiv_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_number_field('logindiv_transparency', 'logindiv_transparency', self::$options['logindiv_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
-		a5_select('logindiv_border_style', 'logindiv_border_style', $border_style, self::$options['logindiv_border_style'], __('Border Style', self::language_file), __('choose a border style', self::language_file), array('style' => 'width: 220px;'), false),
-		a5_number_field('logindiv_border_width', 'logindiv_border_width', self::$options['logindiv_border_width'], __('Border Width (in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('logindiv_border_color', 'logindiv_border_color', self::$options['logindiv_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
-		a5_number_field('logindiv_border_round', 'logindiv_border_round', self::$options['logindiv_border_round'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logindiv_shadow_x', 'logindiv_shadow_x', self::$options['logindiv_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logindiv_shadow_y', 'logindiv_shadow_y', self::$options['logindiv_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logindiv_shadow_softness', 'logindiv_shadow_softness', self::$options['logindiv_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('logindiv_shadow_color', 'logindiv_shadow_color', self::$options['logindiv_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
+		a5_text_field('logindiv_background', 'logindiv_background', @self::$options['logindiv_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_select('logindiv_img_repeat', 'logindiv_img_repeat', $options, @self::$options['logindiv_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
+		a5_text_field('logindiv_img_pos', 'logindiv_img_pos', @self::$options['logindiv_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('logindiv_bg_color1', 'logindiv_bg_color1', @self::$options['logindiv_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('logindiv_bg_color2', 'logindiv_bg_color2', @self::$options['logindiv_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('logindiv_text_color', 'logindiv_text_color', @self::$options['logindiv_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('logindiv_transparency', 'logindiv_transparency', @self::$options['logindiv_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_select('logindiv_border_style', 'logindiv_border_style', $border_style, @self::$options['logindiv_border_style'], __('Border Style', self::language_file), __('choose a border style', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('logindiv_border_width', 'logindiv_border_width', @self::$options['logindiv_border_width'], __('Border Width (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('logindiv_border_color', 'logindiv_border_color', @self::$options['logindiv_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('logindiv_border_round', 'logindiv_border_round', @self::$options['logindiv_border_round'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_shadow_x', 'logindiv_shadow_x', @self::$options['logindiv_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_shadow_y', 'logindiv_shadow_y', @self::$options['logindiv_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_shadow_softness', 'logindiv_shadow_softness', @self::$options['logindiv_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('logindiv_shadow_color', 'logindiv_shadow_color', @self::$options['logindiv_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
 		);
 
 		a5_container_left($fields);
@@ -503,11 +505,11 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_number_field('logindiv_left', 'logindiv_left', self::$options['logindiv_left'], __('Position (x-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logindiv_top', 'logindiv_top', self::$options['logindiv_top'], __('Position (y-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logindiv_width', 'logindiv_width', self::$options['logindiv_width'], __('Width (in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('logindiv_height', 'logindiv_height', self::$options['logindiv_height'], __('Height (in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('logindiv_padding', 'logindiv_padding', self::$options['logindiv_padding'], __('Padding', self::language_file), false, false)
+		a5_number_field('logindiv_left', 'logindiv_left', @self::$options['logindiv_left'], __('Position (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_top', 'logindiv_top', @self::$options['logindiv_top'], __('Position (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_width', 'logindiv_width', @self::$options['logindiv_width'], __('Width (in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('logindiv_height', 'logindiv_height', @self::$options['logindiv_height'], __('Height (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('logindiv_padding', 'logindiv_padding', @self::$options['logindiv_padding'], __('Padding', self::language_file), false, false)
 		);
 		
 		a5_container_left($fields);
@@ -535,23 +537,23 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('loginform_background', 'loginform_background', self::$options['loginform_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_select('loginform_img_repeat', 'loginform_img_repeat', $options, self::$options['loginform_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
-		a5_text_field('loginform_img_pos', 'loginform_img_pos', self::$options['loginform_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
-		a5_text_field('loginform_bg_color1', 'loginform_bg_color1', self::$options['loginform_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('loginform_bg_color2', 'loginform_bg_color2', self::$options['loginform_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
-		a5_text_field('loginform_text_color', 'loginform_text_color', self::$options['loginform_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_number_field('loginform_transparency', 'loginform_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
-		a5_select('loginform_border_style', 'loginform_border_style', $border_style, self::$options['loginform_border_style'], __('Border Style', self::language_file), __('choose a border style', self::language_file), array('style' => 'width: 220px;'), false),
-		a5_number_field('loginform_border_width', 'loginform_border_width', self::$options['loginform_border_width'], __('Border Width (in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('loginform_border_color', 'loginform_border_color', self::$options['loginform_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
-		a5_number_field('loginform_border_round', 'loginform_border_round', self::$options['loginform_border_round'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('loginform_margin', 'loginform_margin', self::$options['loginform_margin'], __('Margin', self::language_file), false, false),
-		a5_text_field('loginform_padding', 'loginform_padding', self::$options['loginform_padding'], __('Padding', self::language_file), false, false),
-		a5_number_field('loginform_shadow_x', 'loginform_shadow_x', self::$options['loginform_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('loginform_shadow_y', 'loginform_shadow_y', self::$options['loginform_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('loginform_shadow_softness', 'loginform_shadow_softness', self::$options['loginform_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('loginform_shadow_color', 'loginform_shadow_color', self::$options['loginform_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
+		a5_text_field('loginform_background', 'loginform_background', @self::$options['loginform_background'], __('Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_select('loginform_img_repeat', 'loginform_img_repeat', $options, @self::$options['loginform_img_repeat'], __('Background Repeat', self::language_file), __('default', self::language_file), array('style' => 'width: 135px;'), false),
+		a5_text_field('loginform_img_pos', 'loginform_img_pos', @self::$options['loginform_img_pos'], __('Position of the Background Picture', self::language_file), array('style' => 'width: 95%;'), false),
+		a5_text_field('loginform_bg_color1', 'loginform_bg_color1', @self::$options['loginform_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('loginform_bg_color2', 'loginform_bg_color2', @self::$options['loginform_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('loginform_text_color', 'loginform_text_color', @self::$options['loginform_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('loginform_transparency', 'loginform_transparency', @self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_select('loginform_border_style', 'loginform_border_style', $border_style, @self::$options['loginform_border_style'], __('Border Style', self::language_file), __('choose a border style', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('loginform_border_width', 'loginform_border_width', @self::$options['loginform_border_width'], __('Border Width (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('loginform_border_color', 'loginform_border_color', @self::$options['loginform_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('loginform_border_round', 'loginform_border_round', @self::$options['loginform_border_round'], __('Rounded Corners (in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('loginform_margin', 'loginform_margin', @self::$options['loginform_margin'], __('Margin', self::language_file), false, false),
+		a5_text_field('loginform_padding', 'loginform_padding', @self::$options['loginform_padding'], __('Padding', self::language_file), false, false),
+		a5_number_field('loginform_shadow_x', 'loginform_shadow_x', @self::$options['loginform_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('loginform_shadow_y', 'loginform_shadow_y', @self::$options['loginform_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('loginform_shadow_softness', 'loginform_shadow_softness', @self::$options['loginform_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('loginform_shadow_color', 'loginform_shadow_color', @self::$options['loginform_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
 		);
 		
 		a5_container_left($fields);
@@ -582,14 +584,14 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('button_bg_color1', 'button_bg_color1', self::$options['button_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('button_bg_color2', 'button_bg_color2', self::$options['button_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
-		a5_text_field('button_text_color', 'button_text_color', self::$options['button_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('button_border_color', 'button_border_color', self::$options['button_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('btn_hover_bg_color1', 'btn_hover_bg_color1', self::$options['btn_hover_bg_color1'], __('Hover Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('btn_hover_bg_color2', 'btn_hover_bg_color2', self::$options['btn_hover_bg_color2'], __('Second Hover Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
-		a5_text_field('btn_hover_text_color', 'btn_hover_text_color', self::$options['btn_hover_text_color'], __('Hover Text Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('btn_hover_border_color', 'btn_hover_border_color', self::$options['btn_hover_border_color'], __('Hover Border Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('button_bg_color1', 'button_bg_color1', @self::$options['button_bg_color1'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('button_bg_color2', 'button_bg_color2', @self::$options['button_bg_color2'], __('Second Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('button_text_color', 'button_text_color', @self::$options['button_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('button_border_color', 'button_border_color', @self::$options['button_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_bg_color1', 'btn_hover_bg_color1', @self::$options['btn_hover_bg_color1'], __('Hover Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_bg_color2', 'btn_hover_bg_color2', @self::$options['btn_hover_bg_color2'], __('Second Hover Background Colour (for Gradient)', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_text_color', 'btn_hover_text_color', @self::$options['btn_hover_text_color'], __('Hover Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('btn_hover_border_color', 'btn_hover_border_color', @self::$options['btn_hover_border_color'], __('Hover Border Colour', self::language_file), array('class' => $class), false),
 		
 		);
 		
@@ -616,11 +618,11 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('loggedout_text_color', 'loggedout_text_color', self::$options['loggedout_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('loggedout_bg_color', 'loggedout_bg_color', self::$options['loggedout_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('loggedout_border_color', 'loggedout_border_color', self::$options['loggedout_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
-		a5_number_field('loggedout_transparency', 'loggedout_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
-		a5_text_field('logout_custom_message', 'logout_custom_message', self::$options['logout_custom_message'], __('Logout Message', self::language_file), array('style' => 'width: 95%;'), false)
+		a5_text_field('loggedout_text_color', 'loggedout_text_color', @self::$options['loggedout_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('loggedout_bg_color', 'loggedout_bg_color', @self::$options['loggedout_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('loggedout_border_color', 'loggedout_border_color', @self::$options['loggedout_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('loggedout_transparency', 'loggedout_transparency', @self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_text_field('logout_custom_message', 'logout_custom_message', @self::$options['logout_custom_message'], __('Logout Message', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -637,11 +639,11 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('error_text_color', 'error_text_color', self::$options['error_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('error_bg_color', 'error_bg_color', self::$options['error_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('error_bg_color', 'error_bg_color', self::$options['error_bg_color'], __('Border Colour', self::language_file), array('class' => $class), false),
-		a5_number_field('error_transparency', 'error_transparency', self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
-		a5_text_field('error_custom_message', 'error_custom_message', self::$options['error_custom_message'], __('Error Message', self::language_file), array('style' => 'width: 95%;'), false)
+		a5_text_field('error_text_color', 'error_text_color', @self::$options['error_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('error_bg_color', 'error_bg_color', @self::$options['error_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('error_border_color', 'error_border_color', @self::$options['error_border_color'], __('Border Colour', self::language_file), array('class' => $class), false),
+		a5_number_field('error_transparency', 'error_transparency', @self::$options['loginform_transparency'], __('Transparency (in percent)', self::language_file), array('step' => 1, 'min' => 0, 'max' => 100), false),
+		a5_text_field('error_custom_message', 'error_custom_message', @self::$options['error_custom_message'], __('Error Message', self::language_file), array('style' => 'width: 95%;'), false)
 		);
 		
 		a5_container_left($fields);
@@ -658,9 +660,9 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('input_text_color', 'input_text_color', self::$options['input_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('input_bg_color', 'input_bg_color', self::$options['input_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('input_border_color', 'input_border_color', self::$options['input_border_color'], __('Border Colour', self::language_file), array('class' => $class), false)
+		a5_text_field('input_text_color', 'input_text_color', @self::$options['input_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('input_bg_color', 'input_bg_color', @self::$options['input_bg_color'], __('Background Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('input_border_color', 'input_border_color', @self::$options['input_border_color'], __('Border Colour', self::language_file), array('class' => $class), false)
 		);
 		
 		a5_container_left($fields);
@@ -688,25 +690,27 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		
-		a5_text_field('link_text_color', 'link_text_color', self::$options['link_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
-		a5_select('link_textdecoration', 'link_textdecoration', $textdeco, self::$options['link_textdecoration'], __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
-		a5_number_field('link_shadow_x', 'link_shadow_x', self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('link_shadow_y', 'link_shadow_y', self::$options['link_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('link_shadow_softness', 'link_shadow_softness', self::$options['link_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('link_shadow_color', 'link_shadow_color', self::$options['link_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false),
-		a5_text_field('hover_text_color', 'hover_text_color', self::$options['hover_text_color'], __('Hover Text Colour', self::language_file), array('class' => $class), false),
-		a5_select('hover_textdecoration', 'hover_textdecoration', $textdeco, self::$options['hover_textdecoration'], __('Hover Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
-		a5_number_field('hover_shadow_x', 'hover_shadow_x', self::$options['hover_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('hover_shadow_y', 'hover_shadow_y', self::$options['hover_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
-		a5_number_field('hover_shadow_softness', 'hover_shadow_softness', self::$options['hover_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('hover_shadow_color', 'hover_shadow_color', self::$options['hover_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false)
+		a5_text_field('link_text_color', 'link_text_color', @self::$options['link_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
+		a5_select('link_textdecoration', 'link_textdecoration', $textdeco, @self::$options['link_textdecoration'], __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('link_shadow_x', 'link_shadow_x', @self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('link_shadow_y', 'link_shadow_y', @self::$options['link_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('link_shadow_softness', 'link_shadow_softness', @self::$options['link_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('link_shadow_color', 'link_shadow_color', @self::$options['link_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('hover_text_color', 'hover_text_color', @self::$options['hover_text_color'], __('Hover Text Colour', self::language_file), array('class' => $class), false),
+		a5_select('hover_textdecoration', 'hover_textdecoration', $textdeco, @self::$options['hover_textdecoration'], __('Hover Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
+		a5_number_field('hover_shadow_x', 'hover_shadow_x', @self::$options['hover_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('hover_shadow_y', 'hover_shadow_y', @self::$options['hover_shadow_y'], __('Shadow (y-direction in px)', self::language_file), array('step' => 1), false),
+		a5_number_field('hover_shadow_softness', 'hover_shadow_softness', @self::$options['hover_shadow_softness'], __('Shadow (softness in px)', self::language_file), array('step' => 1), false),
+		a5_text_field('hover_shadow_color', 'hover_shadow_color', @self::$options['hover_shadow_color'], __('Shadow Colour', self::language_file), array('class' => $class), false),
+		a5_text_field('link_size', 'link_size', @self::$options['link_size'], __('Font Size', self::language_file), array(), false)
 		);
 		
 		a5_container_left($fields);
 
 		$text = array(
 		
-		__('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', self::language_file)
+		__('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', self::language_file),
+		sprintf(__('For the font size, give a css value, such as %1$s or %2$s.', self::language_file), '<em>&#39;12px&#39;</em>', '<em>&#39;1em&#39;</em>')
 		);
 		
 		a5_container_right(__('Links', self::language_file), $text, $special, array('linkmsg', 2));
@@ -782,6 +786,7 @@ class A5_CustomLoginPage {
 				self::$options['logo_height'] = $_POST['logo_height'];
 				self::$options['h1_width'] = $_POST['h1_width'];
 				self::$options['h1_height'] = $_POST['h1_height'];
+				self::$options['h1_margin'] = $_POST['h1_margin'];
 				self::$options['h1_corner'] = $_POST['h1_corner'];
 				self::$options['h1_shadow_x'] = $_POST['h1_shadow_x'];
 				self::$options['h1_shadow_y'] = $_POST['h1_shadow_y'];
@@ -1003,6 +1008,7 @@ class A5_CustomLoginPage {
 				self::$options['hover_shadow_y'] = $_POST['hover_shadow_y'];
 				self::$options['hover_shadow_softness'] = $_POST['hover_shadow_softness'];
 				self::$options['hover_shadow_color'] = $_POST['hover_shadow_color'];
+				self::$options['link_size'] = $_POST['link_size'];
 				
 				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
 				
@@ -1086,34 +1092,39 @@ class A5_CustomLoginPage {
 		# collecting variables
 		
 		$eol = "\r\n";
+		$tab = "\t";
 		
-		# body.login 
+		# body.login
+		
+		$body_style = '';
 			
-		if (!empty(self::$options['body_background'])) $body_style .= 'background-image: url('.self::$options['body_background'].');'.$eol;
-		if (!empty(self::$options['body_img_repeat'])) $body_style .= 'background-repeat: '.self::$options['body_img_repeat'].';'.$eol;
-		if (!empty(self::$options['body_img_pos'])) $body_style .= 'background-position: '.self::$options['body_img_pos'].';'.$eol;
+		if (!empty(self::$options['body_background'])) $body_style .= $eol.$tab.'background-image: url('.self::$options['body_background'].');';
+		if (!empty(self::$options['body_img_repeat'])) $body_style .= $eol.$tab.'background-repeat: '.self::$options['body_img_repeat'].';';
+		if (!empty(self::$options['body_img_pos'])) $body_style .= $eol.$tab.'background-position: '.self::$options['body_img_pos'].';';
 		if (!empty(self::$options['body_bg_size'])) :
 		
-			$body_style .= '-webkit-background-size: '.self::$options['body_bg_size'].';'.$eol;
-			$body_style .= '-moz-background-size: '.self::$options['body_bg_size'].';'.$eol;
-			$body_style .= '-o-background-size: '.self::$options['body_bg_size'].';'.$eol;
-			$body_style .= 'background-size: '.self::$options['body_bg_size'].';'.$eol;
+			$body_style .= $eol.$tab.'-webkit-background-size: '.self::$options['body_bg_size'].';';
+			$body_style .= $eol.$tab.'-moz-background-size: '.self::$options['body_bg_size'].';';
+			$body_style .= $eol.$tab.'-o-background-size: '.self::$options['body_bg_size'].';';
+			$body_style .= $eol.$tab.'background-size: '.self::$options['body_bg_size'].';';
 		
 		endif;
 		
-		if (!empty(self::$options['body_bg_color1'])) $body_style .= 'background-color: '.self::$options['body_bg_color1'].';'.$eol;	
+		if (!empty(self::$options['body_bg_color1'])) $body_style .= $eol.$tab.'background-color: '.self::$options['body_bg_color1'].';';	
 		if (!empty(self::$options['body_bg_color2'])) :
 			
-			$body_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['body_bg_color1'].'), to('.self::$options['body_bg_color2'].'));'.$eol;
-			$body_style .= 'background-image: -webkit-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');'.$eol;
-			$body_style .= 'background-image: -moz-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');'.$eol;
-			$body_style .= 'background-image: -ms-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');'.$eol;
-			$body_style .= 'background-image: -o-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');'.$eol;
-			$body_style .= 'background-image: -linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');'.$eol;
+			$body_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['body_bg_color1'].'), to('.self::$options['body_bg_color2'].'));';
+			$body_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
+			$body_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
+			$body_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
+			$body_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
+			$body_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
 			
 		endif;
 		
 		# .login h1 a
+		
+		$h1_style = '';
 		
 		if (!empty(self::$options['logo'])) :
 		
@@ -1122,26 +1133,28 @@ class A5_CustomLoginPage {
 			$h1_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '326';
 			$h1_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'] : '67';
 		
-			$h1_style = 'background-image: url('.self::$options['logo'].');'.$eol;
-			$h1_style .= 'background-position: center top;'.$eol;
-			$h1_style .= 'background-repeat: no-repeat;'.$eol;
-			$h1_style .= 'background-size: '.$bg_width.'px '.$bg_height.'px;'.$eol;
-			$h1_style .= 'width: '.$h1_width.'px;'.$eol;
-			$h1_style .= 'height: '.$h1_height.'px;'.$eol;
+			$h1_style .= $eol.$tab.'background-image: url('.self::$options['logo'].');';
+			$h1_style .= $eol.$tab.'background-position: center top;';
+			$h1_style .= $eol.$tab.'background-repeat: no-repeat;';
+			$h1_style .= $eol.$tab.'background-size: '.$bg_width.'px '.$bg_height.'px;';
+			$h1_style .= $eol.$tab.'width: '.$h1_width.'px;';
+			$h1_style .= $eol.$tab.'height: '.$h1_height.'px;';
+			
+			if (!empty(self::$options['h1_margin'])) $h1_style .= $eol.$tab.'margin: '.self::$options['h1_margin'].';';
 			
 			if (!empty(self::$options['h1_corner'])) :
 			
-				$h1_style .= '-webkit-border-radius: '.self::$options['h1_corner'].'px;'.$eol;
-				$h1_style .= '-moz-border-radius: '.self::$options['h1_corner'].'px;'.$eol;
-				$h1_style .= 'border-radius: '.self::$options['h1_corner'].'px;'.$eol;
+				$h1_style .= $eol.$tab.'-webkit-border-radius: '.self::$options['h1_corner'].'px;';
+				$h1_style .= $eol.$tab.'-moz-border-radius: '.self::$options['h1_corner'].'px;';
+				$h1_style .= $eol.$tab.'border-radius: '.self::$options['h1_corner'].'px;';
 				
 			endif;
 			
 			if (!empty(self::$options['h1_shadow_x']) || self::$options['h1_shadow_x']=='0') :
 				
-				$h1_style .= '-webkit-box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';'.$eol;
-				$h1_style .= '-moz-box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';'.$eol;;
-				$h1_style .= 'box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';'.$eol;
+				$h1_style .= $eol.$tab.'-webkit-box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';';
+				$h1_style .= $eol.$tab.'-moz-box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';';
+				$h1_style .= $eol.$tab.'box-shadow: '.self::$options['h1_shadow_x'].'px '.self::$options['h1_shadow_y'].'px '.self::$options['h1_shadow_softness'].'px '.self::$options['h1_shadow_color'].';';
 				
 			endif;
 			
@@ -1149,242 +1162,265 @@ class A5_CustomLoginPage {
 		
 		# #login
 		
-		if (!empty(self::$options['logindiv_top']) || !empty(self::$options['logindiv_left']) || self::$options['logindiv_top']=='0' || self::$options['logindiv_left']=='0') $logindiv_style = 'position: absolute;'.$eol;
-		if (!empty(self::$options['logindiv_top']) || self::$options['logindiv_top']=='0') $logindiv_style .= 'top: '.self::$options['logindiv_top'].'px;'.$eol;
-		if (!empty(self::$options['logindiv_left']) || self::$options['logindiv_left']=='0') $logindiv_style .= 'left: '.self::$options['logindiv_left'].'px;'.$eol;
-		if (!empty(self::$options['logindiv_bg_color1'])) $logindiv_style .= 'background-color: '.self::$options['logindiv_bg_color1'].';'.$eol;
+		$logindiv_style = '';
+		$label_style = '';
+		
+		if (!empty(self::$options['logindiv_top']) || !empty(self::$options['logindiv_left']) || self::$options['logindiv_top']=='0' || self::$options['logindiv_left']=='0') $logindiv_style .= $eol.$tab.'position: absolute;';
+		if (!empty(self::$options['logindiv_top']) || self::$options['logindiv_top']=='0') $logindiv_style .= $eol.$tab.'top: '.self::$options['logindiv_top'].'px;';
+		if (!empty(self::$options['logindiv_left']) || self::$options['logindiv_left']=='0') $logindiv_style .= $eol.$tab.'left: '.self::$options['logindiv_left'].'px;';
+		if (!empty(self::$options['logindiv_bg_color1'])) $logindiv_style .= $eol.$tab.'background-color: '.self::$options['logindiv_bg_color1'].';';
 		if (!empty(self::$options['logindiv_bg_color2'])) :
 			
-			$logindiv_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['logindiv_bg_color1'].'), to('.self::$options['logindiv_bg_color2'].'));'.$eol;
-			$logindiv_style .= 'background-image: -webkit-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');'.$eol;
-			$logindiv_style .= 'background-image: -moz-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');'.$eol;
-			$logindiv_style .= 'background-image: -ms-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');'.$eol;
-			$logindiv_style .= 'background-image: -o-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');'.$eol;
-			$logindiv_style .= 'background-image: -linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');'.$eol;
+			$logindiv_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['logindiv_bg_color1'].'), to('.self::$options['logindiv_bg_color2'].'));';
+			$logindiv_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
+			$logindiv_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
+			$logindiv_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
+			$logindiv_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
+			$logindiv_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
 			
 		endif;
 		if (!empty(self::$options['logindiv_transparency'])) :
-			$logindiv_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['logindiv_transparency'].')";'.$eol;
-			$logindiv_style .= 'filter: alpha(Opacity='.self::$options['logindiv_transparency'].');'.$eol;
-			$logindiv_style .= '-moz-opacity: '.(self::$options['logindiv_transparency']/100).';'.$eol;
-			$logindiv_style .= '-khtml-opacity: '.(self::$options['logindiv_transparency']/100).';'.$eol;
-			$logindiv_style .= 'opacity: '.(self::$options['logindiv_transparency']/100).';'.$eol;
+			$logindiv_style .= $eol.$tab.'-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['logindiv_transparency'].')";';
+			$logindiv_style .= $eol.$tab.'filter: alpha(Opacity='.self::$options['logindiv_transparency'].');';
+			$logindiv_style .= $eol.$tab.'-moz-opacity: '.(self::$options['logindiv_transparency']/100).';';
+			$logindiv_style .= $eol.$tab.'-khtml-opacity: '.(self::$options['logindiv_transparency']/100).';';
+			$logindiv_style .= $eol.$tab.'opacity: '.(self::$options['logindiv_transparency']/100).';';
 		endif;
-		if (!empty(self::$options['logindiv_background'])) $logindiv_style .= 'background-image: url('.self::$options['logindiv_background'].');'.$eol;
-		if (!empty(self::$options['logindiv_img_repeat'])) $logindiv_style .= 'background-repeat: '.self::$options['logindiv_img_repeat'].';'.$eol;
-		if (!empty(self::$options['logindiv_img_pos'])) $logindiv_style .= 'background-position: '.self::$options['logindiv_img_pos'].';'.$eol;
-		if (!empty(self::$options['logindiv_border_style'])) $logindiv_style .= 'border: '.self::$options['logindiv_border_style'].' '.self::$options['logindiv_border_width'].'px '.self::$options['logindiv_border_color'].';'.$eol;
+		if (!empty(self::$options['logindiv_background'])) $logindiv_style .= $eol.$tab.'background-image: url('.self::$options['logindiv_background'].');';
+		if (!empty(self::$options['logindiv_img_repeat'])) $logindiv_style .= $eol.$tab.'background-repeat: '.self::$options['logindiv_img_repeat'].';';
+		if (!empty(self::$options['logindiv_img_pos'])) $logindiv_style .= $eol.$tab.'background-position: '.self::$options['logindiv_img_pos'].';';
+		if (!empty(self::$options['logindiv_border_style'])) $logindiv_style .= $eol.$tab.'border: '.self::$options['logindiv_border_style'].' '.self::$options['logindiv_border_width'].'px '.self::$options['logindiv_border_color'].';';
 		if (!empty(self::$options['logindiv_border_round'])) :
 			
-			$logindiv_style .= '-webkit-border-radius: '.self::$options['logindiv_border_round'].'px;'.$eol;
-			$logindiv_style .= '-moz-border-radius: '.self::$options['logindiv_border_round'].'px;'.$eol;
-			$logindiv_style .= 'border-radius: '.self::$options['logindiv_border_round'].'px;'.$eol;
+			$logindiv_style .= $eol.$tab.'-webkit-border-radius: '.self::$options['logindiv_border_round'].'px;';
+			$logindiv_style .= $eol.$tab.'-moz-border-radius: '.self::$options['logindiv_border_round'].'px;';
+			$logindiv_style .= $eol.$tab.'border-radius: '.self::$options['logindiv_border_round'].'px;';
 			
 		endif;
 		if (!empty(self::$options['logindiv_shadow_x']) || self::$options['logindiv_shadow_x']=='0') :
 			
-			$logindiv_style .= '-webkit-box-shadow: '.self::$options['logindiv_shadow_x'].'px '.self::$options['logindiv_shadow_y'].'px '.self::$options['logindiv_shadow_softness'].'px '.self::$options['logindiv_shadow_color'].';'.$eol;
-			$logindiv_style .= '-moz-box-shadow: '.self::$options['logindiv_shadow_x'].'px '.self::$options['logindiv_shadow_y'].'px '.self::$options['logindiv_shadow_softness'].'px '.self::$options['logindiv_shadow_color'].';'.$eol;;
-			$logindiv_style .= 'box-shadow: '.self::$options['logindiv_shadow_x'].'px '.self::$options['logindiv_shadow_y'].'px '.self::$options['logindiv_shadow_softness'].'px '.self::$options['logindiv_shadow_color'].';'.$eol;
+			$logindiv_style .= $eol.$tab.'-webkit-box-shadow: '.self::$options['logindiv_shadow_x'].'px '.self::$options['logindiv_shadow_y'].'px '.self::$options['logindiv_shadow_softness'].'px '.self::$options['logindiv_shadow_color'].';';
+			$logindiv_style .= $eol.$tab.'-moz-box-shadow: '.self::$options['logindiv_shadow_x'].'px '.self::$options['logindiv_shadow_y'].'px '.self::$options['logindiv_shadow_softness'].'px '.self::$options['logindiv_shadow_color'].';';
+			$logindiv_style .= $eol.$tab.'box-shadow: '.self::$options['logindiv_shadow_x'].'px '.self::$options['logindiv_shadow_y'].'px '.self::$options['logindiv_shadow_softness'].'px '.self::$options['logindiv_shadow_color'].';';
 			
 		endif;
-		if (!empty(self::$options['logindiv_width'])) $logindiv_style .= 'width: '.self::$options['logindiv_width'].'px;'.$eol;
-		if (!empty(self::$options['logindiv_height'])) $logindiv_style .= 'height: '.self::$options['logindiv_height'].'px;'.$eol;
-		if (!empty(self::$options['logindiv_padding'])) $logindiv_style .= 'padding: '.self::$options['logindiv_padding'].';'.$eol;
+		if (!empty(self::$options['logindiv_width'])) $logindiv_style .= $eol.$tab.'width: '.self::$options['logindiv_width'].'px;';
+		if (!empty(self::$options['logindiv_height'])) $logindiv_style .= $eol.$tab.'height: '.self::$options['logindiv_height'].'px;';
+		if (!empty(self::$options['logindiv_padding'])) $logindiv_style .= $eol.$tab.'padding: '.self::$options['logindiv_padding'].';';
 		
 		if (!empty(self::$options['logindiv_text_color'])) :
 			
-			$logindiv_style .= 'color: '.self::$options['logindiv_text_color'].';'.$eol;
-			$label_style = 'color: '.self::$options['logindiv_text_color'].';'.$eol;
+			$logindiv_style .= $eol.$tab.'color: '.self::$options['logindiv_text_color'].';';
+			$label_style .= $eol.$tab.'color: '.self::$options['logindiv_text_color'].';';
 			
 		endif;
 		
 		# .login form
 		
-		if (self::$options['loginform_transparency'] == '0') :
+		$loginform_style = '';
 		
-			$loginform_style = 'background: transparent;'.$eol;
+		if (isset(self::$options['loginform_transparency']) && self::$options['loginform_transparency'] == '0') :
+		
+			$loginform_style .= $eol.$tab.'background: transparent;';
 		
 		else:
 			
-			if (!empty(self::$options['loginform_bg_color1'])) $loginform_style = 'background-color: '.self::$options['loginform_bg_color1'].';'.$eol;
+			if (!empty(self::$options['loginform_bg_color1'])) $loginform_style .= $eol.$tab.'background-color: '.self::$options['loginform_bg_color1'].';';
 			if (!empty(self::$options['loginform_bg_color2'])) :
 				
-				$loginform_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['loginform_bg_color1'].'), to('.self::$options['loginform_bg_color2'].'));'.$eol;
-				$loginform_style .= 'background-image: -webkit-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');'.$eol;
-				$loginform_style .= 'background-image: -moz-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');'.$eol;
-				$loginform_style .= 'background-image: -ms-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');'.$eol;
-				$loginform_style .= 'background-image: -o-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');'.$eol;
-				$loginform_style .= 'background-image: -linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');'.$eol;
+				$loginform_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['loginform_bg_color1'].'), to('.self::$options['loginform_bg_color2'].'));';
+				$loginform_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
+				$loginform_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
+				$loginform_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
+				$loginform_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
+				$loginform_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
 				
 			endif;
 			
 			if (!empty(self::$options['loginform_transparency'])) :
-				$loginform_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['loginform_transparency'].')";'.$eol;
-				$loginform_style .= 'filter: alpha(Opacity='.self::$options['loginform_transparency'].');'.$eol;
-				$loginform_style .= '-moz-opacity: '.(self::$options['loginform_transparency']/100).';'.$eol;
-				$loginform_style .= '-khtml-opacity: '.(self::$options['loginform_transparency']/100).';'.$eol;
-				$loginform_style .= 'opacity: '.(self::$options['loginform_transparency']/100).';'.$eol;
+				$loginform_style .= $eol.$tab.'-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['loginform_transparency'].')";';
+				$loginform_style .= $eol.$tab.'filter: alpha(Opacity='.self::$options['loginform_transparency'].');';
+				$loginform_style .= $eol.$tab.'-moz-opacity: '.(self::$options['loginform_transparency']/100).';';
+				$loginform_style .= $eol.$tab.'-khtml-opacity: '.(self::$options['loginform_transparency']/100).';';
+				$loginform_style .= $eol.$tab.'opacity: '.(self::$options['loginform_transparency']/100).';';
 			endif;
 			
 		endif;
 			
-		if (!empty(self::$options['loginform_background'])) $loginform_style .= 'background-image: url('.self::$options['loginform_background'].');'.$eol;
-		if (!empty(self::$options['loginform_img_repeat'])) $loginform_style .= 'background-repeat: '.self::$options['loginform_img_repeat'].';'.$eol;
-		if (!empty(self::$options['loginform_img_pos'])) $loginform_style .= 'background-position: '.self::$options['loginform_img_pos'].';'.$eol;
-		if (!empty(self::$options['loginform_border_style']) && !empty(self::$options['loginform_border_width'])) $loginform_style .= 'border: '.self::$options['loginform_border_style'].' '.self::$options['loginform_border_width'].'px '.self::$options['loginform_border_color'].';'.$eol;
-		if (self::$options['loginform_border_style'] == 'none') $loginform_style .= 'border: medium none;'.$eol;
+		if (!empty(self::$options['loginform_background'])) $loginform_style .= $eol.$tab.'background-image: url('.self::$options['loginform_background'].');';
+		if (!empty(self::$options['loginform_img_repeat'])) $loginform_style .= $eol.$tab.'background-repeat: '.self::$options['loginform_img_repeat'].';';
+		if (!empty(self::$options['loginform_img_pos'])) $loginform_style .= $eol.$tab.'background-position: '.self::$options['loginform_img_pos'].';';
+		if (!empty(self::$options['loginform_border_style']) && !empty(self::$options['loginform_border_width'])) $loginform_style .= $eol.$tab.'border: '.self::$options['loginform_border_style'].' '.self::$options['loginform_border_width'].'px '.self::$options['loginform_border_color'].';';
+		if (isset(self::$options['loginform_border_style']) && self::$options['loginform_border_style'] == 'none') $loginform_style .= $eol.$tab.'border: medium none;';
 		if (!empty(self::$options['loginform_border_round'])) :
 			
-			$loginform_style .= '-webkit-border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
-			$loginform_style .= '-moz-border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
-			$loginform_style .= 'border-radius: '.self::$options['loginform_border_round'].'px;'.$eol;
+			$loginform_style .= $eol.$tab.'-webkit-border-radius: '.self::$options['loginform_border_round'].'px;';
+			$loginform_style .= $eol.$tab.'-moz-border-radius: '.self::$options['loginform_border_round'].'px;';
+			$loginform_style .= $eol.$tab.'border-radius: '.self::$options['loginform_border_round'].'px;';
 			
 		endif;
-		if (!empty(self::$options['loginform_shadow_x']) || self::$options['loginform_shadow_x']=='0') :
+		if (!empty(self::$options['loginform_shadow_x']) || self::$options['loginform_shadow_x'] == '0') :
 			
-			$loginform_style .= '-webkit-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;
-			$loginform_style .= '-moz-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;;
-			$loginform_style .= 'box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';'.$eol;
+			$loginform_style .= $eol.$tab.'-webkit-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';';
+			$loginform_style .= $eol.$tab.'-moz-box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';';
+			$loginform_style .= $eol.$tab.'box-shadow: '.self::$options['loginform_shadow_x'].'px '.self::$options['loginform_shadow_y'].'px '.self::$options['loginform_shadow_softness'].'px '.self::$options['loginform_shadow_color'].';';
 		endif;
 		
-		if (!empty(self::$options['loginform_margin'])) $loginform_style .= 'margin: '.self::$options['loginform_margin'].';'.$eol;
-		if (!empty(self::$options['loginform_padding'])) $loginform_style .= 'padding: '.self::$options['loginform_padding'].';'.$eol;		
+		if (!empty(self::$options['loginform_margin'])) $loginform_style .= $eol.$tab.'margin: '.self::$options['loginform_margin'].';';
+		if (!empty(self::$options['loginform_padding'])) $loginform_style .= $eol.$tab.'padding: '.self::$options['loginform_padding'].';';		
 		
 		if (!empty(self::$options['loginform_text_color'])) :
 			
-			$loginform_style .= 'color: rgb('.$this->rgb_color(self::$options['loginform_text_color']).');'.$eol.'color: rgba('.$this->rgb_color(self::$options['loginform_text_color'], 1).');'.$eol;
-			$label_style = 'color: rgb('.$this->rgb_color(self::$options['loginform_text_color']).');'.$eol.'color: rgba('.$this->rgb_color(self::$options['loginform_text_color'], 1).');'.$eol;
+			$loginform_style .= $eol.$tab.'color: rgb('.$this->rgb_color(self::$options['loginform_text_color']).');'.$eol.$tab.'color: rgba('.$this->rgb_color(self::$options['loginform_text_color'], 1).');';
+			$label_style .= $eol.$tab.'color: rgb('.$this->rgb_color(self::$options['loginform_text_color']).');'.$eol.$tab.'color: rgba('.$this->rgb_color(self::$options['loginform_text_color'], 1).');';
 			
 		endif;
 		
 		# .login .message
 		
-		if (self::$options['loggedout_transparency'] == '0') :
+		$loggedout_style = '';
 		
-			$loggedout_style = 'background: transparent;'.$eol.'border: none;'.$eol.'box-shadow: none;'.$eol;
+		if (isset(self::$options['loggedout_transparency']) && self::$options['loggedout_transparency'] == '0') :
+		
+			$loggedout_style .= $eol.$tab.'background: transparent;'.$eol.$tab.'border: none;'.$eol.$tab.'box-shadow: none;';
 			
 			if (!empty(self::$options['loggedout_text_color'])) :
 			
-				$loggedout_style .= 'color: '.self::$options['loggedout_text_color'].';'.$eol;
+				$loggedout_style .= $eol.$tab.'color: '.self::$options['loggedout_text_color'].';';
 				
 			endif;
 		
 		else :
 		
-			if (!empty(self::$options['loggedout_bg_color'])) $loggedout_style = 'background-color: '.self::$options['loggedout_bg_color'].';'.$eol;
+			if (!empty(self::$options['loggedout_bg_color'])) $loggedout_style = $eol.$tab.'background-color: '.self::$options['loggedout_bg_color'].';';
 			if (!empty(self::$options['loggedout_transparency'])) :
-				$loggedout_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['loggedout_transparency'].')";'.$eol;
-				$loggedout_style .= 'filter: alpha(Opacity='.self::$options['loggedout_transparency'].');'.$eol;
-				$loggedout_style .= '-moz-opacity: '.(self::$options['loggedout_transparency']/100).';'.$eol;
-				$loggedout_style .= '-khtml-opacity: '.(self::$options['loggedout_transparency']/100).';'.$eol;
-				$loggedout_style .= 'opacity: '.(self::$options['loggedout_transparency']/100).';'.$eol;
+				$loggedout_style .= $eol.$tab.'-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['loggedout_transparency'].')";';
+				$loggedout_style .= $eol.$tab.'filter: alpha(Opacity='.self::$options['loggedout_transparency'].');';
+				$loggedout_style .= $eol.$tab.'-moz-opacity: '.(self::$options['loggedout_transparency']/100).';';
+				$loggedout_style .= $eol.$tab.'-khtml-opacity: '.(self::$options['loggedout_transparency']/100).';';
+				$loggedout_style .= $eol.$tab.'opacity: '.(self::$options['loggedout_transparency']/100).';';
 			endif;
 		
-			if (!empty(self::$options['loggedout_text_color'])) $loggedout_style .= 'color: '.self::$options['loggedout_text_color'].';'.$eol;
-			if (!empty(self::$options['loggedout_border_color'])) $loggedout_style .= 'border-color: '.self::$options['loggedout_border_color'].';'.$eol;
+			if (!empty(self::$options['loggedout_text_color'])) $loggedout_style .= $eol.$tab.'color: '.self::$options['loggedout_text_color'].';';
+			if (!empty(self::$options['loggedout_border_color'])) $loggedout_style .= $eol.$tab.'border-color: '.self::$options['loggedout_border_color'].';';
 			
 		endif;
 		
 		# #login_error
 		
-		if (self::$options['error_transparency'] == '0') :
+		$error_style = '';
 		
-			$error_style = 'background: transparent;'.$eol.'border: none;'.$eol.'box-shadow: none;'.$eol;
+		if (isset(self::$options['error_transparency']) && self::$options['error_transparency'] == '0') :
+		
+			$error_style .= $eol.$tab.'background: transparent;'.$eol.$tab.'border: none;'.$eol.$tab.'box-shadow: none;';
 			
 			if (!empty(self::$options['error_text_color'])) :
 			
-				$error_style .= 'color: '.self::$options['error_text_color'].';'.$eol;
+				$error_style .= $eol.$tab.'color: '.self::$options['error_text_color'].';';
 				
 			endif;
 		
 		else :
 		
-			if (!empty(self::$options['error_bg_color'])) $error_style = 'background-color: '.self::$options['error_bg_color'].';'.$eol;
+			if (!empty(self::$options['error_bg_color'])) $error_style .= $eol.$tab.'background-color: '.self::$options['error_bg_color'].';';
 			if (!empty(self::$options['error_transparency'])) :
-				$error_style .= '-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['error_transparency'].')";'.$eol;
-				$error_style .= 'filter: alpha(Opacity='.self::$options['error_transparency'].');'.$eol;
-				$error_style .= '-moz-opacity: '.(self::$options['error_transparency']/100).';'.$eol;
-				$error_style .= '-khtml-opacity: '.(self::$options['error_transparency']/100).';'.$eol;
-				$error_style .= 'opacity: '.(self::$options['error_transparency']/100).';'.$eol;
+				$error_style .= $eol.$tab.'-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$options['error_transparency'].')";';
+				$error_style .= $eol.$tab.'filter: alpha(Opacity='.self::$options['error_transparency'].');';
+				$error_style .= $eol.$tab.'-moz-opacity: '.(self::$options['error_transparency']/100).';';
+				$error_style .= $eol.$tab.'-khtml-opacity: '.(self::$options['error_transparency']/100).';';
+				$error_style .= $eol.$tab.'opacity: '.(self::$options['error_transparency']/100).';';
 			endif;
 			
-			if (!empty(self::$options['error_text_color'])) $error_style .= 'color: '.self::$options['error_text_color'].';'.$eol;
-			if (!empty(self::$options['error_border_color'])) $error_style .= 'border-color: '.self::$options['error_border_color'].';'.$eol;
+			if (!empty(self::$options['error_text_color'])) $error_style .= $eol.$tab.'color: '.self::$options['error_text_color'].';';
+			if (!empty(self::$options['error_border_color'])) $error_style .= $eol.$tab.'border-color: '.self::$options['error_border_color'].';';
 			
 		endif;
 		
 		# .input
 		
-		if (!empty(self::$options['input_text_color'])) $input_style = 'color: '.self::$options['input_text_color'].' !important;'.$eol;
-		if (!empty(self::$options['input_bg_color'])) $input_style .= 'background-color: '.self::$options['input_bg_color'].' !important;'.$eol;
-		if (!empty(self::$options['input_border_color'])) $input_style .= 'border-color: '.self::$options['input_border_color'].' !important;'.$eol;
+		$input_style = '';
+		
+		if (!empty(self::$options['input_text_color'])) $input_style .= $eol.$tab.'color: '.self::$options['input_text_color'].' !important;';
+		if (!empty(self::$options['input_bg_color'])) $input_style .= $eol.$tab.'background-color: '.self::$options['input_bg_color'].' !important;';
+		if (!empty(self::$options['input_border_color'])) $input_style .= $eol.$tab.'border-color: '.self::$options['input_border_color'].' !important;';
 		
 		# #login_error a, .login #nav a, .login #backtoblog a
 		
-		if (!empty(self::$options['link_text_color'])) $link_style = 'color: '.self::$options['link_text_color'].' !important;'.$eol;
-		if (!empty(self::$options['link_textdecoration'])) $link_style .= 'text-decoration: '.self::$options['link_textdecoration'].' !important;'.$eol;
-		if (!empty(self::$options['link_shadow_x']) || self::$options['link_shadow_x']=='0') $link_style .= 'text-shadow: '.self::$options['link_shadow_x'].'px '.self::$options['link_shadow_y'].'px '.self::$options['link_shadow_softness'].'px '.self::$options['link_shadow_color'].' !important;'.$eol;
-		if (!empty($link_style) && empty(self::$options['link_shadow_x'])) $link_style .= 'text-shadow: none !important;'.$eol;
+		$link_style = '';
+		$hover_style = '';
 		
-		if (!empty(self::$options['hover_text_color'])) $hover_style = 'color: '.self::$options['hover_text_color'].' !important;'.$eol;
-		if (!empty(self::$options['hover_textdecoration'])) $hover_style .= 'text-decoration: '.self::$options['hover_textdecoration'].' !important;'.$eol;
-		if (!empty(self::$options['hover_shadow_x']) || self::$options['hover_shadow_x']=='0') $hover_style .= 'text-shadow: '.self::$options['hover_shadow_x'].'px '.self::$options['hover_shadow_y'].'px '.self::$options['hover_shadow_softness'].'px '.self::$options['hover_shadow_color'].' !important;'.$eol;
+		if (!empty(self::$options['link_text_color'])) $link_style .= $eol.$tab.'color: '.self::$options['link_text_color'].' !important;';
+		if (!empty(self::$options['link_textdecoration'])) $link_style .= $eol.$tab.'text-decoration: '.self::$options['link_textdecoration'].' !important;';
+		if (!empty(self::$options['link_shadow_x']) || self::$options['link_shadow_x'] == '0') $link_style .= $eol.$tab.'text-shadow: '.self::$options['link_shadow_x'].'px '.self::$options['link_shadow_y'].'px '.self::$options['link_shadow_softness'].'px '.self::$options['link_shadow_color'].' !important;';
+		if (!empty($link_style) && empty(self::$options['link_shadow_x'])) $link_style .= $eol.$tab.'text-shadow: none !important;';
+		if (!empty(self::$options['link_size'])) $link_style .= $eol.$tab.'font-size: '.self::$options['link_size'].';';
+		
+		if (!empty(self::$options['hover_text_color'])) $hover_style .= $eol.$tab.'color: '.self::$options['hover_text_color'].' !important;';
+		if (!empty(self::$options['hover_textdecoration'])) $hover_style .= $eol.$tab.'text-decoration: '.self::$options['hover_textdecoration'].' !important;';
+		if (!empty(self::$options['hover_shadow_x']) || self::$options['hover_shadow_x'] == '0') $hover_style .= $eol.$tab.'text-shadow: '.self::$options['hover_shadow_x'].'px '.self::$options['hover_shadow_y'].'px '.self::$options['hover_shadow_softness'].'px '.self::$options['hover_shadow_color'].' !important;';
 		
 		# .button-primary
 		
+		$button_style = '';
+		$btn_hover_style = '';
+		
 		if (!empty(self::$options['button_bg_color1'])) :
 			
-			$button_style = 'background: transparent !important;'.$eol;
-			$button_style .= 'background-color: '.self::$options['button_bg_color1'].' !important;'.$eol;
+			$button_style .= $eol.$tab.'background: transparent !important;';
+			$button_style .= $eol.$tab.'background-color: '.self::$options['button_bg_color1'].' !important;';
 			
 		endif;
 		if (!empty(self::$options['button_bg_color2'])) :
 			
-			$button_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['button_bg_color1'].'), to('.self::$options['button_bg_color2'].')) !important;'.$eol;
-			$button_style .= 'background-image: -webkit-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;'.$eol;
-			$button_style .= 'background-image: -moz-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;'.$eol;
-			$button_style .= 'background-image: -ms-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;'.$eol;
-			$button_style .= 'background-image: -o-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;'.$eol;
-			$button_style .= 'background-image: -linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;'.$eol;
+			$button_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['button_bg_color1'].'), to('.self::$options['button_bg_color2'].')) !important;';
+			$button_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
+			$button_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
+			$button_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
+			$button_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
+			$button_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
 			
 		endif;
-		if (!empty(self::$options['button_text_color'])) $button_style .= 'color: '.self::$options['button_text_color'].' !important;'.$eol;
-		if (!empty(self::$options['button_border_color'])) $button_style .= 'border: solid 1px '.self::$options['button_border_color'].' !important;'.$eol;
+		if (!empty(self::$options['button_text_color'])) $button_style .= $eol.$tab.'color: '.self::$options['button_text_color'].' !important;';
+		if (!empty(self::$options['button_border_color'])) $button_style .= $eol.$tab.'border: solid 1px '.self::$options['button_border_color'].' !important;';
 		
-		if (!empty(self::$options['btn_hover_bg_color1'])) $btn_hover_style = 'background-color: '.self::$options['btn_hover_bg_color1'].' !important;'.$eol;
+		if (!empty(self::$options['btn_hover_bg_color1'])) $btn_hover_style .= $eol.$tab.'background-color: '.self::$options['btn_hover_bg_color1'].' !important;';
 		if (!empty(self::$options['btn_hover_bg_color2'])) :
 			
-			$btn_hover_style .= 'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['btn_hover_bg_color1'].'), to('.self::$options['btn_hover_bg_color2'].')) !important;'.$eol;
-			$btn_hover_style .= 'background-image: -webkit-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;'.$eol;
-			$btn_hover_style .= 'background-image: -moz-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;'.$eol;
-			$btn_hover_style .= 'background-image: -ms-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;'.$eol;
-			$btn_hover_style .= 'background-image: -o-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;'.$eol;
-			$btn_hover_style .= 'background-image: -linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;'.$eol;
+			$btn_hover_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['btn_hover_bg_color1'].'), to('.self::$options['btn_hover_bg_color2'].')) !important;';
+			$btn_hover_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
+			$btn_hover_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
+			$btn_hover_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
+			$btn_hover_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
+			$btn_hover_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
 			
 		endif;
-		if (!empty(self::$options['btn_hover_text_color'])) $btn_hover_style .= 'color: '.self::$options['btn_hover_text_color'].' !important;'.$eol;
-		if (!empty(self::$options['btn_hover_border_color'])) $btn_hover_style .= 'border: solid 1px '.self::$options['btn_hover_border_color'].' !important;'.$eol;
+		if (!empty(self::$options['btn_hover_text_color'])) $btn_hover_style .= $eol.$tab.'color: '.self::$options['btn_hover_text_color'].' !important;';
+		if (!empty(self::$options['btn_hover_border_color'])) $btn_hover_style .= $eol.$tab.'border: solid 1px '.self::$options['btn_hover_border_color'].' !important;';
 	
 		#building the stylesheet
 		
+		$link_text_color = '';
+		
 		$clp_css='@charset "UTF-8";'.$eol.'/* CSS Document */'.$eol.$eol;
 		
-		if(!empty($body_style)) $clp_css.='html body.login {'.$eol.$body_style.'}'.$eol;
-		if(!empty($h1_style)) $clp_css.='.login h1 a {'.$eol.$h1_style.'}'.$eol;
-		if(!empty($logindiv_style)) $clp_css.='#login {'.$eol.$logindiv_style.'}'.$eol;
-		if(!empty($loginform_style)) $clp_css.='.login form {'.$eol.$loginform_style.'}'.$eol;
-		if(!empty($label_style)) $clp_css.='#loginform label, #lostpasswordform label, #registerform label {'.$eol.$label_style.'}'.$eol;
-		if(!empty($loggedout_style)) $clp_css.='.login .message {'.$eol.$loggedout_style.'}'.$eol;
-		if(!empty($error_style)) $clp_css.='.login #login_error {'.$eol.$error_style.'}'.$eol;
-		if(!empty($input_style)) $clp_css.='.input {'.$eol.$input_style.'}'.$eol;
+		if(!empty($body_style)) $clp_css.='html body.login {'.$body_style.$eol.'}'.$eol;
+		if(!empty($h1_style)) $clp_css.='.login h1 a {'.$h1_style.$eol.'}'.$eol;
+		if(!empty($logindiv_style)) $clp_css.='#login {'.$logindiv_style.$eol.'}'.$eol;
+		if(!empty($loginform_style)) $clp_css.='.login form {'.$loginform_style.$eol.'}'.$eol;
+		if(!empty($label_style)) $clp_css.='#loginform label,'.$eol.'#lostpasswordform label,'.$eol.'#registerform label {'.$label_style.'}'.$eol;
+		if(!empty($loggedout_style)) $clp_css.='.login .message {'.$loggedout_style.$eol.'}'.$eol;
+		if(!empty($error_style)) $clp_css.='.login #login_error {'.$error_style.$eol.'}'.$eol;
+		if(!empty($input_style)) $clp_css.='.input {'.$input_style.$eol.'}'.$eol;
 		if(!empty($link_style)) :
-			$clp_css.='.login #nav {'.$eol.'color: '.self::$options['link_text_color'].' !important;'.$eol.'text-shadow: none !important;'.$eol.'}'.$eol;
-			$clp_css.='#login_error a, .login #nav a, .login #backtoblog a {'.$eol.$link_style.'}'.$eol;
+		
+			if (!empty(self::$options['link_text_color'])) $link_text_color = $eol.$tab.'color: '.self::$options['link_text_color'].' !important;';
+			
+			$clp_css.='.login #nav {'.$link_text_color.$eol.$tab.'text-shadow: none !important;'.$eol.'}'.$eol;
+			$clp_css.='#login_error a,'.$eol.'.login #nav a,'.$eol.'.login #backtoblog a {'.$link_style.$eol.'}'.$eol;
 		endif;
-		if(!empty($hover_style)) $clp_css.='#login_error a:hover, .login #nav a:hover, .login #backtoblog a:hover {'.$eol.$hover_style.'}'.$eol;
-		if(!empty($button_style)) $clp_css.='.button-primary {'.$eol.$button_style.'}'.$eol;
-		if(!empty($btn_hover_style)) $clp_css.='.button-primary:hover {'.$eol.$btn_hover_style.'}'.$eol;
+		if(!empty($hover_style)) $clp_css.='#login_error a:hover,'.$eol.'.login #nav a:hover,'.$eol.'.login #backtoblog a:hover {'.$hover_style.$eol.'}'.$eol;
+		if(!empty($button_style)) $clp_css.='.button-primary {'.$button_style.$eol.'}'.$eol;
+		if(!empty($btn_hover_style)) $clp_css.='.button-primary:hover {'.$btn_hover_style.$eol.'}'.$eol;
 	
 		return $clp_css;
 		

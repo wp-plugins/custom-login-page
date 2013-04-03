@@ -23,9 +23,9 @@ class A5_OptionPage {
 		$eol = "\r\n";
 		$tab = "\t";
 		
-		$id = ($id) ? ' id="'.$id.'"' : '';
-		$style = ($style) ? ' style="'.$style.'"' : '';
-		$class = ($class) ? ' class="'.$class.'"' : '';
+		$id = (isset($id)) ? ' id="'.$id.'"' : '';
+		$style = (isset($style)) ? ' style="'.$style.'"' : '';
+		$class = (isset($class)) ? ' class="'.$class.'"' : '';
 		
 		$this->page_item = $eol.$tab.'<div'.$id.$class.$style.'>';
 		
@@ -90,7 +90,7 @@ function a5_navigation($id, $menuitems, $echo = true){
 	
 	foreach ($menuitems as $menuitem) :
 	
-		$class = (true === $menuitem[2]) ? ' class="selected"' : '';
+		$class = (isset($menuitem[2])) ? ' class="selected"' : '';
 		
 		$menu .= $eol.$tab.'<li><a href="#" id="'.$menuitem[0].'-tab" rel="'.$menuitem[0].'"'.$class.'>'.$menuitem[1].'</a></li>';
 	
@@ -284,11 +284,15 @@ function a5_container_right($headline, $text, $special = false, $message = false
 	
 	$container = $a5_option_page->open_container($args);
 	
+	$priority = (isset($priority)) ? $priority : 0;
+	
 	if ($priority == 1) $container.=$message;
 	
 	$container.=$eol.$tab.'<h2>'.$headline.'</h2>';
 	
 	if ($priority == 2) $container.=$message;
+	
+	$count = 0;
 	
 	foreach ($text as $schnummschnick) :
 	
