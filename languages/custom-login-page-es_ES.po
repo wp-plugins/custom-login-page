@@ -523,3 +523,21 @@ msgstr "Waldemar Stoffel"
 #. Author URI of the plugin/theme
 msgid "http://www.waldemarstoffel.com"
 msgstr "http://www.waldemarstoffel.com"
+
+#: custom-login-page.php:399
+msgid "Margin of the Logo Container (CSS)"
+msgstr ""
+
+#: custom-login-page.php:408
+msgid ""
+"With the margin of the logo, you can position the logo more precisely. Give "
+"a CSS value here, i.e. %s to locate it 180 px left."
+msgstr ""
+
+#: custom-login-page.php:705
+msgid "Font Size"
+msgstr ""
+
+#: custom-login-page.php:713
+msgid "For the font size, give a css value, such as %1$s or %2$s."
+msgstr ""
