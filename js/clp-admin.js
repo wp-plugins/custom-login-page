@@ -13,6 +13,7 @@ jQuery(document).ready(function(){
 		var h1_width = jQuery("#h1_width").val();
 		var h1_height = jQuery("#h1_height").val();
 		var h1_margin = jQuery("#h1_margin").val();
+		var h1_padding = jQuery("#h1_padding").val();
 		var h1_corner = jQuery("#h1_corner").val();
 		var h1_shadow_x = jQuery("#h1_shadow_x").val();
 		var h1_shadow_y = jQuery("#h1_shadow_y").val();
@@ -37,6 +38,7 @@ jQuery(document).ready(function(){
 			h1_width: h1_width,
 			h1_height: h1_height,
 			h1_margin: h1_margin,
+			h1_padding: h1_padding,
 			h1_corner: h1_corner,
 			h1_shadow_x: h1_shadow_x,
 			h1_shadow_y: h1_shadow_y,

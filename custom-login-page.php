@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.9
+Version: 1.9.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -396,7 +396,8 @@ class A5_CustomLoginPage {
 		a5_number_field('logo_height', 'logo_height', @self::$options['logo_height'], __('Height of the Logo (in px)', self::language_file), array('step' => 1), false),
 		a5_number_field('h1_width', 'h1_width', @self::$options['h1_width'], __('Width of the Logo Container (in px)', self::language_file), array('step' => 1), false),
 		a5_number_field('h1_height', 'h1_height', @self::$options['h1_height'], __('Height of the Logo Container (in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('h1_margin', 'h1_margin', @self::$options['h1_margin'], __('Margin of the Logo Container (CSS)', self::language_file), array(), false)
+		a5_text_field('h1_margin', 'h1_margin', @self::$options['h1_margin'], __('Margin of the Logo Container (CSS)', self::language_file), array(), false),
+		a5_text_field('h1_padding', 'h1_padding', @self::$options['h1_padding'], __('Padding of the Logo Container (CSS)', self::language_file), array(), false)
 		);
 		
 		a5_container_left($fields);
@@ -405,7 +406,8 @@ class A5_CustomLoginPage {
 		
 		__('If your logo is larger than the default WP-logo (274px by 63px), you can enter the width and the height of it here.', self::language_file),
 		__('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file),
-		sprintf(__('With the margin of the logo, you can position the logo more precisely. Give a CSS value here, i.e. %s to locate it 180 px left.', self::language_file), '&#39;0 0 0 -180px&#39;')
+		sprintf(__('With the margin of the logo, you can position the logo more precisely. Give a CSS value here, i.e. %s to locate it 180 px left.', self::language_file), '&#39;0 0 0 -180px&#39;'),
+		sprintf(__('With the padding of the logo, you can position the shadow more precisely. Give a CSS value here, i.e. %s to gat rid of it completely.', self::language_file), '&#39;0px&#39;')
 		);
 		
 		a5_container_right(__('Position and Size of the Logo', self::language_file), $text, $special);
@@ -787,6 +789,7 @@ class A5_CustomLoginPage {
 				self::$options['h1_width'] = $_POST['h1_width'];
 				self::$options['h1_height'] = $_POST['h1_height'];
 				self::$options['h1_margin'] = $_POST['h1_margin'];
+				self::$options['h1_padding'] = $_POST['h1_padding'];
 				self::$options['h1_corner'] = $_POST['h1_corner'];
 				self::$options['h1_shadow_x'] = $_POST['h1_shadow_x'];
 				self::$options['h1_shadow_y'] = $_POST['h1_shadow_y'];
@@ -1141,6 +1144,8 @@ class A5_CustomLoginPage {
 			$h1_style .= $eol.$tab.'height: '.$h1_height.'px;';
 			
 			if (!empty(self::$options['h1_margin'])) $h1_style .= $eol.$tab.'margin: '.self::$options['h1_margin'].';';
+			
+			if (!empty(self::$options['h1_padding'])) $h1_style .= $eol.$tab.'padding: '.self::$options['h1_padding'].';';
 			
 			if (!empty(self::$options['h1_corner'])) :
 			
