@@ -700,7 +700,7 @@ class A5_CustomLoginPage {
 		
 		$fields = array(
 		a5_checkbox('hide_nav', 'hide_nav', self::$options['hide_nav'], __('Hide register and lost password links.', self::language_file), array(), false, false),
-		a5_checkbox('hide_backlink', 'hide_backlink', self::$options['hide_backlink'], __('Hide back to block link.', self::language_file), array(), false, false),
+		a5_checkbox('hide_backlink', 'hide_backlink', self::$options['hide_backlink'], __('Hide back to block link.', self::language_file), array('space' => true), false, false),
 		a5_text_field('link_text_color', 'link_text_color', @self::$options['link_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
 		a5_select('link_textdecoration', 'link_textdecoration', $textdeco, @self::$options['link_textdecoration'], __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
 		a5_number_field('link_shadow_x', 'link_shadow_x', @self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
