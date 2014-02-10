@@ -89,6 +89,7 @@ jQuery(document).ready(function(){
 		var logindiv_width = jQuery("#logindiv_width").val();
 		var logindiv_height = jQuery("#logindiv_height").val();
 		var logindiv_padding = jQuery("#logindiv_padding").val();
+		var logindiv_margin = jQuery("#logindiv_margin").val();
 		
 		
 		var logindivnonce = jQuery("#logindivnonce").val();
@@ -116,6 +117,7 @@ jQuery(document).ready(function(){
 			logindiv_width: logindiv_width,
 			logindiv_height: logindiv_height,
 			logindiv_padding: logindiv_padding,
+			logindiv_margin: logindiv_margin,
 			logindivnonce: logindivnonce,
 			_wp_http_referer: _wp_http_referer
 		};
@@ -283,6 +285,8 @@ jQuery(document).ready(function(){
 	jQuery("#link_form").submit(function()	{
 		jQuery("#linkmsg").html('<p class="save">' + message.saving + '</p>');		
 		var section = 'link';
+		var hide_nav = jQuery("input[name='hide_nav']:checked").val();
+		var hide_backlink = jQuery("input[name='hide_backlink']:checked").val();
 		var link_text_color = jQuery("#link_text_color").val();
 		var link_textdecoration = jQuery("#link_textdecoration").val();
 		var link_shadow_x = jQuery("#link_shadow_x").val();
@@ -301,6 +305,8 @@ jQuery(document).ready(function(){
 		var data = {
 			action: 'clp_save_settings',
 			section: section,
+			hide_nav: hide_nav,
+			hide_backlink: hide_backlink,
 			link_text_color: link_text_color,
 			link_textdecoration: link_textdecoration,
 			link_shadow_x: link_shadow_x,
@@ -327,6 +333,32 @@ jQuery(document).ready(function(){
 		});
 	return false;
 	});
+	
+//save debug_form
+
+	jQuery("#debug_form").submit(function()	{
+		jQuery("#debugmsg").html('<p class="save">' + message.saving + '</p>');		
+		var section = 'debug';
+		var inline = jQuery("input[name='inline']:checked").val();
+		var debugnonce = jQuery("#debugnonce").val();
+		var _wp_http_referer = jQuery("#debug_form #_wp_http_referer").val();
+		var data = {
+			action: 'clp_save_settings',
+			section: section,
+			inline: inline,
+			debugnonce: debugnonce,
+			_wp_http_referer: _wp_http_referer
+		};
+		jQuery("#debug_save").hide();
+		jQuery(".debug_save").show();
+		jQuery.post(ajaxurl, data,
+		function(response){
+			jQuery("#debugmsg").html(response);
+			jQuery(".debug_save").hide();
+			jQuery("#debug_save").show();
+		});
+	return false;
+	});	
 	
 //import settings file
 

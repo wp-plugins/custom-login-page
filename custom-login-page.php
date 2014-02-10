@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 1.9.1
+Version: 	1.9.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -10,7 +10,7 @@ License: GPL3
 Text Domain: custom-login-page
 */
 
-/*  Copyright 2011 Waldemar Stoffel  (email: stoffel@atelier-fuenf.de)
+/*  Copyright 2011 - 2014 Waldemar Stoffel  (email: stoffel@atelier-fuenf.de)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -51,7 +51,6 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) die('Sorry,
 define( 'CLP_PATH', plugin_dir_path(__FILE__) );
 if (!class_exists('A5_FormField')) require_once CLP_PATH.'class-lib/A5_FormFieldClass.php';
 if (!class_exists('A5_OptionPage')) require_once CLP_PATH.'class-lib/A5_OptionPageClass.php';
-if (!function_exists('a5_textarea')) require_once CLP_PATH.'includes/A5_field-functions.php';
 
 class A5_CustomLoginPage {
 	
@@ -85,9 +84,9 @@ class A5_CustomLoginPage {
 				
 				self::$options = get_site_option('clp_options');
 				
-				if (self::$options['version'] !='1.9') :
+				if (self::$options['version'] !='1.9.2') :
 				
-					self::$options['version']='1.9';
+					self::$options['version']='1.9.2';
 					
 					update_site_option('clp_options', self::$options);
 					
@@ -99,9 +98,9 @@ class A5_CustomLoginPage {
 			
 				self::$options = get_option('clp_options');
 				
-				if (self::$options['version'] !='1.9') :
+				if (self::$options['version'] !='1.9.2') :
 					
-					self::$options['version']='1.9';
+					self::$options['version']='1.9.2';
 					
 					update_option('clp_options', self::$options);
 					
@@ -115,9 +114,9 @@ class A5_CustomLoginPage {
 			
 			self::$options = get_option('clp_options');
 			
-			if (self::$options['version'] !='1.9') :
+			if (self::$options['version'] !='1.9.2') :
 				
-				self::$options['version']='1.9';
+				self::$options['version']='1.9.2';
 				
 				update_option('clp_options', self::$options);
 				
@@ -217,9 +216,16 @@ class A5_CustomLoginPage {
 	 */
 	function clp_login_css() {
 		
-		echo "<link rel='stylesheet' id='a5-custom-login-css' href='".get_bloginfo('url')."/?clpfile=css&amp;ver=".self::$options['version']."' type='text/css' media='all' />\r\n";
+		if (self::$options['inline'] != true) :
 		
-		// later perhaps try that: add_query_arg( array('clpfile' => 'css', 'ver' => self::$options['version']), get_bloginfo('url') )
+			echo "<link rel='stylesheet' id='a5-custom-login-css' href='".get_bloginfo('url')."/?clpfile=css&ver=".self::$options['version']."' type='text/css' media='all' />\r\n";
+		
+		else :
+		
+			echo "\r\n<style>\r\n".$this->clp_get_the_style()."\r\n</style>\r\n";
+		
+		endif;
+		
 	}
 
 	/**
@@ -233,11 +239,11 @@ class A5_CustomLoginPage {
 		
 		if (is_multisite() && $screen->is_network) :
 		
-			add_site_option('clp_options', array('version' => '1.9'));
+			add_site_option('clp_options', array('version' => '1.9.2'));
 			
 		else:
 		
-			add_option('clp_options', array('version' => '1.9'));
+			add_option('clp_options', array('version' => '1.9.2'));
 			
 		endif;
 	
@@ -271,7 +277,7 @@ class A5_CustomLoginPage {
 	 */
 	function clp_admin_menu() {
 		
-		add_theme_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', array($this, 'clp_options_page'));	
+		add_theme_page('A5 Custom Login Page', '<img alt="" src="'.plugins_url('custom-login-page/img/a5-icon-11.png').'"> A5 Custom Login Page', 'administrator', 'clp-settings', array($this, 'clp_options_page'));	
 		
 	}
 	
@@ -352,6 +358,7 @@ class A5_CustomLoginPage {
 			$tabs[] = array('message', __('Messages and Input Fields', self::language_file));
 			$tabs[] = array('link', __('Links', self::language_file));
 			$tabs[] = array('impex', __('Import / Export', self::language_file));
+			$tabs[] = array('debug', __('Debug', self::language_file));
 			
 			a5_navigation('a5-pagetabs', $tabs);
 		
@@ -511,7 +518,8 @@ class A5_CustomLoginPage {
 		a5_number_field('logindiv_top', 'logindiv_top', @self::$options['logindiv_top'], __('Position (y-direction in px)', self::language_file), array('step' => 1), false),
 		a5_number_field('logindiv_width', 'logindiv_width', @self::$options['logindiv_width'], __('Width (in px)', self::language_file), array('step' => 1), false),
 		a5_number_field('logindiv_height', 'logindiv_height', @self::$options['logindiv_height'], __('Height (in px)', self::language_file), array('step' => 1), false),
-		a5_text_field('logindiv_padding', 'logindiv_padding', @self::$options['logindiv_padding'], __('Padding', self::language_file), false, false)
+		a5_text_field('logindiv_padding', 'logindiv_padding', @self::$options['logindiv_padding'], __('Padding', self::language_file), false, false),
+		a5_text_field('logindiv_margin', 'logindiv_margin', @self::$options['logindiv_margin'], __('Margin', self::language_file), false, false)
 		);
 		
 		a5_container_left($fields);
@@ -520,7 +528,7 @@ class A5_CustomLoginPage {
 		
 		__('Position and Size of the Login Container', self::language_file),
 		__('Here you can give the whole login container a position. If you enter &#39;0&#39; in both of the fields, it will be in the top left corner of the screen.', self::language_file),
-		__('The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the default padding of the login container).', self::language_file)
+		__('The Padding and Margin are given as css value. I.e. &#39;144px 0 0&#39; (which is the default padding of the login container).', self::language_file)
 		);
 		
 		a5_container_right(__('Position and Size of the Login Container', self::language_file), $text, $special);
@@ -691,7 +699,8 @@ class A5_CustomLoginPage {
 		$textdeco = array(array('none', 'none'), array('underline', 'underline'), array('overline', 'overline'), array('line-through', 'line-through'), array('blink', 'blink'));
 		
 		$fields = array(
-		
+		a5_checkbox('hide_nav', 'hide_nav', self::$options['hide_nav'], __('Hide register and lost password links.', self::language_file), array(), false, false),
+		a5_checkbox('hide_backlink', 'hide_backlink', self::$options['hide_backlink'], __('Hide back to block link.', self::language_file), array(), false, false),
 		a5_text_field('link_text_color', 'link_text_color', @self::$options['link_text_color'], __('Text Colour', self::language_file), array('class' => $class), false),
 		a5_select('link_textdecoration', 'link_textdecoration', $textdeco, @self::$options['link_textdecoration'], __('Text Decoration', self::language_file), __('choose a text decoration', self::language_file), array('style' => 'width: 220px;'), false),
 		a5_number_field('link_shadow_x', 'link_shadow_x', @self::$options['link_shadow_x'], __('Shadow (x-direction in px)', self::language_file), array('step' => 1), false),
@@ -712,7 +721,8 @@ class A5_CustomLoginPage {
 		$text = array(
 		
 		__('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', self::language_file),
-		sprintf(__('For the font size, give a css value, such as %1$s or %2$s.', self::language_file), '<em>&#39;12px&#39;</em>', '<em>&#39;1em&#39;</em>')
+		sprintf(__('For the font size, give a css value, such as %1$s or %2$s.', self::language_file), '<em>&#39;12px&#39;</em>', '<em>&#39;1em&#39;</em>'),
+		__('If you hide the links under the login form, the styles still affect the links in the error message container.', self::language_file)
 		);
 		
 		a5_container_right(__('Links', self::language_file), $text, $special, array('linkmsg', 2));
@@ -745,11 +755,35 @@ class A5_CustomLoginPage {
 		  </div>
 		  <?php
 		  	
-			a5_close_section();
-		  
-		  	a5_submit_container('impex_save', __('Save Changes'), __('Import Settings', self::language_file));
+		a5_close_section();
+	  
+		a5_submit_container('impex_save', __('Save Changes'), __('Save Settings', self::language_file));
+		
+		a5_next_page('debug');
+		
+		// debug (do better!!!)
+	
+		a5_open_section();
+		
+		?>
+		  <div class="a5-option-container-full">
+          <?php wp_nonce_field('save_debug','debugnonce'); ?>
+			<h2><?php _e('Debugging', self::language_file); ?></h2>
+			<p class="error"><?php _e('There seem to be problems with the virtual stylesheet in some environments. By choosing to write the styles inline, those can be avoided.'); ?></p>
+            <div id="debugmsg"></div>
+            <?php 
 			
-			a5_close_page();
+				a5_checkbox('inline', 'inline', self::$options['inline'], __('Check, to write styles inline instead of to a virtual CSS file.', self::language_file), array(), false);
+			
+			?>
+		  </div>
+		  <?php
+		  	
+		a5_close_section();
+		
+		a5_submit_container('debug_save', __('Save Changes'), __('Import Settings', self::language_file));
+		
+		a5_close_page();
 		  
 		  ?>
 	</td>
@@ -849,6 +883,7 @@ class A5_CustomLoginPage {
 				self::$options['logindiv_width'] = $_POST['logindiv_width'];
 				self::$options['logindiv_height'] = $_POST['logindiv_height'];
 				self::$options['logindiv_padding'] = $_POST['logindiv_padding'];
+				self::$options['logindiv_margin'] = $_POST['logindiv_margin'];
 				
 				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
 				
@@ -999,6 +1034,8 @@ class A5_CustomLoginPage {
 			
 			else :
 			
+				self::$options['hide_nav'] = $_POST['hide_nav'];
+				self::$options['hide_backlink'] = $_POST['hide_backlink'];
 				self::$options['link_text_color'] = $_POST['link_text_color'];
 				self::$options['link_textdecoration'] = $_POST['link_textdecoration'];
 				self::$options['link_shadow_x'] = $_POST['link_shadow_x'];
@@ -1012,6 +1049,35 @@ class A5_CustomLoginPage {
 				self::$options['hover_shadow_softness'] = $_POST['hover_shadow_softness'];
 				self::$options['hover_shadow_color'] = $_POST['hover_shadow_color'];
 				self::$options['link_size'] = $_POST['link_size'];
+				
+				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
+				
+					update_site_option('clp_options', self::$options);
+				
+				else : 
+				
+					update_option('clp_options', self::$options);
+					
+				endif;
+					
+				$output='<p class="save">'.__('Settings saved', self::language_file).'</p>';
+			
+			endif;
+			
+				echo $output;
+				die();
+			
+			break;
+			
+			case 'debug':
+			
+			if (!wp_verify_nonce($_POST['debugnonce'],'save_debug')) :
+				
+				$output = '<p class="error">'.__('Error in Datatransfer.', self::language_file).'</p>';
+			
+			else :
+			
+				self::$options['inline'] = $_POST['inline'];
 				
 				if (is_plugin_active_for_network(plugin_basename(__FILE__))) :
 				
@@ -1170,7 +1236,7 @@ class A5_CustomLoginPage {
 		$logindiv_style = '';
 		$label_style = '';
 		
-		if (!empty(self::$options['logindiv_top']) || !empty(self::$options['logindiv_left']) || self::$options['logindiv_top']=='0' || self::$options['logindiv_left']=='0') $logindiv_style .= $eol.$tab.'position: absolute;';
+		if (!empty(self::$options['logindiv_top']) || !empty(self::$options['logindiv_left']) || self::$options['logindiv_top']=='0' || self::$options['logindiv_left']=='0') $logindiv_style .= $eol.$tab.'position: relative;';
 		if (!empty(self::$options['logindiv_top']) || self::$options['logindiv_top']=='0') $logindiv_style .= $eol.$tab.'top: '.self::$options['logindiv_top'].'px;';
 		if (!empty(self::$options['logindiv_left']) || self::$options['logindiv_left']=='0') $logindiv_style .= $eol.$tab.'left: '.self::$options['logindiv_left'].'px;';
 		if (!empty(self::$options['logindiv_bg_color1'])) $logindiv_style .= $eol.$tab.'background-color: '.self::$options['logindiv_bg_color1'].';';
@@ -1212,6 +1278,7 @@ class A5_CustomLoginPage {
 		if (!empty(self::$options['logindiv_width'])) $logindiv_style .= $eol.$tab.'width: '.self::$options['logindiv_width'].'px;';
 		if (!empty(self::$options['logindiv_height'])) $logindiv_style .= $eol.$tab.'height: '.self::$options['logindiv_height'].'px;';
 		if (!empty(self::$options['logindiv_padding'])) $logindiv_style .= $eol.$tab.'padding: '.self::$options['logindiv_padding'].';';
+		if (!empty(self::$options['logindiv_margin'])) $logindiv_style .= $eol.$tab.'margin: '.self::$options['logindiv_margin'].';';
 		
 		if (!empty(self::$options['logindiv_text_color'])) :
 			
@@ -1364,6 +1431,18 @@ class A5_CustomLoginPage {
 		if (!empty(self::$options['hover_textdecoration'])) $hover_style .= $eol.$tab.'text-decoration: '.self::$options['hover_textdecoration'].' !important;';
 		if (!empty(self::$options['hover_shadow_x']) || self::$options['hover_shadow_x'] == '0') $hover_style .= $eol.$tab.'text-shadow: '.self::$options['hover_shadow_x'].'px '.self::$options['hover_shadow_y'].'px '.self::$options['hover_shadow_softness'].'px '.self::$options['hover_shadow_color'].' !important;';
 		
+		# #nav
+		
+		$nav_style = '';
+		
+		if (isset(self::$options['hide_nav'])) $nav_style .= $eol.$tab.'display: none;';
+		
+		# #backtoblog
+		
+		$backtoblog_style = '';
+		
+		if (isset(self::$options['hide_backlink'])) $backtoblog_style .= $eol.$tab.'display: none;';
+		
 		# .button-primary
 		
 		$button_style = '';
@@ -1406,7 +1485,7 @@ class A5_CustomLoginPage {
 		
 		$link_text_color = '';
 		
-		$clp_css='@charset "UTF-8";'.$eol.'/* CSS Document */'.$eol.$eol;
+		if (self::$options['inline'] != true) $clp_css='@charset "UTF-8";'.$eol.'/* CSS Document */'.$eol.$eol;
 		
 		if(!empty($body_style)) $clp_css.='html body.login {'.$body_style.$eol.'}'.$eol;
 		if(!empty($h1_style)) $clp_css.='.login h1 a {'.$h1_style.$eol.'}'.$eol;
@@ -1416,6 +1495,8 @@ class A5_CustomLoginPage {
 		if(!empty($loggedout_style)) $clp_css.='.login .message {'.$loggedout_style.$eol.'}'.$eol;
 		if(!empty($error_style)) $clp_css.='.login #login_error {'.$error_style.$eol.'}'.$eol;
 		if(!empty($input_style)) $clp_css.='.input {'.$input_style.$eol.'}'.$eol;
+		if(!empty($nav_style)) $clp_css.='#nav {'.$nav_style.$eol.'}'.$eol;
+		if(!empty($backtoblog_style)) $clp_css.='#backtoblog {'.$backtoblog_style.$eol.'}'.$eol;
 		if(!empty($link_style)) :
 		
 			if (!empty(self::$options['link_text_color'])) $link_text_color = $eol.$tab.'color: '.self::$options['link_text_color'].' !important;';
@@ -1426,7 +1507,7 @@ class A5_CustomLoginPage {
 		if(!empty($hover_style)) $clp_css.='#login_error a:hover,'.$eol.'.login #nav a:hover,'.$eol.'.login #backtoblog a:hover {'.$hover_style.$eol.'}'.$eol;
 		if(!empty($button_style)) $clp_css.='.button-primary {'.$button_style.$eol.'}'.$eol;
 		if(!empty($btn_hover_style)) $clp_css.='.button-primary:hover {'.$btn_hover_style.$eol.'}'.$eol;
-	
+
 		return $clp_css;
 		
 	}

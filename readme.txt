@@ -1,10 +1,10 @@
 === A5 Custom Login Page ===
 Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA
-Tags: custom login, brand login, customize, brand, login, login page, own look, multisite
+Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof
 Requires at least: 3.1
-Tested up to: 3.6
-Stable tag: 1.9.1
+Tested up to: 3.9
+Stable tag: 1.9.2
 
 Style your login page differently.
 
@@ -20,7 +20,11 @@ If you are working for a customer or you just want to set a page for a community
 
 == Frequently Asked Questions ==
 
-None so far.
+= The login page doesn't change, no matter what i do. =
+
+The CSS style sheet is a virtual one and the plugin adds a rewrite rule to refer to it. In some environments that's not working and thus the styles are not readable.
+
+In the case your login screen is not changing after saving the settings, go to the debug section of the settings page and choose inline display of the styles. That should make your own design available.
 
 == Future Versions ==
 
@@ -39,7 +43,11 @@ We are planning some more advanced features in the future such as
 
 == Changelog ==
 
-= 1.9 =
+= 1.9.2 =
+
+* Debug option added
+
+= 1.9.1 =
 
 * More options for the logo added
 
@@ -181,6 +189,10 @@ Slovak translation updated
 
 More options for the logo added
 
-= 1.9 =
+= 1.9.1 =
 
 More options for the logo added
+
+= 1.9.2 =
+
+Debug option added
