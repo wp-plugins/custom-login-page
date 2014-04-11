@@ -4,82 +4,333 @@ msgid ""
 msgstr ""
 "Project-Id-Version: A5 Custom Login Page 1.7.3\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-login-page\n"
-"POT-Creation-Date: 2013-01-13 18:06:43+00:00\n"
+"POT-Creation-Date: 2014-04-03 14:44+0200\n"
+"PO-Revision-Date: 2014-04-03 14:45+0200\n"
+"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: sk_SK\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2013-01-14 22:07+0200\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.6.4\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
 
-#: custom-login-page.php:151
-msgid "FAQ"
-msgstr "Telo"
-
-#: custom-login-page.php:152
-msgid "Donate"
-msgstr "Donate"
-
-#: custom-login-page.php:163 custom-login-page.php:341
+#: class-lib/A5_OptionPageClass.php:31 custom-login-page.php:178
 msgid "Settings"
 msgstr "Nastavenia"
 
-#: custom-login-page.php:327
-msgid "Saving..."
-msgstr "Ukladanie ..."
-
-#. #-#-#-#-#  plugin.pot (A5 Custom Login Page 1.8)  #-#-#-#-#
-#. Plugin URI of the plugin/theme
-#: custom-login-page.php:340
-msgid ""
-"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
-"page"
+#: class-lib/A5_OptionPageClass.php:112
+msgid "Click to toggle"
 msgstr ""
-"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
-"page"
 
-#: custom-login-page.php:348 custom-login-page.php:455
+#: class-lib/CLP_AdminClass.php:93
+#, fuzzy
+msgid "Logged Out and Error Messages"
+msgstr "Prihlásený Out Message"
+
+#: class-lib/CLP_AdminClass.php:95
+msgid "Logout Message"
+msgstr "Odhlásiť správu"
+
+#: class-lib/CLP_AdminClass.php:97 class-lib/CLP_AdminClass.php:285
+msgid "Error Message"
+msgstr "Chybové hlásenie"
+
+#: class-lib/CLP_AdminClass.php:99
+#, fuzzy
+msgid "Hide Links"
+msgstr "Styling Odkazy"
+
+#: class-lib/CLP_AdminClass.php:101
+msgid "Hide register and lost password links."
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:103
+msgid "Hide back to block link."
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:105
+msgid "Debugging"
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:107
+msgid "Check, to write styles inline instead of to a virtual CSS file."
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:109
+msgid "Export Settings"
+msgstr "Export nastavení"
+
+#: class-lib/CLP_AdminClass.php:111
+#, fuzzy, php-format
+msgctxt "%s is the file name"
+msgid ""
+"The file will be named %s. After you downloaded it, you can (but don&#39;t "
+"need to) rename the file to something more meaningful."
+msgstr ""
+"Po stiahnutí to, môžete (ale nemusíte) premenovať súbor na niečo "
+"zmysluplnejšie."
+
+#: class-lib/CLP_AdminClass.php:113
+msgid "Import Settings"
+msgstr ""
+"Po stiahnutí to, môžete (ale nemusíte) premenovať súbor na niečo "
+"zmysluplnejšie."
+
+#: class-lib/CLP_AdminClass.php:115
+msgid "This will overlay any existing setting, you already have."
+msgstr "Toto vloží existujúce nastavenie, už máte."
+
+#: class-lib/CLP_AdminClass.php:119
 msgid "Body"
 msgstr "Body"
 
-#: custom-login-page.php:349 custom-login-page.php:500
-msgid "Login Container"
-msgstr "Prihlásiť sa kontajner"
+#: class-lib/CLP_AdminClass.php:121 class-lib/CLP_AdminClass.php:191
+#: class-lib/CLP_AdminClass.php:239
+msgid "Background Picture"
+msgstr "Obrázok na pozadí"
 
-#: custom-login-page.php:350 custom-login-page.php:569
-msgid "Login Form"
-msgstr "Prihlásiť sa formulár"
+#: class-lib/CLP_AdminClass.php:123 class-lib/CLP_AdminClass.php:193
+#: class-lib/CLP_AdminClass.php:241
+msgid "Background Repeat"
+msgstr "Pozadie opakovanie"
 
-#: custom-login-page.php:351
-msgid "Button"
-msgstr "Button"
+#: class-lib/CLP_AdminClass.php:125 class-lib/CLP_AdminClass.php:195
+#: class-lib/CLP_AdminClass.php:243
+msgid "Position of the Background Picture"
+msgstr "Pozícia obrázok na pozadí"
 
-#: custom-login-page.php:352
-msgid "Messages and Input Fields"
-msgstr "Správy a vstupné pole"
+#: class-lib/CLP_AdminClass.php:127 class-lib/CLP_AdminClass.php:135
+#: class-lib/CLP_AdminClass.php:197 class-lib/CLP_AdminClass.php:245
+#: class-lib/CLP_AdminClass.php:279 class-lib/CLP_AdminClass.php:289
+#: class-lib/CLP_AdminClass.php:299
+msgid "Background Colour"
+msgstr "Farba pozadia"
 
-#: custom-login-page.php:353 custom-login-page.php:712
-msgid "Links"
-msgstr "Links"
+#: class-lib/CLP_AdminClass.php:129 class-lib/CLP_AdminClass.php:137
+#: class-lib/CLP_AdminClass.php:199 class-lib/CLP_AdminClass.php:247
+msgid "Second Background Colour (for Gradient)"
+msgstr "Druhá Farba pozadia (pre gradientu)"
 
-#: custom-login-page.php:354
-msgid "Import / Export"
-msgstr "Import / Export"
+#: class-lib/CLP_AdminClass.php:131
+msgid "Background Size"
+msgstr "Pozadie Veľkosť"
 
-#: custom-login-page.php:374
+#: class-lib/CLP_AdminClass.php:133
+#, fuzzy
+msgid " Submit Button"
+msgstr "Odoslať Tlačidlo"
+
+#: class-lib/CLP_AdminClass.php:139 class-lib/CLP_AdminClass.php:201
+#: class-lib/CLP_AdminClass.php:249 class-lib/CLP_AdminClass.php:277
+#: class-lib/CLP_AdminClass.php:287 class-lib/CLP_AdminClass.php:297
+#: class-lib/CLP_AdminClass.php:307 class-lib/CLP_AdminClass.php:319
+msgid "Text Colour"
+msgstr "Text Colour"
+
+#: class-lib/CLP_AdminClass.php:141 class-lib/CLP_AdminClass.php:209
+#: class-lib/CLP_AdminClass.php:257 class-lib/CLP_AdminClass.php:281
+#: class-lib/CLP_AdminClass.php:291 class-lib/CLP_AdminClass.php:301
+msgid "Border Colour"
+msgstr "Border Farba"
+
+#: class-lib/CLP_AdminClass.php:143
+msgid "Hover Background Colour"
+msgstr "Hover Farba pozadia"
+
+#: class-lib/CLP_AdminClass.php:145
+msgid "Second Hover Background Colour (for Gradient)"
+msgstr "Druhá Hover Farba pozadia (pre gradientu)"
+
+#: class-lib/CLP_AdminClass.php:147
+msgid "Hover Text Colour"
+msgstr "Hover Text Color"
+
+#: class-lib/CLP_AdminClass.php:149
+msgid "Hover Border Colour"
+msgstr "Hover Border Color"
+
+#: class-lib/CLP_AdminClass.php:153
+#, fuzzy
+msgid "Logo of the Login Screen"
+msgstr "Výška loga (v px)"
+
+#: class-lib/CLP_AdminClass.php:155
 msgid "Logo URL"
 msgstr "Logo URL"
 
-#: custom-login-page.php:375
+#: class-lib/CLP_AdminClass.php:157
 msgid "URL to link to"
 msgstr "URL odkazy na"
 
-#: custom-login-page.php:376
+#: class-lib/CLP_AdminClass.php:159
 msgid "Title tag of the logo"
 msgstr "Názov tag logo"
 
-#: custom-login-page.php:381
+#: class-lib/CLP_AdminClass.php:161
+msgid "Position and Size of the Logo"
+msgstr "Poloha a veľkosť loga"
+
+#: class-lib/CLP_AdminClass.php:163
+msgid "Width of the Logo (in px)"
+msgstr "Šírka loga (v px)"
+
+#: class-lib/CLP_AdminClass.php:165
+msgid "Height of the Logo (in px)"
+msgstr "Výška loga (v px)"
+
+#: class-lib/CLP_AdminClass.php:167
+msgid "Width of the Logo Container (in px)"
+msgstr "Šírka Logo Container (v px)"
+
+#: class-lib/CLP_AdminClass.php:169
+msgid "Height of the Logo Container (in px)"
+msgstr "Výška Logo Container (v px)"
+
+#: class-lib/CLP_AdminClass.php:171
+msgid "Margin of the Logo Container (CSS)"
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:173
+#, fuzzy
+msgid "Padding of the Logo Container (CSS)"
+msgstr "Výška Logo Container (v px)"
+
+#: class-lib/CLP_AdminClass.php:175
+msgid "Styling of the Logo"
+msgstr "Styling na Logo"
+
+#: class-lib/CLP_AdminClass.php:177 class-lib/CLP_AdminClass.php:211
+#: class-lib/CLP_AdminClass.php:259
+msgid "Rounded Corners (in px)"
+msgstr "Zaoblené rohy (v px)"
+
+#: class-lib/CLP_AdminClass.php:179 class-lib/CLP_AdminClass.php:213
+#: class-lib/CLP_AdminClass.php:265 class-lib/CLP_AdminClass.php:311
+#: class-lib/CLP_AdminClass.php:323
+msgid "Shadow (x-direction in px)"
+msgstr "Shadow (x-smer v px)"
+
+#: class-lib/CLP_AdminClass.php:181 class-lib/CLP_AdminClass.php:215
+#: class-lib/CLP_AdminClass.php:267 class-lib/CLP_AdminClass.php:313
+#: class-lib/CLP_AdminClass.php:325
+msgid "Shadow (y-direction in px)"
+msgstr "Shadow (y-smer v px)"
+
+#: class-lib/CLP_AdminClass.php:183 class-lib/CLP_AdminClass.php:217
+#: class-lib/CLP_AdminClass.php:269 class-lib/CLP_AdminClass.php:315
+#: class-lib/CLP_AdminClass.php:327
+msgid "Shadow (softness in px)"
+msgstr "Shadow (mäkkosť v px)"
+
+#: class-lib/CLP_AdminClass.php:185 class-lib/CLP_AdminClass.php:219
+#: class-lib/CLP_AdminClass.php:271 class-lib/CLP_AdminClass.php:317
+#: class-lib/CLP_AdminClass.php:329
+msgid "Shadow Colour"
+msgstr "Tieň Farba"
+
+#: class-lib/CLP_AdminClass.php:189 class-lib/CLP_AdminClass.php:237
+#: class-lib/CLP_AdminClass.php:1112
+msgid "Login Container"
+msgstr "Prihlásiť sa kontajner"
+
+#: class-lib/CLP_AdminClass.php:203 class-lib/CLP_AdminClass.php:251
+#: class-lib/CLP_AdminClass.php:283 class-lib/CLP_AdminClass.php:293
+msgid "Transparency (in percent)"
+msgstr "Priehľadnosť (v percentách)"
+
+#: class-lib/CLP_AdminClass.php:205 class-lib/CLP_AdminClass.php:253
+msgid "Border Style"
+msgstr "Border Style"
+
+#: class-lib/CLP_AdminClass.php:207 class-lib/CLP_AdminClass.php:255
+msgid "Border Width (in px)"
+msgstr "Šírka okraja (v px)"
+
+#: class-lib/CLP_AdminClass.php:221
+msgid "Position and Size of the Login Container"
+msgstr "Poloha a Veľkosť Meno kontajner"
+
+#: class-lib/CLP_AdminClass.php:223
+msgid "Position (x-direction in px)"
+msgstr "Pozícia (x-smer v px)"
+
+#: class-lib/CLP_AdminClass.php:225
+msgid "Position (y-direction in px)"
+msgstr "Pozícia (y-smer v px)"
+
+#: class-lib/CLP_AdminClass.php:227
+msgid "Width (in px)"
+msgstr "Šírka (v px)"
+
+#: class-lib/CLP_AdminClass.php:229
+msgid "Height (in px)"
+msgstr "Výška (v px)"
+
+#: class-lib/CLP_AdminClass.php:231 class-lib/CLP_AdminClass.php:261
+msgid "Padding"
+msgstr "Padding"
+
+#: class-lib/CLP_AdminClass.php:233 class-lib/CLP_AdminClass.php:263
+msgid "Margin"
+msgstr "Okraj"
+
+#: class-lib/CLP_AdminClass.php:275
+msgid "Logged Out Message"
+msgstr "Prihlásený Out Message"
+
+#: class-lib/CLP_AdminClass.php:295
+msgid "Input Fields"
+msgstr "Vstupné pole"
+
+#: class-lib/CLP_AdminClass.php:305 class-lib/CLP_AdminClass.php:1115
+msgid "Links"
+msgstr "Links"
+
+#: class-lib/CLP_AdminClass.php:309 class-lib/CLP_AdminClass.php:321
+msgid "Text Decoration"
+msgstr "Text dekorácie"
+
+#: class-lib/CLP_AdminClass.php:331
+msgid "Font Size"
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:339
+#, fuzzy
+msgid ""
+"You can enter your own logout message here. You can make your blog a bit "
+"more personal like that."
+msgstr ""
+"Okrem toho si môžete zadať svoj vlastný odhlásenia správu. Môžete si "
+"vytvoriť svoj blog trochu viac osobné, ako že."
+
+#: class-lib/CLP_AdminClass.php:340
+#, fuzzy
+msgid ""
+"Furthermore, you can enter your own error message. By default, Wordpress "
+"says that either the username or the password is wrong, which is perhaps a "
+"hint to foreigners that you don&#39;t wish to give.."
+msgstr ""
+"Okrem toho si môžete zadať svoj vlastný chybovú správu. V predvolenom "
+"nastavení, Wordpress hovorí, že buď užívateľské meno alebo heslo je zlé, čo "
+"je možno náznak pre cudzincov, ktoré si neprajete, aby."
+
+#: class-lib/CLP_AdminClass.php:341
+msgid ""
+"If you don&#39;t want to style your login page item by item, you can as well "
+"move on to enter a whole style sheet in the css tab."
+msgstr ""
+
+#: class-lib/CLP_AdminClass.php:342 class-lib/CLP_AdminClass.php:418
+#: class-lib/CLP_AdminClass.php:520 class-lib/CLP_AdminClass.php:631
+#: class-lib/CLP_AdminClass.php:781 class-lib/CLP_AdminClass.php:896
+#: class-lib/CLP_AdminClass.php:984
 msgid ""
 "You can leave any of the fields empty to keep the default settings of "
 "Wordpress."
@@ -87,140 +338,36 @@ msgstr ""
 "Môžete zanechať niektorý z polí vyprázdniť, aby predvolené nastavenia "
 "Wordpress."
 
-#: custom-login-page.php:385
-msgid ""
-"You can enter the url of the logo, that you want to have in place of the WP "
-"logo on the login screen. Just upload any picture (best is a png or gif with "
-"transparent background) via the uploader on the Media section and copy the "
-"url of that file here."
+#: class-lib/CLP_AdminClass.php:360
+msgid "You can hide the links under login form if wanting to."
 msgstr ""
-"Môžete zadať adresu URL loga, ktoré chcete mať v mieste WP loga na "
-"prihlasovacej obrazovke. Stačí nahrať akýkoľvek obrázok (najlepšie je png "
-"alebo gif s priehľadným pozadím) pomocou nahral na sekcii Media a skopírujte "
-"adresu URL tohto súboru tu."
 
-#: custom-login-page.php:386
-msgid "In the URL field, you enter the URL to which the logo should link."
-msgstr "V poli URL, zadať adresu URL, na ktoré by sa logo malo spojiť."
-
-#: custom-login-page.php:389
-msgid "Logo"
-msgstr "Logo"
-
-#: custom-login-page.php:395
-msgid "Width of the Logo (in px)"
-msgstr "Šírka loga (v px)"
-
-#: custom-login-page.php:396
-msgid "Height of the Logo (in px)"
-msgstr "Výška loga (v px)"
-
-#: custom-login-page.php:397
-msgid "Width of the Logo Container (in px)"
-msgstr "Šírka Logo Container (v px)"
-
-#: custom-login-page.php:398
-msgid "Height of the Logo Container (in px)"
-msgstr "Výška Logo Container (v px)"
-
-#: custom-login-page.php:405
+#: class-lib/CLP_AdminClass.php:378
 msgid ""
-"If your logo is larger than the default WP-logo (274px by 63px), you can "
-"enter the width and the height of it here."
+"There seem to be problems with the virtual stylesheet in some environments. "
+"By choosing to write the styles inline, those can be avoided.)."
 msgstr ""
-"Ak vaše logo je väčšia ako predvolený WP-logo (274px by 63px), môžete zadať "
-"šírku a výšku to tu."
 
-#: custom-login-page.php:406
+#: class-lib/CLP_AdminClass.php:390
+#, fuzzy
 msgid ""
-"The width and height of the logo-container are by default 326px and 67px. "
-"They are used to move the Logo around, since the background-position is "
-"always &#39;center top&#39;."
+"Export the current A5 Custom Login Page settings and download them as a text "
+"file. The content of this text file can be imported into this or another A5 "
+"Custom Login Page installation:"
 msgstr ""
-"Šírka a výška loga kontajnera sú implicitne 326px 67px a Oni sú zvyknutí na "
-"pohyb Logo okolo, pretože background-position je vždy \"centrum hore\"."
+"Export aktuálne A5 Vlastné nastavenie prihlasovaciu stránku a stiahnuť si "
+"ich ako textový súbor. Tento textový súbor je možné importovať do tohto "
+"alebo iného A5 Page Meno Vlastná inštalácia:"
 
-#: custom-login-page.php:409
-msgid "Position and Size of the Logo"
-msgstr "Poloha a veľkosť loga"
+#: class-lib/CLP_AdminClass.php:396
+msgid "Export &amp; Download"
+msgstr "Export & Stiahnuť"
 
-#: custom-login-page.php:417 custom-login-page.php:483
-#: custom-login-page.php:548
-msgid "Rounded Corners (in px)"
-msgstr "Zaoblené rohy (v px)"
-
-#: custom-login-page.php:418 custom-login-page.php:484
-#: custom-login-page.php:551 custom-login-page.php:693
-#: custom-login-page.php:699
-msgid "Shadow (x-direction in px)"
-msgstr "Shadow (x-smer v px)"
-
-#: custom-login-page.php:419 custom-login-page.php:485
-#: custom-login-page.php:552 custom-login-page.php:694
-#: custom-login-page.php:700
-msgid "Shadow (y-direction in px)"
-msgstr "Shadow (y-smer v px)"
-
-#: custom-login-page.php:420 custom-login-page.php:486
-#: custom-login-page.php:553 custom-login-page.php:695
-#: custom-login-page.php:701
-msgid "Shadow (softness in px)"
-msgstr "Shadow (mäkkosť v px)"
-
-#: custom-login-page.php:421 custom-login-page.php:487
-#: custom-login-page.php:554 custom-login-page.php:696
-#: custom-login-page.php:702
-msgid "Shadow Colour"
-msgstr "Tieň Farba"
-
-#: custom-login-page.php:428
-msgid ""
-"Here you can style the logo a bit. Give it a shadow or round corners if you "
-"like"
+#: class-lib/CLP_AdminClass.php:402
+msgid "Enter the content of your text file with the settings here."
 msgstr ""
-"Tu môžete štýl logo bit. Dajte mu tieň, alebo zaoblené rohy, ak sa vám páči"
 
-#: custom-login-page.php:431
-msgid "Styling of the Logo"
-msgstr "Styling na Logo"
-
-#: custom-login-page.php:439 custom-login-page.php:473
-#: custom-login-page.php:538
-msgid "Background Picture"
-msgstr "Obrázok na pozadí"
-
-#: custom-login-page.php:440 custom-login-page.php:474
-#: custom-login-page.php:539
-msgid "Background Repeat"
-msgstr "Pozadie opakovanie"
-
-#: custom-login-page.php:440 custom-login-page.php:474
-#: custom-login-page.php:539
-msgid "default"
-msgstr "štandardné"
-
-#: custom-login-page.php:441 custom-login-page.php:475
-#: custom-login-page.php:540
-msgid "Position of the Background Picture"
-msgstr "Pozícia obrázok na pozadí"
-
-#: custom-login-page.php:442 custom-login-page.php:476
-#: custom-login-page.php:541 custom-login-page.php:585
-#: custom-login-page.php:620 custom-login-page.php:641
-#: custom-login-page.php:662
-msgid "Background Colour"
-msgstr "Farba pozadia"
-
-#: custom-login-page.php:443 custom-login-page.php:477
-#: custom-login-page.php:542 custom-login-page.php:586
-msgid "Second Background Colour (for Gradient)"
-msgstr "Druhá Farba pozadia (pre gradientu)"
-
-#: custom-login-page.php:444
-msgid "Background Size"
-msgstr "Pozadie Veľkosť"
-
-#: custom-login-page.php:451
+#: class-lib/CLP_AdminClass.php:416
 msgid ""
 "You can enter the url of the background picture, that you want to have on "
 "the login page. Just upload any picture via the uploader on the Media "
@@ -240,7 +387,7 @@ msgstr ""
 "celú obrazovku, dať 'kryt' ako veľkosti. Inak, vyplňte v každom css (napr."
 "&#39;auto 150px&#39;)."
 
-#: custom-login-page.php:452
+#: class-lib/CLP_AdminClass.php:417
 msgid ""
 "In the last section, you choose the background colour and the colour of the "
 "text in the html body element. If you give two background colours, you can "
@@ -250,50 +397,78 @@ msgstr ""
 "elementu body. Ak dávať dve farby pozadia, môžete vytvoriť prechod. Farba "
 "nie. 1 bude vždy."
 
-#: custom-login-page.php:459 custom-login-page.php:526
-#: custom-login-page.php:573 custom-login-page.php:607
-#: custom-login-page.php:677 custom-login-page.php:716
-#: custom-login-page.php:744
-msgid "Save Changes"
-msgstr "Uložiť zmeny"
+#: class-lib/CLP_AdminClass.php:432 class-lib/CLP_AdminClass.php:645
+#: class-lib/CLP_AdminClass.php:795
+msgid "default"
+msgstr "štandardné"
 
-#: custom-login-page.php:459 custom-login-page.php:526
-#: custom-login-page.php:573 custom-login-page.php:607
-#: custom-login-page.php:677 custom-login-page.php:716
-msgid "Save style"
-msgstr "Uložiť štýl"
+#: class-lib/CLP_AdminClass.php:462
+msgid ""
+"Enter the background, text and border colour of the submit button here. The "
+"button will look static if you don&#39;t give values for the hover state of "
+"it. If you want to have a gradient, enter two background colours. The first "
+"one will be up then."
+msgstr ""
+"Zadajte pozadia, textu a hranice farbu tlačidla submit tu. Tlačidlo bude "
+"vyzerať statická, ak nedáte hodnoty pre stav hover nej. Ak chcete mať "
+"prechod, zadajte dve farby pozadia. Prvý z nich bude sa potom."
 
-#: custom-login-page.php:478 custom-login-page.php:543
-#: custom-login-page.php:587 custom-login-page.php:619
-#: custom-login-page.php:640 custom-login-page.php:661
-#: custom-login-page.php:691
-msgid "Text Colour"
-msgstr "Text Colour"
+#: class-lib/CLP_AdminClass.php:518
+msgid ""
+"You can enter the url of the logo, that you want to have in place of the WP "
+"logo on the login screen. Just upload any picture (best is a png or gif with "
+"transparent background) via the uploader on the Media section and copy the "
+"url of that file here."
+msgstr ""
+"Môžete zadať adresu URL loga, ktoré chcete mať v mieste WP loga na "
+"prihlasovacej obrazovke. Stačí nahrať akýkoľvek obrázok (najlepšie je png "
+"alebo gif s priehľadným pozadím) pomocou nahral na sekcii Media a skopírujte "
+"adresu URL tohto súboru tu."
 
-#: custom-login-page.php:479 custom-login-page.php:544
-#: custom-login-page.php:622 custom-login-page.php:643
-msgid "Transparency (in percent)"
-msgstr "Priehľadnosť (v percentách)"
+#: class-lib/CLP_AdminClass.php:519
+msgid "In the URL field, you enter the URL to which the logo should link."
+msgstr "V poli URL, zadať adresu URL, na ktoré by sa logo malo spojiť."
 
-#: custom-login-page.php:480 custom-login-page.php:545
-msgid "Border Style"
-msgstr "Border Style"
+#: class-lib/CLP_AdminClass.php:544
+msgid ""
+"If your logo is larger than the default WP-logo (274px by 63px), you can "
+"enter the width and the height of it here."
+msgstr ""
+"Ak vaše logo je väčšia ako predvolený WP-logo (274px by 63px), môžete zadať "
+"šírku a výšku to tu."
 
-#: custom-login-page.php:480 custom-login-page.php:545
-msgid "choose a border style"
-msgstr "vyberte štýl orámovania"
+#: class-lib/CLP_AdminClass.php:545
+msgid ""
+"The width and height of the logo-container are by default 326px and 67px. "
+"They are used to move the Logo around, since the background-position is "
+"always &#39;center top&#39;."
+msgstr ""
+"Šírka a výška loga kontajnera sú implicitne 326px 67px a Oni sú zvyknutí na "
+"pohyb Logo okolo, pretože background-position je vždy \"centrum hore\"."
 
-#: custom-login-page.php:481 custom-login-page.php:546
-msgid "Border Width (in px)"
-msgstr "Šírka okraja (v px)"
+#: class-lib/CLP_AdminClass.php:546
+#, php-format
+msgid ""
+"With the margin of the logo, you can position the logo more precisely. Give "
+"a CSS value here, i.e. %s to locate it 180 px left."
+msgstr ""
 
-#: custom-login-page.php:482 custom-login-page.php:547
-#: custom-login-page.php:588 custom-login-page.php:621
-#: custom-login-page.php:642 custom-login-page.php:663
-msgid "Border Colour"
-msgstr "Border Farba"
+#: class-lib/CLP_AdminClass.php:547
+#, php-format
+msgid ""
+"With the padding of the logo, you can position the shadow more precisely. "
+"Give a CSS value here, i.e. %s to get rid of it completely."
+msgstr ""
 
-#: custom-login-page.php:494
+#: class-lib/CLP_AdminClass.php:589
+#, fuzzy
+msgid ""
+"Here you can style the logo a bit. Give it a shadow or round corners if you "
+"like."
+msgstr ""
+"Tu môžete štýl logo bit. Dajte mu tieň, alebo zaoblené rohy, ak sa vám páči"
+
+#: class-lib/CLP_AdminClass.php:627
 msgid ""
 "You can enter the url of the background picture, that you want to have on "
 "the login container. Just upload any picture via the uploader on the Media "
@@ -309,7 +484,7 @@ msgstr ""
 "vybrať smer opakovanie obrazu, alebo je opakovať. Pozícia obrazu môže byť "
 "niečo ako '100px 50% \"alebo\" centrum hore \"."
 
-#: custom-login-page.php:495
+#: class-lib/CLP_AdminClass.php:628
 msgid ""
 "In the next section, you choose the background colour and the colour of the "
 "text in the login container. If you give two background colours, you can "
@@ -319,7 +494,7 @@ msgstr ""
 "kontajnera. Ak dávať dve farby pozadia, môžete vytvoriť prechod. Farba nie. "
 "1 bude vždy."
 
-#: custom-login-page.php:496 custom-login-page.php:563
+#: class-lib/CLP_AdminClass.php:629 class-lib/CLP_AdminClass.php:778
 msgid ""
 "Choose a border, if wanting one. Define style, width and whether or not, you "
 "want to have rounded corners (is not supported by all browsers)."
@@ -327,37 +502,17 @@ msgstr ""
 "Vyberte si hranice, ak chcú jeden. Definovať štýl, šírku a či alebo nie, "
 "chcete mať zaoblené rohy (nie je podporovaný všetkými prehliadačmi)."
 
-#: custom-login-page.php:497
+#: class-lib/CLP_AdminClass.php:630
 msgid ""
 "At last, give the container a shadow (is not supported by all browsers)."
 msgstr ""
 "Konečne, dať kontajner tieň (nie je podporovaný všetkými prehliadačmi)."
 
-#: custom-login-page.php:506
-msgid "Position (x-direction in px)"
-msgstr "Pozícia (x-smer v px)"
+#: class-lib/CLP_AdminClass.php:683 class-lib/CLP_AdminClass.php:833
+msgid "choose a border style"
+msgstr "vyberte štýl orámovania"
 
-#: custom-login-page.php:507
-msgid "Position (y-direction in px)"
-msgstr "Pozícia (y-smer v px)"
-
-#: custom-login-page.php:508
-msgid "Width (in px)"
-msgstr "Šírka (v px)"
-
-#: custom-login-page.php:509
-msgid "Height (in px)"
-msgstr "Výška (v px)"
-
-#: custom-login-page.php:510 custom-login-page.php:550
-msgid "Padding"
-msgstr "Padding"
-
-#: custom-login-page.php:517 custom-login-page.php:522
-msgid "Position and Size of the Login Container"
-msgstr "Poloha a Veľkosť Meno kontajner"
-
-#: custom-login-page.php:518
+#: class-lib/CLP_AdminClass.php:731
 msgid ""
 "Here you can give the whole login container a position. If you enter "
 "&#39;0&#39; in both of the fields, it will be in the top left corner of the "
@@ -366,19 +521,16 @@ msgstr ""
 "Tu si môžete dať celému prihlásiť kontajner pozíciu. Ak zadáte '0 'obe "
 "polia, bude v ľavom hornom rohu obrazovky."
 
-#: custom-login-page.php:519
+#: class-lib/CLP_AdminClass.php:732
+#, fuzzy
 msgid ""
-"The Padding is given as css value. I.e. &#39;144px 0 0&#39; (which is the "
-"default padding of the login container)."
+"The Padding and Margin are given as css value. I.e. &#39;144px 0 0&#39; "
+"(which is the default padding of the login container)."
 msgstr ""
 "Padding sa, rovnako ako hodnota css. Tj. '144px 0 0 \"(čo je predvolené "
 "Čalúnenie prihlásenie kontajnera)."
 
-#: custom-login-page.php:549
-msgid "Margin"
-msgstr "Okraj"
-
-#: custom-login-page.php:561
+#: class-lib/CLP_AdminClass.php:776
 msgid ""
 "You can enter the url of the background picture, that you want to have in "
 "the login form. Just upload any picture via the uploader on the Media "
@@ -394,7 +546,7 @@ msgstr ""
 "vybrať smer opakovanie obrazu, alebo je opakovať. Pozícia obrazu môže byť "
 "niečo ako '100px 50% \"alebo\" centrum hore \"."
 
-#: custom-login-page.php:562
+#: class-lib/CLP_AdminClass.php:777
 msgid ""
 "In the next section, you choose the background colour and the colour of the "
 "text in the login form. If you give two background colours, you can create a "
@@ -404,7 +556,7 @@ msgstr ""
 "formulári. Ak dávať dve farby pozadia, môžete vytvoriť prechod. Farba nie. 1 "
 "bude vždy."
 
-#: custom-login-page.php:564 custom-login-page.php:565
+#: class-lib/CLP_AdminClass.php:779
 msgid ""
 "Margin and Padding are given as css values. The form has a left margin of "
 "8px by default and a padding of 26px 24px 46px. By changing the top and the "
@@ -414,69 +566,18 @@ msgstr ""
 "predvolenom nastavení a polstrovanie na 26px 24px 46px. Zmenou horné a "
 "spodné odsadenie, môžete natiahnuť formulár v jeho dĺžky."
 
-#: custom-login-page.php:566
+#: class-lib/CLP_AdminClass.php:780
 msgid "At last, give the form a shadow (is not supported by all browsers)."
 msgstr "Konečne, dať formou tieň (nie je podporovaný všetkými prehliadačmi)."
 
-#: custom-login-page.php:589
-msgid "Hover Background Colour"
-msgstr "Hover Farba pozadia"
-
-#: custom-login-page.php:590
-msgid "Second Hover Background Colour (for Gradient)"
-msgstr "Druhá Hover Farba pozadia (pre gradientu)"
-
-#: custom-login-page.php:591 custom-login-page.php:697
-msgid "Hover Text Colour"
-msgstr "Hover Text Color"
-
-#: custom-login-page.php:592
-msgid "Hover Border Colour"
-msgstr "Hover Border Color"
-
-#: custom-login-page.php:600
-msgid ""
-"Enter the background, text and border colour of the submit button here. The "
-"button will look static if you don&#39;t give values for the hover state of "
-"it. If you want to have a gradient, enter two background colours. The first "
-"one will be up then."
-msgstr ""
-"Zadajte pozadia, textu a hranice farbu tlačidla submit tu. Tlačidlo bude "
-"vyzerať statická, ak nedáte hodnoty pre stav hover nej. Ak chcete mať "
-"prechod, zadajte dve farby pozadia. Prvý z nich bude sa potom."
-
-#: custom-login-page.php:603
-msgid "Submit Button"
-msgstr "Odoslať Tlačidlo"
-
-#: custom-login-page.php:623
-msgid "Logout Message"
-msgstr "Odhlásiť správu"
-
-#: custom-login-page.php:630
+#: class-lib/CLP_AdminClass.php:895
 msgid ""
 "This changes the the text container, that appears, when you have "
 "successfully logged out."
 msgstr ""
 "Tým sa zmení text kontajner, ktorý sa zobrazí, keď ste úspešne odhlásený."
 
-#: custom-login-page.php:631
-msgid ""
-"Furthermore, you can enter your own logout message here. You can make your "
-"blog a bit more personal like that."
-msgstr ""
-"Okrem toho si môžete zadať svoj vlastný odhlásenia správu. Môžete si "
-"vytvoriť svoj blog trochu viac osobné, ako že."
-
-#: custom-login-page.php:634
-msgid "Logged Out Message"
-msgstr "Prihlásený Out Message"
-
-#: custom-login-page.php:644 custom-login-page.php:655
-msgid "Error Message"
-msgstr "Chybové hlásenie"
-
-#: custom-login-page.php:651
+#: class-lib/CLP_AdminClass.php:926
 msgid ""
 "This changes the text container, that appears, when you get an error logging "
 "in."
@@ -484,38 +585,12 @@ msgstr ""
 "Tým sa zmení textovú kontajner, ktorý sa zobrazí, keď sa dostanete k chybe "
 "prihlásenie"
 
-#: custom-login-page.php:652
-msgid ""
-"Furthermore, you can enter your own error message here. By default, "
-"Wordpress says that either the username or the password is wrong, which is "
-"perhaps a hint to foreigners that you don&#39;t wish to give."
-msgstr ""
-"Okrem toho si môžete zadať svoj vlastný chybovú správu. V predvolenom "
-"nastavení, Wordpress hovorí, že buď užívateľské meno alebo heslo je zlé, čo "
-"je možno náznak pre cudzincov, ktoré si neprajete, aby."
-
-#: custom-login-page.php:670
+#: class-lib/CLP_AdminClass.php:956
 msgid ""
 "This changes the colours of the name and password fields of the log in form."
 msgstr "Tým sa zmení farby mena a hesla odbory protokolu vo forme."
 
-#: custom-login-page.php:673
-msgid "Input Fields"
-msgstr "Vstupné pole"
-
-#: custom-login-page.php:692
-msgid "Text Decoration"
-msgstr "Text dekorácie"
-
-#: custom-login-page.php:692 custom-login-page.php:698
-msgid "choose a text decoration"
-msgstr "vyberte textové dekorácie"
-
-#: custom-login-page.php:698
-msgid "Hover Text Decoration"
-msgstr "Hover Text Decoration"
-
-#: custom-login-page.php:709
+#: class-lib/CLP_AdminClass.php:982
 msgid ""
 "Style the links by giving a text colour, text decoration and shadow for the "
 "link and the hover style."
@@ -523,103 +598,118 @@ msgstr ""
 "Štýl väzby tým, že farbu textu, textové dekorácie a tieň pre odkaz a štýl "
 "hover."
 
-#: custom-login-page.php:727
-msgid "Export Settings"
-msgstr "Export nastavení"
+#: class-lib/CLP_AdminClass.php:983
+#, php-format
+msgid "For the font size, give a css value, such as %1$s or %2$s."
+msgstr ""
 
-#: custom-login-page.php:728
+#: class-lib/CLP_AdminClass.php:1107
 msgid ""
-"Export the current A5 Custom Login Page settings and download them as a text "
-"file. This text file can be imported into this or another A5 Custom Login "
-"Page installation:"
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
+"page"
 msgstr ""
-"Export aktuálne A5 Vlastné nastavenie prihlasovaciu stránku a stiahnuť si "
-"ich ako textový súbor. Tento textový súbor je možné importovať do tohto "
-"alebo iného A5 Page Meno Vlastná inštalácia:"
+"http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
+"page"
 
-#: custom-login-page.php:729
-msgid "Export &amp; Download"
-msgstr "Export & Stiahnuť"
-
-#: custom-login-page.php:730
-msgid "The file will be named"
-msgstr "Súbor bude mať názov"
-
-#: custom-login-page.php:730
-msgid ""
-"After you downloaded it, you can (but don&#39;t need to) rename the file to "
-"something more meaningful."
+#: class-lib/CLP_AdminClass.php:1109
+msgid "General Options"
 msgstr ""
-"Po stiahnutí to, môžete (ale nemusíte) premenovať súbor na niečo "
-"zmysluplnejšie."
 
-#: custom-login-page.php:736 custom-login-page.php:744
-msgid "Import Settings"
+#: class-lib/CLP_AdminClass.php:1110
+#, fuzzy
+msgid "Body & Submit Button"
+msgstr "Odoslať Tlačidlo"
+
+#: class-lib/CLP_AdminClass.php:1111
+msgid "Logo"
+msgstr "Logo"
+
+#: class-lib/CLP_AdminClass.php:1113
+msgid "Login Form"
+msgstr "Prihlásiť sa formulár"
+
+#: class-lib/CLP_AdminClass.php:1114
+#, fuzzy
+msgid "Messages & Input Fields"
+msgstr "Stačí zadať niečo ako,"
+
+#: class-lib/CLP_AdminClass.php:1116
+#, fuzzy
+msgid "CSS"
+msgstr "Len dať nejaký kód css tu."
+
+#: class-lib/CLP_AdminClass.php:1261
+msgid "Debug Info"
 msgstr ""
-"Po stiahnutí to, môžete (ale nemusíte) premenovať súbor na niečo "
-"zmysluplnejšie."
 
-#: custom-login-page.php:737
-msgid "This will overlay any existing setting, you already have."
-msgstr "Toto vloží existujúce nastavenie, už máte."
+#: custom-login-page.php:167
+msgid "FAQ"
+msgstr "Telo"
 
-#: custom-login-page.php:774 custom-login-page.php:820
-#: custom-login-page.php:868 custom-login-page.php:913
-#: custom-login-page.php:949 custom-login-page.php:990
-#: custom-login-page.php:1041
+#: custom-login-page.php:168
+msgid "Donate"
+msgstr "Donate"
+
+#: custom-login-page.php:292 custom-login-page.php:340
+#: custom-login-page.php:389 custom-login-page.php:434
+#: custom-login-page.php:470 custom-login-page.php:511
+#: custom-login-page.php:554 custom-login-page.php:594
 msgid "Error in Datatransfer."
 msgstr "Chyba v datatransferu."
 
-#: custom-login-page.php:807 custom-login-page.php:855
-#: custom-login-page.php:900 custom-login-page.php:936
-#: custom-login-page.php:977 custom-login-page.php:1017
+#: custom-login-page.php:327 custom-login-page.php:376
+#: custom-login-page.php:421 custom-login-page.php:457
+#: custom-login-page.php:498 custom-login-page.php:541
+#: custom-login-page.php:570
 msgid "Settings saved"
 msgstr "Nastavenie uložené"
 
-#: custom-login-page.php:1051
+#: custom-login-page.php:604
 msgid "This doesn&#39;t seem to be a valid settings file."
 msgstr "To sa nezdá byť platným súbor nastavení."
 
-#: custom-login-page.php:1067
+#: custom-login-page.php:620
 msgid "Settings successfully imported."
 msgstr "Nastavenie úspešne importované."
 
-#. Plugin Name of the plugin/theme
-msgid "A5 Custom Login Page"
-msgstr "A5 Custom Login Page"
+#~ msgid "Saving..."
+#~ msgstr "Ukladanie ..."
 
-#. Description of the plugin/theme
-msgid ""
-"Just customize your login page (or that of your community etc.) by giving "
-"the WP login page a different look, with your own logo and special colours "
-"and styles."
-msgstr ""
-"Stačí upraviť svoje prihlasovacie stránku (alebo že vaše komunity a pod) "
-"tým, že WP prihlasovacia stránka odlišný vzhľad, s vlastným logom a "
-"špeciálnych farieb a štýlov."
+#~ msgid "Button"
+#~ msgstr "Button"
 
-#. Author of the plugin/theme
-msgid "Waldemar Stoffel"
-msgstr "Waldemar Stoffel"
+#~ msgid "Import / Export"
+#~ msgstr "Import / Export"
 
-#. Author URI of the plugin/theme
-msgid "http://www.waldemarstoffel.com"
-msgstr "http://www.waldemarstoffel.com"
+#~ msgid "Save Changes"
+#~ msgstr "Uložiť zmeny"
 
-#: custom-login-page.php:399
-msgid "Margin of the Logo Container (CSS)"
-msgstr ""
+#~ msgid "Save style"
+#~ msgstr "Uložiť štýl"
 
-#: custom-login-page.php:408
-msgid ""
-"With the margin of the logo, you can position the logo more precisely. Give "
-"a CSS value here, i.e. %s to locate it 180 px left."
-msgstr ""
+#~ msgid "choose a text decoration"
+#~ msgstr "vyberte textové dekorácie"
 
-#: custom-login-page.php:705
-msgid "Font Size"
-msgstr ""
+#~ msgid "Hover Text Decoration"
+#~ msgstr "Hover Text Decoration"
 
-#: custom-login-page.php:713
-msgid "For the font size, give a css value, such as %1$s or %2$s."
-msgstr ""
+#~ msgid "The file will be named"
+#~ msgstr "Súbor bude mať názov"
+
+#~ msgid "A5 Custom Login Page"
+#~ msgstr "A5 Custom Login Page"
+
+#~ msgid ""
+#~ "Just customize your login page (or that of your community etc.) by giving "
+#~ "the WP login page a different look, with your own logo and special "
+#~ "colours and styles."
+#~ msgstr ""
+#~ "Stačí upraviť svoje prihlasovacie stránku (alebo že vaše komunity a pod) "
+#~ "tým, že WP prihlasovacia stránka odlišný vzhľad, s vlastným logom a "
+#~ "špeciálnych farieb a štýlov."
+
+#~ msgid "Waldemar Stoffel"
+#~ msgstr "Waldemar Stoffel"
+
+#~ msgid "http://www.waldemarstoffel.com"
+#~ msgstr "http://www.waldemarstoffel.com"
