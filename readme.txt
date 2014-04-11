@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof
 Requires at least: 3.1
 Tested up to: 3.9
-Stable tag: 1.9.2
+Stable tag: 2.0
 
 Style your login page differently.
 
@@ -42,6 +42,10 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 2.0 =
+
+* Complete overhaule of the whole plugin with more functionalty
 
 = 1.9.2 =
 
@@ -196,3 +200,7 @@ More options for the logo added
 = 1.9.2 =
 
 Debug option added
+
+= 2.0 =
+
+Complete overhaule of the whole plugin with more functionalty
