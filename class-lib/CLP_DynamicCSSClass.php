@@ -20,16 +20,18 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 		
 		if (!isset(self::$options['inline'])) self::$options['inline'] = false;
 		
+		if (!isset(self::$options['compress'])) self::$options['compress'] = false;
+		
 		parent::A5_DynamicFiles('login', 'css', false, self::$options['inline']);
 		
-		$eol = "\r\n";
-		$tab = "\t";
+		$eol = (self::$options['compress']) ? '' : "\r\n";
+		$tab = (self::$options['compress']) ? '' : "\t";
 		
 		if (isset(self::$options['css']) && !empty(self::$options['css'])) :
 		
-			parent::$styles .= $eol.'/* CSS portion of the A5 Custom Login Page */'.$eol.$eol;
+			$custom_css = (!self::$options['compress']) ? $eol.'/* CSS portion of the A5 Custom Login Page */'.$eol.$eol : '';
 		
-			parent::$styles .= self::$options['css'];
+			$custom_css .= self::$options['css'];
 		
 		else :
 		
@@ -63,7 +65,7 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				
 			endif;
 			
-			# .login h1 a
+			# 'body.login div#login h1 a
 			
 			$h1_style = '';
 			
@@ -362,31 +364,33 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			$link_text_color = '';
 			
-			parent::$styles .= $eol.'/* CSS portion of the A5 Custom Login Page */'.$eol.$eol;
+			$custom_css = (!self::$options['compress']) ? $eol.'/* CSS portion of the A5 Custom Login Page */'.$eol.$eol : '';
 			
-			if(!empty($body_style)) parent::$styles .= 'html body.login {'.$body_style.$eol.'}'.$eol;
-			if(!empty($h1_style)) parent::$styles .= '.login h1 a {'.$h1_style.$eol.'}'.$eol;
-			if(!empty($logindiv_style)) parent::$styles .= '#login {'.$logindiv_style.$eol.'}'.$eol;
-			if(!empty($loginform_style)) parent::$styles .= '.login form {'.$loginform_style.$eol.'}'.$eol;
-			if(!empty($label_style)) parent::$styles .= '#loginform label,'.$eol.'#lostpasswordform label,'.$eol.'#registerform label {'.$label_style.'}'.$eol;
-			if(!empty($loggedout_style)) parent::$styles .= '.login .message {'.$loggedout_style.$eol.'}'.$eol;
-			if(!empty($error_style)) parent::$styles .= '.login #login_error {'.$error_style.$eol.'}'.$eol;
-			if(!empty($input_style)) parent::$styles .= '.input {'.$input_style.$eol.'}'.$eol;
-			if(!empty($nav_style)) parent::$styles .= '#nav {'.$nav_style.$eol.'}'.$eol;
-			if(!empty($backtoblog_style)) parent::$styles .= '#backtoblog {'.$backtoblog_style.$eol.'}'.$eol;
+			if(!empty($body_style)) $custom_css .= 'html body.login {'.$body_style.$eol.'}'.$eol;
+			if(!empty($h1_style)) $custom_css .= 'body.login div#login h1,'.$eol.'body.login div#login h1 a {'.$h1_style.$eol.'}'.$eol;
+			if(!empty($logindiv_style)) parent::$login_styles .= '#login {'.$logindiv_style.$eol.'}'.$eol;
+			if(!empty($loginform_style)) $custom_css .= '.login form {'.$loginform_style.$eol.'}'.$eol;
+			if(!empty($label_style)) $custom_css .= '#loginform label,'.$eol.'#lostpasswordform label,'.$eol.'#registerform label {'.$label_style.'}'.$eol;
+			if(!empty($loggedout_style)) $custom_css .= '.login .message {'.$loggedout_style.$eol.'}'.$eol;
+			if(!empty($error_style)) $custom_css .= '.login #login_error {'.$error_style.$eol.'}'.$eol;
+			if(!empty($input_style)) $custom_css .= '.input {'.$input_style.$eol.'}'.$eol;
+			if(!empty($nav_style)) $custom_css .= '#nav {'.$nav_style.$eol.'}'.$eol;
+			if(!empty($backtoblog_style)) $custom_css .= '#backtoblog {'.$backtoblog_style.$eol.'}'.$eol;
 			if(!empty($link_style)) :
 			
 				if (!empty(self::$options['link_text_color'])) $link_text_color = $eol.$tab.'color: '.self::$options['link_text_color'].' !important;';
 				
-				parent::$styles .= '.login #nav {'.$link_text_color.$eol.$tab.'text-shadow: none !important;'.$eol.'}'.$eol;
-				parent::$styles .= '#login_error a,'.$eol.'.login #nav a,'.$eol.'.login #backtoblog a {'.$link_style.$eol.'}'.$eol;
+				$custom_css .= '.login #nav {'.$link_text_color.$eol.$tab.'text-shadow: none !important;'.$eol.'}'.$eol;
+				$custom_css .= '#login_error a,'.$eol.'.login #nav a,'.$eol.'.login #backtoblog a {'.$link_style.$eol.'}'.$eol;
 				
 			endif;
-			if(!empty($hover_style)) parent::$styles .= '#login_error a:hover,'.$eol.'.login #nav a:hover,'.$eol.'.login #backtoblog a:hover {'.$hover_style.$eol.'}'.$eol;
-			if(!empty($button_style)) parent::$styles .= '#wp-submit.button-primary {'.$button_style.$eol.'}'.$eol;
-			if(!empty($btn_hover_style)) parent::$styles .= '#wp-submit.button-primary:hover {'.$btn_hover_style.$eol.'}'.$eol;
+			if(!empty($hover_style)) $custom_css .= '#login_error a:hover,'.$eol.'.login #nav a:hover,'.$eol.'.login #backtoblog a:hover {'.$hover_style.$eol.'}'.$eol;
+			if(!empty($button_style)) $custom_css .= '#wp-submit.button-primary {'.$button_style.$eol.'}'.$eol;
+			if(!empty($btn_hover_style)) $custom_css .= '#wp-submit.button-primary:hover {'.$btn_hover_style.$eol.'}'.$eol;
 			
 		endif;
+		
+		parent::$login_styles .= (!self::$options['compress']) ? $custom_css : str_replace(array("\r\n", "\n", "\r", "\t"), '', $custom_css);
 
 	}
 	

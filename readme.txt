@@ -3,8 +3,8 @@ Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof
 Requires at least: 3.1
-Tested up to: 3.9
-Stable tag: 2.0
+Tested up to: 3.9.1
+Stable tag: 2.1
 
 Style your login page differently.
 
@@ -42,6 +42,11 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 2.1 =
+
+* Colorpicker works again
+* DSS compressable
 
 = 2.0 =
 
@@ -204,3 +209,7 @@ Debug option added
 = 2.0 =
 
 Complete overhaule of the whole plugin with more functionalty
+
+= 2.1 =
+
+Colorpicker works again; DSS compressable

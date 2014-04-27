@@ -75,7 +75,7 @@ class CLP_Admin extends A5_OptionPage {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, true );
 		
-		wp_register_script('a5-color-picker-script', plugins_url('custom-login-page/js/color-picker.js'), array('iris'), '1.0', true);
+		wp_register_script('a5-color-picker-script', plugins_url('custom-login-page/color-picker.js'), array('wp-color-picker'), '1.0', true);
 		wp_enqueue_script('a5-color-picker-script');
 		
 	}
@@ -104,6 +104,8 @@ class CLP_Admin extends A5_OptionPage {
 		add_settings_field('clp_hide_backlink', __('Hide back to block link.', self::language_file), array(&$this, 'hide_backlink_input'), 'clp_hide', 'clp_options');
 		
 		add_settings_section('clp_options', false, array(&$this, 'clp_debug_section'), 'clp_debug');
+		
+		add_settings_field('clp_compress', __('Compress Style Sheet:', self::language_file), array(&$this, 'compress_field'), 'clp_debug', 'clp_options', array(__('Click here to compress the style sheet.', self::language_file)));
 		
 		add_settings_field('clp_debug', __('Check, to write styles inline instead of to a virtual CSS file.', self::language_file), array(&$this, 'debug_input'), 'clp_debug', 'clp_options');
 		
@@ -389,6 +391,12 @@ class CLP_Admin extends A5_OptionPage {
 	function clp_debug_section() {
 		
 		self::tag_it(__('There seem to be problems with the virtual stylesheet in some environments. By choosing to write the styles inline, those can be avoided.).', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function compress_field($labels) {
+		
+		a5_checkbox('compress', 'clp_options[compress]', @self::$options['compress'], $labels[0]);
 		
 	}
 	
@@ -1443,6 +1451,7 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['error_custom_message'] = trim($input['error_custom_message']);
 					self::$options['hide_nav'] = (@$input['hide_nav']) ? true : false;
 					self::$options['hide_backlink'] = (@$input['hide_backlink']) ? true : false;
+					self::$options['compress'] = (@$input['compress']) ? true : false;
 					self::$options['inline'] = (@$input['inline']) ? true : false;
 					
 					break;
