@@ -5,7 +5,7 @@
  * Class A5 FormField
  *
  * @ A5 Plugin Framework
- * Version: 0.9.7 alpha
+ * Version: 0.99 beta
  *
  * Gets all sort of input fields for plugins by Atelier 5 
  *
@@ -211,6 +211,7 @@ function a5_textarea($field_id, $field_name, $value = false, $label = false, $at
 	echo $textarea->formfield;
 }
 
+
 /**
  *
  * function to get checkbox
@@ -219,7 +220,7 @@ function a5_textarea($field_id, $field_name, $value = false, $label = false, $at
  
 function a5_checkbox($field_id, $field_name, $value = false, $label = false, $attributes = false, $checked = false, $echo = true) {
 	
-	if (false == $checked) :
+	if (false === $checked) :
 		
 		$checked = $value;
 		
@@ -829,17 +830,17 @@ function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = fa
 	
 	foreach($item_options as $options) :
 	
-		if (!isset($options[4])) :
+		if (!array_key_exists(5, $options)) :
 			
-			$options[4] = $options[2];
+			$options[5] = $options[2];
 			
 			$options[2] = true;
 			
 		endif;
 		
-		if ($options[4] == $options[2]) $options[5]['checked'] = 'checked';
+		if ($options[5] == $options[2]) $options[4]['checked'] = 'checked';
 		
-		$attributes = (empty($options[5])) ? array() : (array) $options[5]; 
+		$attributes = (empty($options[4])) ? array() : (array) $options[4]; 
 		
 		$args = array ( 'type' => 'checkbox',
 						'field_id' => $options[0],
@@ -848,7 +849,7 @@ function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = fa
 						'label' => $options[3],
 						'attributes' => $attributes
 						);
-						
+		# a5_checkbox($field_id / $options[0], $field_name / $options[1], [$value / $options[2]], [$label / $options[3]], [array($attributes) / $options[4]], [$checked / $options[5]], [$echo / $options[6]])				
 		$checkbox = new A5_FormField($args);
 		
 		$boxes .= $checkbox->formfield;
@@ -890,6 +891,10 @@ function a5_radiogroup($fieldset_id, $fieldset_name, $item_options, $legend = fa
 	
 	$eol = "\r\n";
 	
+	$boxes = '';
+	
+	$atts = '';
+	
 	if ($fieldset_id) $attributes['id'] = $fieldset_id;
 	if ($fieldset_name) $attributes['name'] = $fieldset_name;
 	
@@ -899,27 +904,29 @@ function a5_radiogroup($fieldset_id, $fieldset_name, $item_options, $legend = fa
 	
 	foreach($item_options as $options) :
 	
-		if (false == $options[4]) :
+		if (!array_key_exists(5, $options)) :
 			
-			$options[4] = $options[2];
+			$options[5] = $options[2];
 			
 			$options[2] = true;
 			
 		endif;
 		
-		if ($options[4] == $options[2]) $options[5]['checked'] = 'checked';
+		if ($options[5] == $options[2]) $options[4]['checked'] = 'checked';
+		
+		$attributes = (empty($options[4])) ? array() : (array) $options[4]; 
 		
 		$args = array ( 'type' => 'radio',
 						'field_id' => $options[0],
 						'field_name' => $options[1],
 						'value' => $options[2],
 						'label' => $options[3],
-						'attributes' => (array) $options[5]
+						'attributes' => $attributes
 						);
 						
 		$radio = new A5_FormField($args);
 		
-		$radios .= $radio->formfield;
+		$radios .= $checkbox->formfield;
 		
 	endforeach;
 	
