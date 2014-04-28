@@ -367,7 +367,7 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			$custom_css = (!self::$options['compress']) ? $eol.'/* CSS portion of the A5 Custom Login Page */'.$eol.$eol : '';
 			
 			if(!empty($body_style)) $custom_css .= 'html body.login {'.$body_style.$eol.'}'.$eol;
-			if(!empty($h1_style)) $custom_css .= 'body.login div#login h1,'.$eol.'body.login div#login h1 a {'.$h1_style.$eol.'}'.$eol;
+			if(!empty($h1_style)) $custom_css .= 'body.login div#login h1 a {'.$h1_style.$eol.'}'.$eol;
 			if(!empty($logindiv_style)) parent::$login_styles .= '#login {'.$logindiv_style.$eol.'}'.$eol;
 			if(!empty($loginform_style)) $custom_css .= '.login form {'.$loginform_style.$eol.'}'.$eol;
 			if(!empty($label_style)) $custom_css .= '#loginform label,'.$eol.'#lostpasswordform label,'.$eol.'#registerform label {'.$label_style.'}'.$eol;
