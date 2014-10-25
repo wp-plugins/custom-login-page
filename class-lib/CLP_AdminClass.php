@@ -18,22 +18,11 @@ class CLP_Admin extends A5_OptionPage {
 	function __construct($multisite) {
 		
 		add_action('admin_init', array(&$this, 'initialize_settings'));
-		#add_action('contextual_help', array(&$this, 'add_help_text'), 10, 3);
+		add_action('contextual_help', array(&$this, 'add_help_text'));
 		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));	
+		add_action('admin_menu', array(&$this, 'add_admin_menu'));
 		
-		if ($multisite) :
-		
-			add_action('network_admin_menu', array(&$this, 'add_site_admin_menu'));
-				
-			self::$options = get_site_option('clp_options');
-			
-		else :
-			
-			add_action('admin_menu', array(&$this, 'add_admin_menu'));
-		
-			self::$options = get_option('clp_options');
-			
-		endif;
+		self::$options = ($multisite) ? get_site_option('clp_options') : get_option('clp_options');
 		
 	}
 	
@@ -44,18 +33,9 @@ class CLP_Admin extends A5_OptionPage {
 	 */
 	function add_admin_menu() {
 		
-		add_theme_page('A5 Custom Login Page', '<img alt="" src="'.plugins_url('custom-login-page/img/a5-icon-11.png').'"> A5 Custom Login Page', 'administrator', 'clp-settings', array(&$this, 'build_options_page'));
+		add_menu_page('A5 Custom Login', 'A5 Custom Login', 'administrator', 'clp-settings', array(&$this, 'build_options_page'), plugins_url('custom-login-page/img/a5-icon-16.png'), 62);
 		
-	}
-	
-	/**
-	 *
-	 * Add menu page for multisite
-	 *
-	 */
-	function add_site_admin_menu() {
-		
-		add_menu_page('A5 Custom Login Page', 'A5 Custom Login Page', 'administrator', 'clp-settings', array(&$this, 'build_options_page'), plugins_url('custom-login-page/img/a5-icon-16.png'));
+		add_submenu_page('clp-settings', 'Custom Login Page', 'Custom Login Page', 'administrator', 'clp-settings', array(&$this, 'build_options_page'));
 		
 	}
 	
@@ -66,9 +46,11 @@ class CLP_Admin extends A5_OptionPage {
 	 */
 	function enqueue_scripts($hook){
 		
-		if ('appearance_page_clp-settings' != $hook && 'toplevel_page_clp-settings' != $hook) return;
+		if ('toplevel_page_clp-settings' != $hook) return;
 		
 		wp_enqueue_script('dashboard');
+		
+		if (wp_is_mobile()) wp_enqueue_script('jquery-touch-punch');
 		
 		// getting the build in iris color picker
 		
@@ -82,9 +64,43 @@ class CLP_Admin extends A5_OptionPage {
 	
 	/**
 	 *
+	 * Adding Contextual Help
+	 *
+	 */
+	function add_help_text() {
+		
+		$screen = get_current_screen();
+		
+		if ($screen->id != 'toplevel_page_clp-settings') return;
+		
+		$content = self::tag_it(__('In these settings you will be guided step by step through the process of styling your login page. The basic options are very foolproof but also very limited.', self::language_file), 'p');
+		$content .= self::tag_it(__('If you are familiar with coding your own css, you can use only the css tab to write your entire style sheet there. Next to the input for the css, you find a help box with all the elements on the page that you can style.', self::language_file), 'p');
+		if (!is_multisite()) $content .= self::tag_it(__('There is also a priview. So, you just can play around a bit and after saving the settings see, how it looks. No need to have two browser windows open.', self::language_file), 'p');
+		
+		$screen->add_help_tab( array(
+			'id'      => 'clp-general-help',
+			'title'   => __('General'),
+			'content' => $content,
+		));
+		
+		$content = self::tag_it(sprintf(__('With the margin of the logo, you can position the logo more precisely. Give a CSS value here, i.e. %s to locate it 180 px left.', self::language_file), '&#39;0 0 0 -180px&#39;'), 'p');
+		$content .= self::tag_it(sprintf(__('With the padding of the logo, you can position the shadow more precisely. Give a CSS value here, i.e. %s to get rid of it completely.', self::language_file), '&#39;0 0 0 -180px&#39;'), 'p');
+		
+		$screen->add_help_tab( array(
+			'id'      => 'clp-logo-help',
+			'title'   => __('Logo', self::language_file),
+			'content' => $content,
+		));
+		
+		
+	}
+	
+	/**
+	 *
 	 * Initialize the admin screen of the plugin
 	 *
 	 */
+	 
 	function initialize_settings() {
 		
 		register_setting('clp_options', 'clp_options', array(&$this, 'validate'));
@@ -97,18 +113,6 @@ class CLP_Admin extends A5_OptionPage {
 		
 		add_settings_field('clp_error_custom_message', __('Error Message', self::language_file), array(&$this, 'error_custom_message_input'), 'clp_message', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_hide_section'), 'clp_hide');
-		
-		add_settings_field('clp_hide_nav', __('Hide register and lost password links.', self::language_file), array(&$this, 'hide_nav_input'), 'clp_hide', 'clp_options');
-		
-		add_settings_field('clp_hide_backlink', __('Hide back to block link.', self::language_file), array(&$this, 'hide_backlink_input'), 'clp_hide', 'clp_options');
-		
-		add_settings_section('clp_options', false, array(&$this, 'clp_debug_section'), 'clp_debug');
-		
-		add_settings_field('clp_compress', __('Compress Style Sheet:', self::language_file), array(&$this, 'compress_field'), 'clp_debug', 'clp_options', array(__('Click here to compress the style sheet.', self::language_file)));
-		
-		add_settings_field('clp_debug', __('Check, to write styles inline instead of to a virtual CSS file.', self::language_file), array(&$this, 'debug_input'), 'clp_debug', 'clp_options');
-		
 		add_settings_section('clp_options', __('Export Settings', self::language_file), array(&$this, 'clp_export_section'), 'clp_export');
 		
 		add_settings_field('clp_export', __('Download a file with your settings', self::language_file), array(&$this, 'export_input'), 'clp_export', 'clp_options');
@@ -116,6 +120,28 @@ class CLP_Admin extends A5_OptionPage {
 		add_settings_section('clp_options', __('Import Settings', self::language_file), array(&$this, 'clp_import_section'), 'clp_import');
 		
 		add_settings_field('clp_import', __('This will overlay any existing setting, you already have.', self::language_file), array(&$this, 'import_input'), 'clp_import', 'clp_options');
+		
+		add_settings_field('clp_impex_resize', false, array(&$this, 'impex_resize_field'), 'clp_import', 'clp_options');
+		
+		// advanced tab
+		
+		add_settings_section('clp_options', false, array(&$this, 'clp_custom_redirect_section'), 'clp_redirect');
+		
+		add_settings_field('clp_custom_redirect', __('Redirect per User Role', self::language_file), array(&$this, 'custom_redirect_input'), 'clp_redirect', 'clp_options');
+		
+		add_settings_section('clp_options', false, array(&$this, 'clp_hide_section'), 'clp_hide');
+		
+		add_settings_field('clp_hide_nav', __('Hide register and lost password links.', self::language_file), array(&$this, 'hide_nav_input'), 'clp_hide', 'clp_options');
+		
+		add_settings_field('clp_hide_backlink', __('Hide back to blog link.', self::language_file), array(&$this, 'hide_backlink_input'), 'clp_hide', 'clp_options');
+		
+		add_settings_section('clp_options', false, array(&$this, 'clp_debug_section'), 'clp_debug');
+		
+		add_settings_field('clp_compress', __('Compress Style Sheet:', self::language_file), array(&$this, 'compress_field'), 'clp_debug', 'clp_options', array(__('Click here to compress the style sheet.', self::language_file)));
+		
+		add_settings_field('clp_debug', __('Check, to write styles inline instead of to a virtual CSS file.', self::language_file), array(&$this, 'debug_input'), 'clp_debug', 'clp_options');
+		
+		if (isset(self::$options['inline']) && !empty(self::$options['inline'])) add_settings_field('clp_priority', __('Give a value for the priority of the style inline (this can help with other plugins overriding our styles).', self::language_file), array(&$this, 'priority_input'), 'clp_debug', 'clp_options');
 		
 		// body and button tab
 		
@@ -341,9 +367,25 @@ class CLP_Admin extends A5_OptionPage {
 		
 		add_settings_field('clp_css', __('Own CSS', self::language_file), array(&$this, 'css_input'), 'clp_css', 'clp_options');
 		
+		add_settings_field('clp_css_override', __('Override other styles', self::language_file), array(&$this, 'override_input'), 'clp_css', 'clp_options', array(__('By checking this, all other styles will be replaced by your CSS. Otherwise, your CSS is additional.', self::language_file)));
+		
+		add_settings_field('clp_css_resize', false, array(&$this, 'css_resize_field'), 'clp_css', 'clp_options');
+		
 		add_settings_section('clp_options', __('SVG', self::language_file), array(&$this, 'clp_svg_section'), 'clp_svg');
 		
 		add_settings_field('clp_svg', __('Some SVG', self::language_file), array(&$this, 'svg_input'), 'clp_svg', 'clp_options');
+		
+		// html tab
+		
+		add_settings_section('clp_options', __('Aditional html snippets', self::language_file), array(&$this, 'clp_html_section'), 'clp_html');
+		
+		add_settings_field('clp_login_message', __('Above Form', self::language_file), array(&$this, 'login_message_input'), 'clp_html', 'clp_options');
+		
+		add_settings_field('clp_login_form', __('Inside Form', self::language_file), array(&$this, 'login_form_input'), 'clp_html', 'clp_options');
+		
+		add_settings_field('clp_login_footer', __('Beneath Form', self::language_file), array(&$this, 'login_footer_input'), 'clp_html', 'clp_options');
+		
+		add_settings_field('clp_html_resize', false, array(&$this, 'html_resize_field'), 'clp_html', 'clp_options');
 	
 	}
 	
@@ -367,6 +409,68 @@ class CLP_Admin extends A5_OptionPage {
 	function error_custom_message_input() {
 		
 		a5_text_field('error_custom_message', 'clp_options[error_custom_message]', @self::$options['error_custom_message'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		
+	}
+	
+	function clp_export_section() {
+		
+		self::tag_it(__('Export the current A5 Custom Login Page settings and download them as a text file. The content of this text file can be imported into this or another A5 Custom Login Page installation:', self::language_file), 'p', 1, false, true);
+		self::tag_it(sprintf(_x('The file will be named %s. After you downloaded it, you can (but don&#39;t need to) rename the file to something more meaningful.', '%s is the file name', self::language_file), '<code>a5-clp-' . str_replace('.','-', $_SERVER['SERVER_NAME']) . '-' . date('y') . date('m') . date('d') . '.txt</code>'), 'p', 1, false, true);
+		
+	}
+	
+	function export_input() {
+	
+		echo '<a class="button" href="' . get_bloginfo('url') . '/?clpfile=export" id="settings-download"><strong>'. __('Export &amp; Download', self::language_file) .'</strong> A5 Custom Login Page Settings File</a>';
+	
+	}
+	
+	function clp_import_section() {
+		
+		self::tag_it(__('Enter the content of your text file with the settings here.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function import_input() {
+	
+		a5_textarea('import', 'clp_options[import]', false, false, array('style' => 'height: 200px; min-width: 100%;'));
+	
+	}
+	
+	function impex_resize_field() {
+		
+		a5_resize_textarea(array('import'), true);
+		
+	}
+	
+	// advanced tab
+	
+	function clp_custom_redirect_section() {
+	
+		self::tag_it(__('You can enter redirections for each user role of the blog.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('If you leave a field empty, the plugin will redirect to the default page.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function custom_redirect_input() {
+		
+		$userroles = get_editable_roles();
+		
+		$rows = '';
+			
+		foreach ($userroles as $role => $details) :
+		
+			$nicename = translate_user_role($details['name']);
+			
+			$cells = self::tag_it('<label for="custom_redirect-'.$role.'">'.$nicename.'</label>', 'td', 2);
+			
+			$cells .= self::tag_it(a5_url_field('custom_redirect-'.$role, 'clp_options[custom_redirect]['.$role.']', @self::$options['custom_redirect'][$role], false, array('style' => 'min-width: 350px; max-width: 500px;', 'placeholder' => 'http://example.com'), false), 'td', 2);
+			
+			$rows .= self::tag_it($cells, 'tr', 1);
+			
+		endforeach;
+		
+		self::tag_it($rows, 'table', 0, false, true);
 		
 	}
 	
@@ -406,28 +510,9 @@ class CLP_Admin extends A5_OptionPage {
 	
 	}
 	
-	function clp_export_section() {
-		
-		self::tag_it(__('Export the current A5 Custom Login Page settings and download them as a text file. The content of this text file can be imported into this or another A5 Custom Login Page installation:', self::language_file), 'p', 1, false, true);
-		self::tag_it(sprintf(_x('The file will be named %s. After you downloaded it, you can (but don&#39;t need to) rename the file to something more meaningful.', '%s is the file name', self::language_file), '<code>a5-clp-' . str_replace('.','-', $_SERVER['SERVER_NAME']) . '-' . date('y') . date('m') . date('d') . '.txt</code>'), 'p', 1, false, true);
-		
-	}
+	function priority_input() {
 	
-	function export_input() {
-	
-		echo '<a class="button" href="' . get_bloginfo('url') . '/?clpfile=export" id="settings-download"><strong>'. __('Export &amp; Download', self::language_file) .'</strong> A5 Custom Login Page Settings File</a>';
-	
-	}
-	
-	function clp_import_section() {
-		
-		self::tag_it(__('Enter the content of your text file with the settings here.', self::language_file), 'p', 1, false, true);
-		
-	}
-	
-	function import_input() {
-	
-		a5_textarea('import', 'clp_options[import]', false, false, array('cols' => 80, 'rows' => 10, 'style' => 'min-width: 350px; max-width: 500px;'));
+		a5_number_field('priority', 'clp_options[priority]', @self::$options['priority'], false, array('step' => 10));
 	
 	}
 	
@@ -551,7 +636,7 @@ class CLP_Admin extends A5_OptionPage {
 		
 	function link_url_input() {
 		
-		a5_url_field('url', 'clp_options[url]', @self::$options['url'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		a5_url_field('url', 'clp_options[url]', @self::$options['url'], false, array('style' => 'min-width: 350px; max-width: 500px;', 'placeholder' => home_url('/')));
 		
 	}
 	
@@ -565,8 +650,6 @@ class CLP_Admin extends A5_OptionPage {
 		
 		self::tag_it(__('If your logo is larger than the default WP-logo (274px by 63px), you can enter the width and the height of it here.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file), 'p', 1, false, true);
-		self::tag_it(sprintf(__('With the margin of the logo, you can position the logo more precisely. Give a CSS value here, i.e. %s to locate it 180 px left.', self::language_file), '&#39;0 0 0 -180px&#39;'), 'p', 1, false, true);
-		self::tag_it(sprintf(__('With the padding of the logo, you can position the shadow more precisely. Give a CSS value here, i.e. %s to get rid of it completely.', self::language_file), '&#39;0 0 0 -180px&#39;'), 'p', 1, false, true);
 		
 	}
 	
@@ -1099,16 +1182,22 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function clp_css_section() {
 		
-		self::tag_it(__('Here you can enter a whole style sheet instead of going through all the options of the plugin.', self::language_file), 'p', 1, false, true);
-		self::tag_it(__('This gives you much more freedom with styling your login screen than the rather foolproof but very limited options .', self::language_file), 'p', 1, false, true);
-		self::tag_it(__('If you enter anything at all here, it will overwrite the rest of the options. You can of course copy the style sheet written by the plugin, paste it here and start finetuning.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Here you can enter some css. You either can enter an entire style sheet or just some additional css.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('This gives you much more freedom with styling your login widget than the rather foolproof but very limited options .', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can of course copy the style sheet written by the plugin, paste it here and start finetuning.', self::language_file), 'p', 1, false, true);
 		
 	}
 	
 	function css_input() {
 	
-		a5_textarea('css', 'clp_options[css]', @self::$options['css'], false, array('rows' => 15, 'cols' => 100, 'style' => 'min-width: 350px; max-width: 750px;'));
+		a5_textarea('css', 'clp_options[css]', @self::$options['css'], false, array('style' => 'height: 200px; min-width: 100%;'));
 	
+	}
+	
+	function override_input($labels) {
+		
+		a5_checkbox('override', 'clp_options[override]', @self::$options['override'], $labels[0]);
+		
 	}
 	
 	function clp_svg_section() {
@@ -1119,8 +1208,47 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function svg_input() {
 	
-		a5_textarea('svg', 'clp_options[svg]', @self::$options['svg'], false, array('rows' => 15, 'cols' => 100, 'style' => 'min-width: 350px; max-width: 750px;'));
+		a5_textarea('svg', 'clp_options[svg]', @self::$options['svg'], false, array('style' => 'height: 200px; min-width: 100%;'));
 	
+	}
+	
+	function css_resize_field() {
+		
+		a5_resize_textarea(array('css', 'svg'), true);
+		
+	}
+	
+	// html tab
+	
+	function clp_html_section() {
+		
+		self::tag_it(__('If you want to have some additional html in your login page, there are three places to put it. Above the form, in the form and under it.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can use the additional css to style the html snippets that you enter here.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function login_message_input() {
+	
+		a5_textarea('login_message', 'clp_options[login_message]', @self::$options['login_message'], false, array('style' => 'height: 200px; min-width: 100%;'));
+	
+	}
+	
+	function login_form_input() {
+	
+		a5_textarea('login_form', 'clp_options[login_form]', @self::$options['login_form'], false, array('style' => 'height: 200px; min-width: 100%;'));
+	
+	}
+	
+	function login_footer_input() {
+	
+		a5_textarea('login_footer', 'clp_options[login_footer]', @self::$options['login_footer'], false, array('style' => 'height: 200px; min-width: 100%;'));
+	
+	}
+	
+	function html_resize_field() {
+		
+		a5_resize_textarea(array('login_message', 'login_form', 'login_footer'), true);
+		
 	}
 	
 	/**
@@ -1165,6 +1293,7 @@ class CLP_Admin extends A5_OptionPage {
 		settings_errors();
 		
 		$tabs ['main_tab'] = array( 'class' => ($active == 'main_tab') ? ' nav-tab-active' : '', 'text' => __('General Options', self::language_file));
+		$tabs ['advanced_tab'] = array( 'class' => ($active == 'advanced_tab') ? ' nav-tab-active' : '', 'text' => __('Advanced Options', self::language_file));
 		$tabs ['body_tab'] = array( 'class' => ($active == 'body_tab') ? ' nav-tab-active' : '', 'text' => __('Body & Submit Button', self::language_file));
 		$tabs ['logo_tab'] = array( 'class' => ($active == 'logo_tab') ? ' nav-tab-active' : '', 'text' => __('Logo', self::language_file));
 		$tabs ['logindiv_tab'] = array( 'class' => ($active == 'logindiv_tab') ? ' nav-tab-active' : '', 'text' => __('Login Container', self::language_file));
@@ -1172,6 +1301,8 @@ class CLP_Admin extends A5_OptionPage {
 		$tabs ['message_tab'] = array( 'class' => ($active == 'message_tab') ? ' nav-tab-active' : '', 'text' => __('Messages & Input Fields', self::language_file));
 		$tabs ['link_tab'] = array( 'class' => ($active == 'link_tab') ? ' nav-tab-active' : '', 'text' => __('Links', self::language_file));
 		$tabs ['css_tab'] = array( 'class' => ($active == 'css_tab') ? ' nav-tab-active' : '', 'text' => __('CSS', self::language_file));
+		$tabs ['html_tab'] = array( 'class' => ($active == 'html_tab') ? ' nav-tab-active' : '', 'text' => __('Additional HTML', self::language_file));
+		if (!is_multisite()) $tabs ['preview_tab'] = array( 'id' => 'prev', 'class' => ($active == 'preview_tab') ? ' nav-tab-active' : ' thickbox', 'text' => __('Preview'));
 		
 		$args = array(
 			'page' => 'clp-settings',
@@ -1192,41 +1323,40 @@ class CLP_Admin extends A5_OptionPage {
 		a5_hidden_field('tab', 'clp_options[tab]', $active, true);
 		
 		settings_fields('clp_options');
+		
+		if (!is_multisite()) add_thickbox();
 
 		// the actual option tabs
 		
 		if ($active == 'main_tab') :
 		
-			self::open_tab('clp', 'general');
+			self::open_tab();
 			
-			self::open_draggable(__('Logged Out and Error Messages', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Logged Out and Error Messages', self::language_file), 'main-options', 'clp_message'));
 			
-			do_settings_sections('clp_message');
+			self::sortable('middle', self::postbox(__('Import / Export', self::language_file), 'impex', array('clp_export', 'clp_import')));
 			
-			self::close_draggable();
-			
-			self::open_draggable(__('Hide Links', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_hide');
-			
-			self::close_draggable();
-			
-			self::open_draggable(__('Debug dynamical CSS', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_debug');
-			
-			self::close_draggable();
-			
-			self::open_draggable(__('Import / Export', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_export');
-			do_settings_sections('clp_import');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
 			
-			if (WP_DEBUG === true) $this->debug_info();
+			self::close_tab();
+			
+		endif;
+		
+		if ($active == 'advanced_tab') :
+		
+			self::open_tab();
+			
+			self::sortable('top', self::postbox(__('Custom Redirects', self::language_file), 'redirect', 'clp_redirect'));
+			
+			self::sortable('middle', self::postbox(__('Hide Links', self::language_file), 'hide-links', 'clp_hide'));
+			
+			self::sortable('bottom', self::postbox(__('Debug dynamical CSS', self::language_file), 'debug-css', 'clp_debug'));
+			
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
+			
+			submit_button();
 			
 			self::close_tab();
 			
@@ -1234,23 +1364,15 @@ class CLP_Admin extends A5_OptionPage {
 		
 		if ($active == 'body_tab') :
 		
-			self::open_tab('clp', 'body');
+			self::open_tab();
 			
-			self::open_draggable(__('Body', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Body', self::language_file), 'body', 'clp_body'));
 			
-			do_settings_sections('clp_body');
+			self::sortable('middle', self::postbox(__('Submit Button', self::language_file), 'submit-button', 'clp_button'));
 			
-			self::close_draggable();
-			
-			self::open_draggable(__('Submit Button', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_button');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
-			
-			if (WP_DEBUG === true) $this->debug_info();
 			
 			self::close_tab();
 			
@@ -1258,53 +1380,33 @@ class CLP_Admin extends A5_OptionPage {
 		
 		if ($active == 'logo_tab') :
 		
-			self::open_tab('clp', 'logo');
+			self::open_tab();
 			
-			self::open_draggable(__('Logo of the Login Screen', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Logo of the Login Screen', self::language_file), 'logo', 'clp_logo'));
 			
-			do_settings_sections('clp_logo');
+			self::sortable('middle', self::postbox(__('Position and Size of the Logo', self::language_file), 'logo-pos', 'clp_logo_size'));
 			
-			self::close_draggable();
+			self::sortable('bottom', self::postbox(__('Styling of the Logo', self::language_file), 'logo-style', 'clp_logo_style'));
 			
-			self::open_draggable(__('Position and Size of the Logo', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_logo_size');
-			
-			self::close_draggable();
-			
-			self::open_draggable(__('Styling of the Logo', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_logo_style');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
 			
-			if (WP_DEBUG === true) $this->debug_info();
-			
-			self::close_tab();
+			self::close_tab();;
 			
 		endif;
 		
 		if ($active == 'logindiv_tab') :
 		
-			self::open_tab('clp', 'logindiv');
+			self::open_tab();
 			
-			self::open_draggable(__('Login Container', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Login Container', self::language_file), 'login', 'clp_logindiv'));
 			
-			do_settings_sections('clp_logindiv');
+			self::sortable('middle', self::postbox(__('Position and Size of the Login Container', self::language_file), 'login-pos', 'clp_logindiv_pos'));
 			
-			self::close_draggable();
-			
-			self::open_draggable(__('Position and Size of the Login Container', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_logindiv_pos');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
-			
-			if (WP_DEBUG === true) $this->debug_info();
 			
 			self::close_tab();
 			
@@ -1314,15 +1416,11 @@ class CLP_Admin extends A5_OptionPage {
 		
 			self::open_tab('clp', 'loginform');
 			
-			self::open_draggable(__('Login Form', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Login Form', self::language_file), 'form', 'clp_loginform'));
 			
-			do_settings_sections('clp_loginform');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
-			
-			if (WP_DEBUG === true) $this->debug_info();
 			
 			self::close_tab();
 			
@@ -1330,29 +1428,17 @@ class CLP_Admin extends A5_OptionPage {
 		
 		if ($active == 'message_tab') :
 		
-			self::open_tab('clp', 'message');
+			self::open_tab();
 			
-			self::open_draggable(__('Logout Message', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Logout Message', self::language_file), 'message-logout', 'clp_logout_message'));
 			
-			do_settings_sections('clp_logout_message');
+			self::sortable('middle', self::postbox(__('Error Message', self::language_file), 'message-error', 'clp_error_message'));
 			
-			self::close_draggable();
+			self::sortable('bottom', self::postbox(__('Input Fields', self::language_file), 'fields', 'clp_input'));
 			
-			self::open_draggable(__('Error Message', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_error_message');
-			
-			self::close_draggable();
-			
-			self::open_draggable(__('Input Fields', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_input');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
-			
-			if (WP_DEBUG === true) $this->debug_info();
 			
 			self::close_tab();
 			
@@ -1360,23 +1446,15 @@ class CLP_Admin extends A5_OptionPage {
 		
 		if ($active == 'link_tab') :
 		
-			self::open_tab('clp', 'link');
+			self::open_tab();
 			
-			self::open_draggable(__('Links', self::language_file), 'main-options');
+			self::sortable('top', self::postbox(__('Links', self::language_file), 'link', 'clp_link'));
 			
-			do_settings_sections('clp_link');
+			self::sortable('middel', self::postbox(__('Links Hover', self::language_file), 'link-hover', 'clp_hover'));
 			
-			self::close_draggable();
-			
-			self::open_draggable(__('Links Hover', self::language_file), 'main-options');
-			
-			do_settings_sections('clp_hover');
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
-			
-			if (WP_DEBUG === true) $this->debug_info();
 			
 			self::close_tab();
 			
@@ -1384,18 +1462,80 @@ class CLP_Admin extends A5_OptionPage {
 		
 		if ($active == 'css_tab') :
 		
-			self::open_tab('clp', 'css');
+			self::open_tab(2);
 			
-			self::open_draggable(__('CSS and SVG', self::language_file), 'debug-info');
+			self::sortable('top', self::postbox(__('CSS and SVG', self::language_file), 'css-svg', array('clp_css', 'clp_svg')));
 		
-			do_settings_sections('clp_css');
-			do_settings_sections('clp_svg'); 
-			
-			self::close_draggable();
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
 			submit_button();
 			
-			if (WP_DEBUG === true) $this->debug_info();
+			$elements = array('body.login', 
+				'body.login div#login',
+				'body.login div#login h1',
+				'body.login div#login h1 a',
+				'body.login div#login form#loginform',
+				'body.login div#login form#loginform p',
+				'body.login div#login form#loginform p label',
+				'body.login div#login form#loginform input',
+				'body.login div#login form#loginform input#user_login',
+				'body.login div#login form#loginform input#user_pass',
+				'body.login div#login form#loginform p.forgetmenot',
+				'body.login div#login form#loginform p.forgetmenot input#rememberme',
+				'body.login div#login form#loginform p.submit',
+				'body.login div#login form#loginform p.submit input#wp-submit',
+				'body.login div#login p#nav',
+				'body.login div#login p#nav a',
+				'body.login div#login p#backtoblog',
+				'body.login div#login p#backtoblog a');
+		
+			$content = self::tag_it(__('To be able to use your own css it is important to know, what elements you actually can style on the login page. In the list below you find all neccessary selectors for your style sheet.', self::language_file), 'p');
+			
+			$content .= self::tag_it(self::list_it($elements, false, false, false, false), 'b');
+			
+			$content .= self::tag_it(__('In order to override the original styles, your selectors have to be more precise than the original ones. By using the ones in the list exactly how they are there, you should be fine.', self::language_file), 'p');
+			
+			self::column('1');
+			
+			self::sortable('side_top', self::help_box($content, __('CSS Help', self::language_file)));
+			
+			$donationtext = self::tag_it(__('If you like the plugin and find it useful, you might think of rewarding the dozens of hours of work that were spent creating it.', self::language_file), 'p');
+			
+			self::sortable('side_middle', self::donation_box($donationtext, __('Donations', self::language_file), '32XGSBKTQNNHA', 'http%3A%2F%2Fwasistlos.waldemarstoffel.com%2Fplugins-fur-wordpress%2Fa5-custom-login-page'));
+			
+			self::close_tab();
+			
+		endif;
+		
+		if ($active == 'html_tab') :
+		
+			self::open_tab();
+			
+			self::sortable('top', self::postbox(__('HTML additions', self::language_file), 'html-additions', 'clp_html'));
+			
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
+			
+			submit_button();
+			
+			self::close_tab();
+			
+		endif;
+		
+		if ($active == 'preview_tab') :
+		
+			self::open_tab();
+			
+			echo self::open_sortable('top');
+			
+			echo self::open_postbox(__('Preview'), 'preview-result');
+			
+			echo '<iframe src="'.wp_login_url().'" sandbox="" style="width: 100%; height: 650px;"></iframe>';
+		
+			echo self::close_postbox();
+			
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
+			
+			echo self::close_sortable();
 			
 			self::close_tab();
 			
@@ -1405,10 +1545,9 @@ class CLP_Admin extends A5_OptionPage {
 	
 	/**
 	 *
-	 * Initialize the admin screen of the plugin
+	 * Validate the options and handle the import - export stuff
 	 *
 	 */
-	
 		
 	function validate($input) {
 		
@@ -1435,6 +1574,8 @@ class CLP_Admin extends A5_OptionPage {
 				
 				add_settings_error('clp_options', 'success-on-import', __('Settings successfully imported.', self::language_file), 'updated');
 				
+				$clp_error = true;
+				
 				return $options;
 			
 			endif;
@@ -1449,10 +1590,17 @@ class CLP_Admin extends A5_OptionPage {
 				
 					self::$options['logout_custom_message'] = trim($input['logout_custom_message']);
 					self::$options['error_custom_message'] = trim($input['error_custom_message']);
+					
+					break;
+					
+				case 'advanced_tab' :
+				
+					self::$options['custom_redirect'] = ($input['custom_redirect']);
 					self::$options['hide_nav'] = (@$input['hide_nav']) ? true : false;
 					self::$options['hide_backlink'] = (@$input['hide_backlink']) ? true : false;
 					self::$options['compress'] = (@$input['compress']) ? true : false;
 					self::$options['inline'] = (@$input['inline']) ? true : false;
+					self::$options['priority'] = @trim($input['priority']);
 					
 					break;
 					
@@ -1579,35 +1727,27 @@ class CLP_Admin extends A5_OptionPage {
 				case 'css_tab' :
 				
 					self::$options['css'] = trim($input['css']);
+					self::$options['override'] = (@$input['override']) ? true : NULL;
 					self::$options['svg'] = trim($input['svg']);
+				
+					break;
+					
+				case 'html_tab' :
+				
+					self::$options['login_message'] = trim($input['login_message']);
+					self::$options['login_form'] = trim($input['login_form']);
+					self::$options['login_footer'] = trim($input['login_footer']);
 				
 					break;
 			
 			endswitch;
 			
+			if (is_plugin_active_for_network(CLP_BASE)) add_settings_error('clp_options', 'settings_updated', __('Settings saved.'), 'updated');
+			
 			return self::$options;
 			
 		endif;
 	
-	}
-	
-	/**
-	 *
-	 * Output options for debugging
-	 *
-	 */
-	function debug_info() {
-	
-		self::open_draggable(__('Debug Info', self::language_file), 'debug-info');
-		
-		echo '<pre>';
-		
-		var_dump(self::$options);
-		
-		echo '</pre>';
-		
-		self::close_draggable();	
-		
 	}
 
 } // end of class

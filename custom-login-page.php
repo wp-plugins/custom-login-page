@@ -55,13 +55,17 @@ if (!class_exists('A5_DynamicFiles')) require_once CLP_PATH.'class-lib/A5_Dynami
 
 #loading plugin specific classes
 if (!class_exists('CLP_Admin')) require_once CLP_PATH.'class-lib/CLP_AdminClass.php';
+if (!class_exists('CLP_WidgetAdmin')) require_once CLP_PATH.'class-lib/CLP_AdminClassWidget.php';
 if (!class_exists('CLP_DynamicCSS')) require_once CLP_PATH.'class-lib/CLP_DynamicCSSClass.php';
+if (!class_exists('CLP_DynamicJS')) require_once CLP_PATH.'class-lib/CLP_DynamicJSClass.php';
+if (!class_exists('Custom_Login_Widget')) require_once CLP_PATH.'class-lib/CLP_WidgetClass.php';
+
 
 class A5_CustomLoginPage {
 	
 	private static $options;
 	
-	const language_file = 'custom-login-page', version = '1.9.1';
+	const language_file = 'custom-login-page', version = '2.2';
 	
 	function __construct(){
 		
@@ -69,7 +73,8 @@ class A5_CustomLoginPage {
 		register_deactivation_hook(__FILE__, array(&$this, '_uninstall'));	
 		
 		add_filter('plugin_row_meta', array(&$this, 'register_links'), 10, 2);
-		add_filter('plugin_action_links', array(&$this, 'plugin_action_links'), 10, 2);
+		
+		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
 		
 		if (is_multisite()) :
 		
@@ -83,9 +88,13 @@ class A5_CustomLoginPage {
 				
 					self::$options['version'] = self::version;
 					
+					self::$options['override'] = true;
+					
 					self::$options['multisite'] = true;
 					
 					update_site_option('clp_options', self::$options);
+					
+					add_site_option('clp_widget_options');
 					
 				endif;
 				
@@ -101,9 +110,13 @@ class A5_CustomLoginPage {
 						
 						self::$options['version'] = self::version;
 						
+						self::$options['override'] = true;
+						
 						self::$options['multisite'] = false;
 						
 						update_option('clp_options', self::$options);
+						
+						add_option('clp_widget_options');
 						
 					endif;
 					
@@ -123,9 +136,13 @@ class A5_CustomLoginPage {
 					
 					self::$options['version'] = self::version;
 					
+					self::$options['override'] = true;
+					
 					self::$options['multisite'] = false;
 					
 					update_option('clp_options', self::$options);
+					
+					add_option('clp_widget_options');
 					
 				endif;
 				
@@ -133,11 +150,14 @@ class A5_CustomLoginPage {
 		
 		endif;
 		
-		if (!empty(self::$options['url'])) add_filter('login_headerurl', array(&$this, 'clp_headerurl'));
-		if (!empty(self::$options['title'])) add_filter('login_headertitle', array(&$this, 'clp_headertitle'));
-		if (!empty(self::$options['error_custom_message'])) add_filter('login_errors', array(&$this, 'clp_custom_error'));
-		if (!empty(self::$options['logout_custom_message'])) add_filter('login_messages', array(&$this, 'clp_custom_logout'));
-		if (!empty(self::$options['svg'])) add_filter('login_message', array(&$this, 'clp_print_svg'));
+		if (!empty(self::$options['url'])) add_filter('login_headerurl', array(&$this, 'change_headerurl'));
+		if (!empty(self::$options['title'])) add_filter('login_headertitle', array(&$this, 'change_headertitle'));
+		if (!empty(self::$options['error_custom_message'])) add_filter('login_errors', array(&$this, 'custom_error'));
+		if (!empty(self::$options['logout_custom_message'])) add_filter('login_messages', array(&$this, 'custom_logout'));
+		if (!empty(self::$options['admin_redirect']) && !empty(self::$options['user_redirect'])) add_filter('login_redirect', array(&$this, 'login_redirect'), 10, 3);
+		if (!empty(self::$options['svg']) || !empty(self::$options['login_message'])) add_filter('login_message', array(&$this, 'print_login_message'));
+		if (!empty(self::$options['login_form'])) add_action('login_form', array(&$this, 'print_login_form'));
+		if (!empty(self::$options['login_footer'])) add_filter('login_footer', array(&$this, 'print_login_footer'));
 		
 		/**
 		 *
@@ -153,6 +173,8 @@ class A5_CustomLoginPage {
 		
 		$CLP_DynamicCSS = new CLP_DynamicCSS(self::$options['multisite']);
 		$CLP_Admin = new CLP_Admin(self::$options['multisite']);
+		$CLP_WidgetAdmin = new CLP_WidgetAdmin(self::$options['multisite']);
+		if (!is_multisite()) $CLP_DynamicJS = new CLP_DynamicJS();
 		
 	}	
 	
@@ -174,12 +196,14 @@ class A5_CustomLoginPage {
 	
 	}
 	
-	function plugin_action_links( $links, $file ) {
+	/* attach JavaScript file for textarea resizing */
+	function enqueue_scripts($hook) {
 		
-		if ($file == CLP_BASE) array_unshift($links, '<a href="'.admin_url( 'themes.php?page=clp-settings' ).'">'.__('Settings', self::language_file).'</a>');
-	
-		return $links;
-	
+		if ($hook != 'widgets.php' && $hook != 'post.php' && 'toplevel_page_clp-settings' != $hook && 'a5-custom-login_page_clp-widget-settings' != $hook) return;
+		
+		wp_register_script('ta-expander-script', plugins_url('ta-expander.js', __FILE__), array('jquery'), '3.0', true);
+		wp_enqueue_script('ta-expander-script');
+		
 	}
 	
 	/**
@@ -187,7 +211,7 @@ class A5_CustomLoginPage {
 	 * Changes the link behind the logo
 	 *
 	 */
-	function clp_headerurl() {
+	function change_headerurl() {
 		
 		return self::$options['url'];
 		
@@ -198,7 +222,7 @@ class A5_CustomLoginPage {
 	 * Changes the Title tag of the logo
 	 *
 	 */
-	function clp_headertitle() {
+	function change_headertitle() {
 		
 		return self::$options['title'];
 		
@@ -209,7 +233,7 @@ class A5_CustomLoginPage {
 	 * Changes the Error Message
 	 *
 	 */
-	function clp_custom_error() {
+	function custom_error() {
 		
 		return self::$options['error_custom_message'];
 		
@@ -220,7 +244,7 @@ class A5_CustomLoginPage {
 	 * Changes the Logout Message
 	 *
 	 */
-	function clp_custom_logout() {
+	function custom_logout() {
 	
 		return self::$options['logout_custom_message'];
 		
@@ -228,12 +252,56 @@ class A5_CustomLoginPage {
 	
 	/**
 	 *
-	 * Printing SVG above the login form
+	 * Redirect after login
 	 *
 	 */
-	function clp_print_svg() {
+	function login_redirect($redirect_to, $request, $user) {
 		
-			return self::$options['svg'];
+		//is there a user to check?
+		
+		global $user;
+		
+		if (isset($user->roles) && is_array($user->roles)) :
+		
+			$redirects = self::$options['custom_redirect'];
+		
+			foreach ($redirects as $role => $custom_redirect) :
+		
+				if (in_array($role, $user->roles) && !empty($custom_redirect)) return $custom_redirect;
+			
+			endforeach;
+			
+			return $redirect_to;
+		
+		else :
+			
+			return $redirect_to;
+		
+		endif;
+	
+	}
+
+	/**
+	 *
+	 * Printing the additional html
+	 *
+	 */
+	function print_login_message() {
+		
+		return @self::$options['svg'].@self::$options['login_message'];
+	
+	}
+	
+	function print_login_form() {
+		
+		echo self::$options['login_form'];
+	
+	}
+	
+	function print_login_footer() {
+		
+		echo self::$options['login_footer'];
+	
 	}
 
 	/**
@@ -255,10 +323,12 @@ class A5_CustomLoginPage {
 			$default['multisite'] = true;
 		
 			add_site_option('clp_options', $default);
+			add_site_option('clp_widget_options');
 			
 		else:
 		
 			add_option('clp_options', $default);
+			add_option('clp_widget_options');
 			
 		endif;
 	
@@ -276,10 +346,12 @@ class A5_CustomLoginPage {
 		if (is_multisite() && $screen->is_network) :
 		
 			delete_site_option('clp_options');
+			delete_site_option('clp_widget_options');
 			
 		else:
 		
 			delete_option('clp_options');
+			delete_option('clp_widget_options');
 			
 		endif;
 		
@@ -317,6 +389,23 @@ class A5_CustomLoginPage {
 			exit;
 		
 		endif;
+		
+		if ('export-widget' == $clpfile) :
+		
+			$options = (self::$options['multisite']) ? get_site_option('clp_widget_options') : get_option('clp_widget_options');
+		
+			$options['log'] = 'original A5 CLP Widget file';
+			
+			header('Content-Description: File Transfer');
+			header('Content-Disposition: attachment; filename="a5-clp-widget-' . str_replace('.','-', $_SERVER['SERVER_NAME']) . '-' . date('Y') . date('m') . date('d') . '.txt"');
+			header('Content-Type: text/plain; charset=utf-8');
+			
+			echo json_encode($options);
+			
+			exit;
+		
+		endif;
+		
 	}
 	
 } // end of class

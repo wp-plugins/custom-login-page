@@ -6,28 +6,36 @@
  *
  * Extending A5 Dynamic Files
  *
- * Presses the dynamical CSS of the A5 Custom Login Page into a virtual style sheet
+ * Presses the dynamical CSS of the A5 Custom Login Plugin into virtual style sheets
  *
  */
 
 class CLP_DynamicCSS extends A5_DynamicFiles {
 	
-	private static $options;
+	private static $options, $widget;
 	
 	function __construct($multisite) {
 		
+		// getting options and preparing the stylesheets
+		
 		self::$options = ($multisite) ? get_site_option('clp_options') : get_option('clp_options');
+		
+		self::$widget = ($multisite) ? get_site_option('clp_widget_options') : get_option('clp_widget_options');
 		
 		if (!isset(self::$options['inline'])) self::$options['inline'] = false;
 		
 		if (!isset(self::$options['compress'])) self::$options['compress'] = false;
 		
-		parent::A5_DynamicFiles('login', 'css', false, self::$options['inline']);
+		if (!isset(self::$options['priority'])) self::$options['priority'] = false;
 		
 		$eol = (self::$options['compress']) ? '' : "\r\n";
 		$tab = (self::$options['compress']) ? '' : "\t";
 		
-		if (isset(self::$options['css']) && !empty(self::$options['css'])) :
+		// part of the Custom Login Page
+		
+		parent::A5_DynamicFiles('login', 'css', 'all', false, self::$options['inline'], self::$options['priority']);
+		
+		if (isset(self::$options['css']) && !empty(self::$options['css']) && isset(self::$options['override'])) :
 		
 			$custom_css = (!self::$options['compress']) ? $eol.'/* CSS portion of the A5 Custom Login Page */'.$eol.$eol : '';
 		
@@ -121,6 +129,7 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			if (!empty(self::$options['logindiv_bg_color1'])) $logindiv_style .= $eol.$tab.'background-color: '.self::$options['logindiv_bg_color1'].';';
 			if (!empty(self::$options['logindiv_bg_color2'])) :
 				
+				$logindiv_style .= $eol.$tab.'background-clip: padding-box;';
 				$logindiv_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['logindiv_bg_color1'].'), to('.self::$options['logindiv_bg_color2'].'));';
 				$logindiv_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
 				$logindiv_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['logindiv_bg_color1'].', '.self::$options['logindiv_bg_color2'].');';
@@ -179,6 +188,7 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				if (!empty(self::$options['loginform_bg_color1'])) $loginform_style .= $eol.$tab.'background-color: '.self::$options['loginform_bg_color1'].';';
 				if (!empty(self::$options['loginform_bg_color2'])) :
 					
+					$loginform_style .= $eol.$tab.'background-clip: padding-box;';
 					$loginform_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['loginform_bg_color1'].'), to('.self::$options['loginform_bg_color2'].'));';
 					$loginform_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
 					$loginform_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['loginform_bg_color1'].', '.self::$options['loginform_bg_color2'].');';
@@ -334,7 +344,8 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				
 			endif;
 			if (!empty(self::$options['button_bg_color2'])) :
-				
+			
+				$button_style .= $eol.$tab.'background-clip: padding-box;';	
 				$button_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['button_bg_color1'].'), to('.self::$options['button_bg_color2'].')) !important;';
 				$button_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
 				$button_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['button_bg_color1'].', '.self::$options['button_bg_color2'].') !important;';
@@ -348,7 +359,9 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			if (!empty(self::$options['btn_hover_bg_color1'])) $btn_hover_style .= $eol.$tab.'background-color: '.self::$options['btn_hover_bg_color1'].' !important;';
 			if (!empty(self::$options['btn_hover_bg_color2'])) :
-				
+			
+			
+				$btn_hover_style .= $eol.$tab.'background-clip: padding-box;';	
 				$btn_hover_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['btn_hover_bg_color1'].'), to('.self::$options['btn_hover_bg_color2'].')) !important;';
 				$btn_hover_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
 				$btn_hover_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$options['btn_hover_bg_color1'].', '.self::$options['btn_hover_bg_color2'].') !important;';
@@ -390,7 +403,260 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 		endif;
 		
+		if (isset(self::$options['css']) && !empty(self::$options['css']) && !isset(self::$options['override'])) $custom_css .= self::$options['css'];
+		
 		parent::$login_styles .= (!self::$options['compress']) ? $custom_css : str_replace(array("\r\n", "\n", "\r", "\t"), '', $custom_css);
+		
+		// part of the Widget
+		
+		parent::A5_DynamicFiles('wp', 'css', 'all', false, self::$options['inline'], self::$options['priority']);
+		
+		// for preview in admin
+		
+		parent::A5_DynamicFiles('admin', 'css', 'all', array('a5-custom-login_page_clp-widget-settings'), self::$options['inline'], self::$options['priority']);
+		
+		if (isset(self::$widget['css']) && !empty(self::$widget['css']) && isset(self::$widget['override'])) :
+		
+			$widget_css = (!self::$options['compress']) ? $eol.'/* CSS portion of the A5 Custom Login Widget */'.$eol.$eol : '';
+		
+			$widget_css .= self::$widget['css'];
+		
+		else :
+		
+			# collecting variables
+			
+			# widget_custom_login_widget[id^="custom_login_widget"]
+			
+			$container_style = '';
+			$h_style = '';
+				
+			if (!empty(self::$widget['container_bg_color1'])) $container_style .= $eol.$tab.'background-color: '.self::$widget['container_bg_color1'].';';
+			if (!empty(self::$widget['container_bg_color2'])) :
+				
+				$container_style .= $eol.$tab.'background-clip: padding-box;';
+				$container_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$widget['container_bg_color1'].'), to('.self::$widget['container_bg_color2'].'));';
+				$container_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$widget['container_bg_color1'].', '.self::$widget['container_bg_color2'].');';
+				$container_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$widget['container_bg_color1'].', '.self::$widget['container_bg_color2'].');';
+				$container_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$widget['container_bg_color1'].', '.self::$widget['container_bg_color2'].');';
+				$container_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$widget['container_bg_color1'].', '.self::$widget['container_bg_color2'].');';
+				$container_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$widget['container_bg_color1'].', '.self::$widget['container_bg_color2'].');';
+				
+			endif;
+			if (!empty(self::$widget['container_transparency'])) :
+				$container_style .= $eol.$tab.'-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$widget['container_transparency'].')";';
+				$container_style .= $eol.$tab.'filter: alpha(Opacity='.self::$widget['container_transparency'].');';
+				$container_style .= $eol.$tab.'-moz-opacity: '.(self::$widget['container_transparency']/100).';';
+				$container_style .= $eol.$tab.'-khtml-opacity: '.(self::$widget['container_transparency']/100).';';
+				$container_style .= $eol.$tab.'opacity: '.(self::$widget['container_transparency']/100).';';
+			endif;
+			if (!empty(self::$widget['container_background'])) $container_style .= $eol.$tab.'background-image: url('.self::$widget['container_background'].');';
+			if (!empty(self::$widget['container_img_repeat'])) $container_style .= $eol.$tab.'background-repeat: '.self::$widget['container_img_repeat'].';';
+			if (!empty(self::$widget['container_img_pos'])) $container_style .= $eol.$tab.'background-position: '.self::$widget['container_img_pos'].';';
+			if (!empty(self::$widget['container_border_style'])) $container_style .= $eol.$tab.'border: '.self::$widget['container_border_style'].' '.self::$widget['container_border_width'].'px '.self::$widget['container_border_color'].';';
+			if (!empty(self::$widget['container_border_round'])) :
+				
+				$container_style .= $eol.$tab.'-webkit-border-radius: '.self::$widget['container_border_round'].'px;';
+				$container_style .= $eol.$tab.'-moz-border-radius: '.self::$widget['container_border_round'].'px;';
+				$container_style .= $eol.$tab.'border-radius: '.self::$widget['container_border_round'].'px;';
+				
+			endif;
+			if (isset(self::$widget['container_shadow_x']) && (!empty(self::$widget['container_shadow_x']) || self::$widget['container_shadow_x']=='0')) :
+				
+				$container_style .= $eol.$tab.'-webkit-box-shadow: '.self::$widget['container_shadow_x'].'px '.self::$widget['container_shadow_y'].'px '.self::$widget['container_shadow_softness'].'px '.self::$widget['container_shadow_color'].';';
+				$container_style .= $eol.$tab.'-moz-box-shadow: '.self::$widget['container_shadow_x'].'px '.self::$widget['container_shadow_y'].'px '.self::$widget['container_shadow_softness'].'px '.self::$widget['container_shadow_color'].';';
+				$container_style .= $eol.$tab.'box-shadow: '.self::$widget['container_shadow_x'].'px '.self::$widget['container_shadow_y'].'px '.self::$widget['container_shadow_softness'].'px '.self::$widget['container_shadow_color'].';';
+				
+			endif;
+			if (!empty(self::$widget['container_padding'])) $container_style .= $eol.$tab.'padding: '.self::$widget['container_padding'].';';
+			if (!empty(self::$widget['container_margin'])) $container_style .= $eol.$tab.'margin: '.self::$widget['container_margin'].';';
+			
+			if (!empty(self::$widget['container_text_color'])) :
+				
+				$container_style .= $eol.$tab.'color: '.self::$widget['container_text_color'].';';
+				$h_style .= $eol.$tab.'color: '.self::$widget['container_text_color'].' !important;';
+				
+			endif;
+			
+			# img a
+			
+			$widget_logo_style = '';
+			
+			if (!empty(self::$widget['logo'])) :
+			
+				$widget_logo_style .= $eol.$tab.'max-width: 100%;'.$eol.$tab.'height: auto;';
+			
+				if (!empty(self::$widget['h1_margin'])) $widget_logo_style .= $eol.$tab.'margin: '.self::$widget['h1_margin'].';';
+				
+				if (!empty(self::$widget['h1_padding'])) $widget_logo_style .= $eol.$tab.'padding: '.self::$widget['h1_padding'].';';
+				
+				if (!empty(self::$widget['h1_corner'])) :
+				
+					$widget_logo_style .= $eol.$tab.'-webkit-border-radius: '.self::$widget['h1_corner'].'px;';
+					$widget_logo_style .= $eol.$tab.'-moz-border-radius: '.self::$widget['h1_corner'].'px;';
+					$widget_logo_style .= $eol.$tab.'border-radius: '.self::$widget['h1_corner'].'px;';
+					
+				endif;
+				
+				if (!empty(self::$widget['h1_shadow_x']) || self::$widget['h1_shadow_x']=='0') :
+					
+					$widget_logo_style .= $eol.$tab.'-webkit-box-shadow: '.self::$widget['h1_shadow_x'].'px '.self::$widget['h1_shadow_y'].'px '.self::$widget['h1_shadow_softness'].'px '.self::$widget['h1_shadow_color'].';';
+					$widget_logo_style .= $eol.$tab.'-moz-box-shadow: '.self::$widget['h1_shadow_x'].'px '.self::$widget['h1_shadow_y'].'px '.self::$widget['h1_shadow_softness'].'px '.self::$widget['h1_shadow_color'].';';
+					$widget_logo_style .= $eol.$tab.'box-shadow: '.self::$widget['h1_shadow_x'].'px '.self::$widget['h1_shadow_y'].'px '.self::$widget['h1_shadow_softness'].'px '.self::$widget['h1_shadow_color'].';';
+					
+				endif;
+				
+			endif;
+			
+			# form
+			
+			$loginform_style = '';
+			$label_style = '';
+			
+			if (isset(self::$widget['loginform_transparency']) && self::$widget['loginform_transparency'] == '0') :
+			
+				$loginform_style .= $eol.$tab.'background: transparent;';
+			
+			else:
+				
+				if (!empty(self::$widget['loginform_bg_color1'])) $loginform_style .= $eol.$tab.'background-color: '.self::$widget['loginform_bg_color1'].';';
+				if (!empty(self::$widget['loginform_bg_color2'])) :
+					
+					$loginform_style .= $eol.$tab.'background-clip: padding-box;';
+					$loginform_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$widget['loginform_bg_color1'].'), to('.self::$widget['loginform_bg_color2'].'));';
+					$loginform_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$widget['loginform_bg_color1'].', '.self::$widget['loginform_bg_color2'].');';
+					$loginform_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$widget['loginform_bg_color1'].', '.self::$widget['loginform_bg_color2'].');';
+					$loginform_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$widget['loginform_bg_color1'].', '.self::$widget['loginform_bg_color2'].');';
+					$loginform_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$widget['loginform_bg_color1'].', '.self::$widget['loginform_bg_color2'].');';
+					$loginform_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$widget['loginform_bg_color1'].', '.self::$widget['loginform_bg_color2'].');';
+					
+				endif;
+				
+				if (!empty(self::$widget['loginform_transparency'])) :
+					$loginform_style .= $eol.$tab.'-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity='.self::$widget['loginform_transparency'].')";';
+					$loginform_style .= $eol.$tab.'filter: alpha(Opacity='.self::$widget['loginform_transparency'].');';
+					$loginform_style .= $eol.$tab.'-moz-opacity: '.(self::$widget['loginform_transparency']/100).';';
+					$loginform_style .= $eol.$tab.'-khtml-opacity: '.(self::$widget['loginform_transparency']/100).';';
+					$loginform_style .= $eol.$tab.'opacity: '.(self::$widget['loginform_transparency']/100).';';
+				endif;
+				
+			endif;
+				
+			if (!empty(self::$widget['loginform_background'])) $loginform_style .= $eol.$tab.'background-image: url('.self::$widget['loginform_background'].');';
+			if (!empty(self::$widget['loginform_img_repeat'])) $loginform_style .= $eol.$tab.'background-repeat: '.self::$widget['loginform_img_repeat'].';';
+			if (!empty(self::$widget['loginform_img_pos'])) $loginform_style .= $eol.$tab.'background-position: '.self::$widget['loginform_img_pos'].';';
+			if (!empty(self::$widget['loginform_border_style']) && !empty(self::$widget['loginform_border_width'])) $loginform_style .= $eol.$tab.'border: '.self::$widget['loginform_border_style'].' '.self::$widget['loginform_border_width'].'px '.self::$widget['loginform_border_color'].';';
+			if (isset(self::$widget['loginform_border_style']) && self::$widget['loginform_border_style'] == 'none') $loginform_style .= $eol.$tab.'border: medium none;';
+			if (!empty(self::$widget['loginform_border_round'])) :
+				
+				$loginform_style .= $eol.$tab.'-webkit-border-radius: '.self::$widget['loginform_border_round'].'px;';
+				$loginform_style .= $eol.$tab.'-moz-border-radius: '.self::$widget['loginform_border_round'].'px;';
+				$loginform_style .= $eol.$tab.'border-radius: '.self::$widget['loginform_border_round'].'px;';
+				
+			endif;
+			if (isset(self::$widget['loginform_shadow_x']) && (!empty(self::$widget['loginform_shadow_x']) || self::$widget['loginform_shadow_x'] == '0')) :
+				
+				$loginform_style .= $eol.$tab.'-webkit-box-shadow: '.self::$widget['loginform_shadow_x'].'px '.self::$widget['loginform_shadow_y'].'px '.self::$widget['loginform_shadow_softness'].'px '.self::$widget['loginform_shadow_color'].';';
+				$loginform_style .= $eol.$tab.'-moz-box-shadow: '.self::$widget['loginform_shadow_x'].'px '.self::$widget['loginform_shadow_y'].'px '.self::$widget['loginform_shadow_softness'].'px '.self::$widget['loginform_shadow_color'].';';
+				$loginform_style .= $eol.$tab.'box-shadow: '.self::$widget['loginform_shadow_x'].'px '.self::$widget['loginform_shadow_y'].'px '.self::$widget['loginform_shadow_softness'].'px '.self::$widget['loginform_shadow_color'].';';
+			endif;
+			
+			if (!empty(self::$widget['loginform_margin'])) $loginform_style .= $eol.$tab.'margin: '.self::$widget['loginform_margin'].';';
+			if (!empty(self::$widget['loginform_padding'])) $loginform_style .= $eol.$tab.'padding: '.self::$widget['loginform_padding'].';';		
+			
+			if (!empty(self::$widget['loginform_text_color'])) :
+				
+				$loginform_style .= $eol.$tab.'color: rgb('.$this->rgb_color(self::$widget['loginform_text_color']).');'.$eol.$tab.'color: rgba('.$this->rgb_color(self::$widget['loginform_text_color'], 1).');';
+				$label_style .= $eol.$tab.'color: rgb('.$this->rgb_color(self::$widget['loginform_text_color']).');'.$eol.$tab.'color: rgba('.$this->rgb_color(self::$widget['loginform_text_color'], 1).');';
+				
+			endif;
+			
+			# .input
+			
+			$input_style = '';
+			
+			if (!empty(self::$widget['input_text_color'])) $input_style .= $eol.$tab.'color: '.self::$widget['input_text_color'].';';
+			if (!empty(self::$widget['input_bg_color'])) $input_style .= $eol.$tab.'background-color: '.self::$widget['input_bg_color'].';';
+			if (!empty(self::$widget['input_border_color'])) $input_style .= $eol.$tab.'border-color: '.self::$widget['input_border_color'].';';
+			if (!empty(self::$widget['input_float'])) $input_style .= $eol.$tab.'float: '.self::$widget['input_float'].';';
+			
+			# #wp-submit.button-primary
+			
+			$button_style = '';
+			$btn_hover_style = '';
+			
+			if (!empty(self::$widget['button_bg_color1'])) :
+				
+				$button_style .= $eol.$tab.'background: transparent;';
+				$button_style .= $eol.$tab.'background-color: '.self::$widget['button_bg_color1'].';';
+				
+			endif;
+			if (!empty(self::$widget['button_bg_color2'])) :
+				
+				$button_style .= $eol.$tab.'background-clip: padding-box;';
+				$button_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$widget['button_bg_color1'].'), to('.self::$widget['button_bg_color2'].'));';
+				$button_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$widget['button_bg_color1'].', '.self::$widget['button_bg_color2'].');';
+				$button_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$widget['button_bg_color1'].', '.self::$widget['button_bg_color2'].');';
+				$button_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$widget['button_bg_color1'].', '.self::$widget['button_bg_color2'].');';
+				$button_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$widget['button_bg_color1'].', '.self::$widget['button_bg_color2'].');';
+				$button_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$widget['button_bg_color1'].', '.self::$widget['button_bg_color2'].');';
+				
+			endif;
+			if (!empty(self::$widget['button_text_color'])) $button_style .= $eol.$tab.'color: '.self::$widget['button_text_color'].';';
+			if (!empty(self::$widget['button_border_color'])) $button_style .= $eol.$tab.'border: solid 1px '.self::$widget['button_border_color'].';';
+			
+			if (!empty(self::$widget['btn_hover_bg_color1'])) $btn_hover_style .= $eol.$tab.'background-color: '.self::$widget['btn_hover_bg_color1'].';';
+			if (!empty(self::$widget['btn_hover_bg_color2'])) :
+				
+				$btn_hover_style .= $eol.$tab.'background-clip: padding-box;';
+				$btn_hover_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$widget['btn_hover_bg_color1'].'), to('.self::$widget['btn_hover_bg_color2'].'));';
+				$btn_hover_style .= $eol.$tab.'background-image: -webkit-linear-gradient(top, '.self::$widget['btn_hover_bg_color1'].', '.self::$widget['btn_hover_bg_color2'].');';
+				$btn_hover_style .= $eol.$tab.'background-image: -moz-linear-gradient(top, '.self::$widget['btn_hover_bg_color1'].', '.self::$widget['btn_hover_bg_color2'].');';
+				$btn_hover_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$widget['btn_hover_bg_color1'].', '.self::$widget['btn_hover_bg_color2'].');';
+				$btn_hover_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$widget['btn_hover_bg_color1'].', '.self::$widget['btn_hover_bg_color2'].');';
+				$btn_hover_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$widget['btn_hover_bg_color1'].', '.self::$widget['btn_hover_bg_color2'].');';
+				
+			endif;
+			if (!empty(self::$widget['btn_hover_text_color'])) $btn_hover_style .= $eol.$tab.'color: '.self::$widget['btn_hover_text_color'].';';
+			if (!empty(self::$widget['btn_hover_border_color'])) $btn_hover_style .= $eol.$tab.'border: solid 1px '.self::$widget['btn_hover_border_color'].';';
+			
+			# a
+			
+			$link_style = '';
+			$hover_style = '';
+			
+			if (!empty(self::$widget['link_text_color'])) $link_style .= $eol.$tab.'color: '.self::$widget['link_text_color'].';';
+			if (!empty(self::$widget['link_textdecoration'])) $link_style .= $eol.$tab.'text-decoration: '.self::$widget['link_textdecoration'].';';
+			if (isset(self::$widget['link_shadow_x']) && (!empty(self::$widget['link_shadow_x']) || self::$widget['link_shadow_x'] == '0')) $link_style .= $eol.$tab.'text-shadow: '.self::$widget['link_shadow_x'].'px '.self::$widget['link_shadow_y'].'px '.self::$widget['link_shadow_softness'].'px '.self::$widget['link_shadow_color'].';';
+			if (!empty($link_style) && empty(self::$widget['link_shadow_x'])) $link_style .= $eol.$tab.'text-shadow: none;';
+			if (!empty(self::$widget['link_size'])) $link_style .= $eol.$tab.'font-size: '.self::$widget['link_size'].';';
+			
+			if (!empty(self::$widget['hover_text_color'])) $hover_style .= $eol.$tab.'color: '.self::$widget['hover_text_color'].';';
+			if (!empty(self::$widget['hover_textdecoration'])) $hover_style .= $eol.$tab.'text-decoration: '.self::$widget['hover_textdecoration'].';';
+			if (isset(self::$widget['hover_shadow_x']) && (!empty(self::$widget['hover_shadow_x']) || self::$widget['hover_shadow_x'] == '0')) $hover_style .= $eol.$tab.'text-shadow: '.self::$widget['hover_shadow_x'].'px '.self::$widget['hover_shadow_y'].'px '.self::$widget['hover_shadow_softness'].'px '.self::$widget['hover_shadow_color'].';';
+			
+			# building the stylesheet
+			
+			$select = 'widget_custom_login_widget[id^="custom_login_widget"]';
+			
+			$widget_css = (!self::$options['compress']) ? $eol.'/* CSS portion of the A5 Custom Login Widget */'.$eol.$eol : '';
+			
+			if(!empty($container_style)) $widget_css .= self::build_widget_css($select, '').'{'.$container_style.$eol.'}'.$eol;
+			if(!empty($widget_logo_style)) $widget_css .= self::build_widget_css($select, 'img').'{'.$widget_logo_style.$eol.'}'.$eol;
+			if(!empty($h_style)) $widget_css .= self::build_widget_css($select, 'h1, h2, h3, h4, h5, h6').'{'.$h_style.'}'.$eol;
+			if(!empty($loginform_style)) $widget_css .= self::build_widget_css($select, 'form').'{'.$loginform_style.$eol.'}'.$eol;
+			if(!empty($input_style)) $widget_css .= self::build_widget_css($select, 'input.input').'{'.$input_style.$eol.'}'.$eol;
+			if(!empty($button_style)) $widget_css .= self::build_widget_css($select, '.button-primary').'{'.$button_style.$eol.'}'.$eol;
+			if(!empty($btn_hover_style)) $widget_css .= self::build_widget_css($select, '.button-primary:hover').'{'.$btn_hover_style.$eol.'}'.$eol;
+			if(!empty($link_style)) $widget_css .= self::build_widget_css($select, 'a').'{'.$link_style.$eol.'}'.$eol;
+			if(!empty($hover_style)) $widget_css .= self::build_widget_css($select, 'a:hover').'{'.$hover_style.$eol.'}'.$eol;
+		
+		endif;
+		
+		if (isset(self::$widget['css']) && !empty(self::$widget['css']) && !isset(self::$widget['override'])) $widget_css .= self::$widget['css'];
+		
+		parent::$wp_styles .= (!self::$options['compress']) ? $widget_css : str_replace(array("\r\n", "\n", "\r", "\t"), '', $widget_css);
+		
+		parent::$admin_styles = parent::$wp_styles;
 
 	}
 	

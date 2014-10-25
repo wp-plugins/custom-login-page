@@ -1,16 +1,19 @@
 === A5 Custom Login Page ===
+
 Contributors: tepelstreel
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=32XGSBKTQNNHA
-Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof
+Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof, login redirect, login widget, own css, additional html, inject css 
 Requires at least: 3.1
-Tested up to: 3.9.1
-Stable tag: 2.1.1
+Tested up to: 4.1
+Stable tag: 2.2
 
 Style your login page differently.
 
 == Description ==
 
 If you are working for a customer or you just want to set a page for a community (band, choir etc.) they might appreciate their own logo at the login screen. With this plugin, you can even go further and style your whole login page according to your needs. At the moment, there is only the way for 'dummies' to style the page, but in a future version you will be able to enter some css code yourself and the final goal is, also to offer the possibility to copy an entire stylesheet into the plugin, to have the most freedom of styling and changing the items on your loginscreen. Since version 1.7 the A5 Custom Login Page is also for a WP networksetup.
+
+Fromon Version 2.2, you can redirect different user roles to different pages after login. There is now also a custom login widget that you can style according to your needs and display it on your blog. Or only in the categories or posts. The widget is very flexible and you can show it on your whole site or only on post pages or only the frontpage etc.
 
 == Installation ==
 
@@ -26,14 +29,6 @@ The CSS style sheet is a virtual one and the plugin adds a rewrite rule to refer
 
 In the case your login screen is not changing after saving the settings, go to the debug section of the settings page and choose inline display of the styles. That should make your own design available.
 
-== Future Versions ==
-
-We are planning some more advanced features in the future such as
-
-* freedom to enter your own pieces of css instead of using the plugin's interface
-
-* possibility to just copy paste your entire stylesheet
-
 == Screenshots ==
 
 1. The options page of the plugin
@@ -42,6 +37,14 @@ We are planning some more advanced features in the future such as
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 2.2 =
+
+* Preview added (doesn't work in network installations)
+* Using own CSS doesn't override other settings anymore
+* Login redirect added
+* Login Widget added
+* Possibility to add custom html snippets added
 
 = 2.1.1 =
 
@@ -54,7 +57,7 @@ We are planning some more advanced features in the future such as
 
 = 2.0 =
 
-* Complete overhaule of the whole plugin with more functionalty
+* Complete overhaul of the whole plugin with more functionalty
 
 = 1.9.2 =
 
@@ -212,7 +215,7 @@ Debug option added
 
 = 2.0 =
 
-Complete overhaule of the whole plugin with more functionalty
+Complete overhaul of the whole plugin with more functionalty
 
 = 2.1 =
 
@@ -221,3 +224,7 @@ Colorpicker works again; DSS compressable
 = 2.1.1 =
 
 Bug with double logo eliminated
+
+= 2.2 =
+
+Redirect added; More options and better CSS added; Login WIdget added
