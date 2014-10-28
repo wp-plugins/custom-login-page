@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof, login redirect, login widget, own css, additional html, inject css 
 Requires at least: 3.1
 Tested up to: 4.1
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 
 Style your login page differently.
 
