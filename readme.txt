@@ -38,6 +38,10 @@ In the case your login screen is not changing after saving the settings, go to t
 
 == Changelog ==
 
+= 2.2.2 =
+
+* Some more cleaning and fixing
+
 = 2.2.1 =
 
 * Fixed a huge bug due to missing function in some environments
@@ -236,3 +240,7 @@ Redirect added; More options and better CSS added; Login WIdget added
 = 2.2.1 =
 
 Fixed a huge bug due to missing function in some environments
+
+= 2.2.2 = 
+
+Other small bug fixed

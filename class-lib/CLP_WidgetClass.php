@@ -15,7 +15,7 @@ class Custom_Login_Widget extends WP_Widget {
 	
 	private static $options;
 	
-	function __construct($multisite) {
+	function __construct() {
 			
 		$widget_opts = array( 'description' => __('With this widget you can add a customized login form to your sidebar.', self::language_file) );
 		$control_opts = array ( 'width' => 400 );

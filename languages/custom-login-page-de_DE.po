@@ -4,9 +4,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: A5 Custom Login Page 1.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-login-page\n"
-"POT-Creation-Date: 2014-10-27 02:14+0200\n"
-"PO-Revision-Date: 2014-10-27 02:15+0200\n"
-"Last-Translator: Waldemar Stoffel <stoffel@atelier-furnf.de>\n"
+"POT-Creation-Date: 2014-10-28 18:07+0200\n"
+"PO-Revision-Date: 2014-10-28 18:07+0200\n"
+"Last-Translator: Waldemar Stoffel <stoffel@atelier-fuenf.de>\n"
 "Language-Team: Atelier 5 <stoffel@atelier-fuenf.de>\n"
 "Language: de_DE\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,7 @@ msgstr ""
 
 #: class-lib/CLP_AdminClass.php:78
 msgid ""
-"There is also a priview. So, you just can play around a bit and after saving "
+"There is also a preview. So, you just can play around a bit and after saving "
 "the settings see, how it looks. No need to have two browser windows open."
 msgstr ""
 "Es gibt auch eine Vorschau. Also kannst du ein wenig herumspielen und, "
@@ -1187,22 +1187,22 @@ msgstr ""
 "Du kannst jedes Feld leer lassen, um das Standard-Loginformular zu verwenden."
 
 #: class-lib/CLP_AdminClassWidget.php:357
-#: class-lib/CLP_AdminClassWidget.php:1561 class-lib/CLP_WidgetClass.php:176
+#: class-lib/CLP_AdminClassWidget.php:1561 class-lib/CLP_WidgetClass.php:178
 msgid "Username"
 msgstr "Benutzername"
 
 #: class-lib/CLP_AdminClassWidget.php:363
-#: class-lib/CLP_AdminClassWidget.php:1562 class-lib/CLP_WidgetClass.php:177
+#: class-lib/CLP_AdminClassWidget.php:1562 class-lib/CLP_WidgetClass.php:179
 msgid "Password"
 msgstr "Passwort"
 
 #: class-lib/CLP_AdminClassWidget.php:369
-#: class-lib/CLP_AdminClassWidget.php:1563 class-lib/CLP_WidgetClass.php:178
+#: class-lib/CLP_AdminClassWidget.php:1563 class-lib/CLP_WidgetClass.php:180
 msgid "Remember Me"
 msgstr "Angemeldet bleiben"
 
 #: class-lib/CLP_AdminClassWidget.php:375
-#: class-lib/CLP_AdminClassWidget.php:1564 class-lib/CLP_WidgetClass.php:179
+#: class-lib/CLP_AdminClassWidget.php:1564 class-lib/CLP_WidgetClass.php:181
 msgid "Log In"
 msgstr "Anmelden"
 
@@ -1378,67 +1378,67 @@ msgstr ""
 "Mit diesem Widget kannst du deiner Sidebar ein individuelles Login-Formular "
 "zufügen."
 
-#: class-lib/CLP_WidgetClass.php:91
+#: class-lib/CLP_WidgetClass.php:93
 msgid "Homepage"
 msgstr "Homepage"
 
-#: class-lib/CLP_WidgetClass.php:92
+#: class-lib/CLP_WidgetClass.php:94
 msgid "Frontpage (e.g. a static page as homepage)"
 msgstr "Frontpage (z.B. eine statische Seite als Homepage)"
 
-#: class-lib/CLP_WidgetClass.php:93
+#: class-lib/CLP_WidgetClass.php:95
 msgid "&#34;Page&#34; pages"
 msgstr "&#34;Seite&#34; Seiten"
 
-#: class-lib/CLP_WidgetClass.php:94
+#: class-lib/CLP_WidgetClass.php:96
 msgid "Category pages"
 msgstr "Kategorieseiten"
 
-#: class-lib/CLP_WidgetClass.php:95
+#: class-lib/CLP_WidgetClass.php:97
 msgid "Single post pages"
 msgstr "Artikelseiten"
 
-#: class-lib/CLP_WidgetClass.php:96
+#: class-lib/CLP_WidgetClass.php:98
 msgid "Archive pages"
 msgstr "Archivseiten"
 
-#: class-lib/CLP_WidgetClass.php:97
+#: class-lib/CLP_WidgetClass.php:99
 msgid "Tag pages"
 msgstr "Schlagwortseiten"
 
-#: class-lib/CLP_WidgetClass.php:98
+#: class-lib/CLP_WidgetClass.php:100
 msgid "Attachments"
 msgstr "Attachments"
 
-#: class-lib/CLP_WidgetClass.php:99
+#: class-lib/CLP_WidgetClass.php:101
 msgid "Custom Taxonomy pages (only available, if having a plugin)"
 msgstr "Custom Taxonomy Seiten (gibt es nur mit entspr. Plugin)"
 
-#: class-lib/CLP_WidgetClass.php:100
+#: class-lib/CLP_WidgetClass.php:102
 msgid "Author pages"
 msgstr "Autorenseiten"
 
-#: class-lib/CLP_WidgetClass.php:101
+#: class-lib/CLP_WidgetClass.php:103
 msgid "Search Results"
 msgstr "Suchergebnisseiten"
 
-#: class-lib/CLP_WidgetClass.php:102
+#: class-lib/CLP_WidgetClass.php:104
 msgid "&#34;Not Found&#34;"
 msgstr "&#34;Nicht gefunden&#34;"
 
-#: class-lib/CLP_WidgetClass.php:105
+#: class-lib/CLP_WidgetClass.php:107
 msgid "Check all"
 msgstr "Alle auswählen"
 
-#: class-lib/CLP_WidgetClass.php:107
+#: class-lib/CLP_WidgetClass.php:109
 msgid "Title:"
 msgstr "Titel:"
 
-#: class-lib/CLP_WidgetClass.php:108
+#: class-lib/CLP_WidgetClass.php:110
 msgid "Don&#39;t show widget to logged in users."
 msgstr "Angemeldeten Benutzern das Widget nicht anzeigen."
 
-#: class-lib/CLP_WidgetClass.php:109
+#: class-lib/CLP_WidgetClass.php:111
 msgid ""
 "Check, where you want to show the widget. By default, it is showing on the "
 "homepage and the category pages:"
