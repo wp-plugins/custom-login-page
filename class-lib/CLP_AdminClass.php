@@ -83,6 +83,15 @@ class CLP_Admin extends A5_OptionPage {
 			'content' => $content,
 		));
 		
+		$content = self::tag_it(__('One way to make the login page look like the rest of your blog is to include the header and footer of the frontend.', self::language_file), 'p');
+		$content .= self::tag_it(__('Depending on your theme, it could take away some possibilities of styling the login page, though.', self::language_file), 'p');
+		
+		$screen->add_help_tab( array(
+			'id'      => 'clp-advanced-help',
+			'title'   => __('Advanced'),
+			'content' => $content,
+		));
+		
 		$content = self::tag_it(sprintf(__('With the margin of the logo, you can position the logo more precisely. Give a CSS value here, i.e. %s to locate it 180 px left.', self::language_file), '&#39;0 0 0 -180px&#39;'), 'p');
 		$content .= self::tag_it(sprintf(__('With the padding of the logo, you can position the shadow more precisely. Give a CSS value here, i.e. %s to get rid of it completely.', self::language_file), '&#39;0 0 0 -180px&#39;'), 'p');
 		
@@ -128,6 +137,12 @@ class CLP_Admin extends A5_OptionPage {
 		add_settings_section('clp_options', false, array(&$this, 'clp_custom_redirect_section'), 'clp_redirect');
 		
 		add_settings_field('clp_custom_redirect', __('Redirect per User Role', self::language_file), array(&$this, 'custom_redirect_input'), 'clp_redirect', 'clp_options');
+		
+		add_settings_section('clp_options', false, array(&$this, 'clp_blog_section'), 'clp_blog');
+		
+		add_settings_field('clp_blog_header', __('Blog Header', self::language_file), array(&$this, 'blog_header_input'), 'clp_blog', 'clp_options', array(__('Check, to include the header of the frontend into your login page.', self::language_file)));
+		
+		add_settings_field('clp_blog_footer', __('Blog Footer', self::language_file), array(&$this, 'blog_footer_input'), 'clp_blog', 'clp_options', array(__('Check, to include the footer of the frontend into your login page.', self::language_file)));
 		
 		add_settings_section('clp_options', false, array(&$this, 'clp_hide_section'), 'clp_hide');
 		
@@ -471,6 +486,24 @@ class CLP_Admin extends A5_OptionPage {
 		endforeach;
 		
 		self::tag_it($rows, 'table', 0, false, true);
+		
+	}
+	
+	function clp_blog_section() {
+	
+		self::tag_it(__('If you want, you can include the header and footer of your blog&#39;s frontend in your login page.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function blog_header_input($labels) {
+		
+		a5_checkbox('blog_header', 'clp_options[blog_header]', @self::$options['blog_header'], $labels[0]);
+	
+	}
+	
+	function blog_footer_input($labels) {
+		
+		a5_checkbox('blog_footer', 'clp_options[blog_footer]', @self::$options['blog_footer'], $labels[0]);
 		
 	}
 	
@@ -1350,7 +1383,9 @@ class CLP_Admin extends A5_OptionPage {
 			
 			self::sortable('top', self::postbox(__('Custom Redirects', self::language_file), 'redirect', 'clp_redirect'));
 			
-			self::sortable('middle', self::postbox(__('Hide Links', self::language_file), 'hide-links', 'clp_hide'));
+			self::sortable('up', self::postbox(__('Include Header & Footer from Frontend', self::language_file), 'include-frontend', 'clp_blog'));
+			
+			self::sortable('down', self::postbox(__('Hide Links', self::language_file), 'hide-links', 'clp_hide'));
 			
 			self::sortable('bottom', self::postbox(__('Debug dynamical CSS', self::language_file), 'debug-css', 'clp_debug'));
 			
@@ -1596,6 +1631,8 @@ class CLP_Admin extends A5_OptionPage {
 				case 'advanced_tab' :
 				
 					self::$options['custom_redirect'] = ($input['custom_redirect']);
+					self::$options['blog_header'] = (@$input['blog_header']) ? true : false;
+					self::$options['blog_footer'] = (@$input['blog_footer']) ? true : false;
 					self::$options['hide_nav'] = (@$input['hide_nav']) ? true : false;
 					self::$options['hide_backlink'] = (@$input['hide_backlink']) ? true : false;
 					self::$options['compress'] = (@$input['compress']) ? true : false;

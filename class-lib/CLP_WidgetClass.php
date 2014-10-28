@@ -15,12 +15,14 @@ class Custom_Login_Widget extends WP_Widget {
 	
 	private static $options;
 	
-	function __construct() {
+	function __construct($multisite) {
 			
 		$widget_opts = array( 'description' => __('With this widget you can add a customized login form to your sidebar.', self::language_file) );
 		$control_opts = array ( 'width' => 400 );
 		
 		parent::WP_Widget(false, $name = 'A5 Custom Login Widget', $widget_opts, $control_opts);
+		
+		if (!function_exists('is_plugin_active_for_network')) require_once(ABSPATH.'/wp-admin/includes/plugin.php');
 		
 		self::$options = (is_plugin_active_for_network(CLP_BASE)) ? get_site_option('clp_widget_options') : get_option('clp_widget_options');
 		
@@ -157,7 +159,7 @@ class Custom_Login_Widget extends WP_Widget {
 			
 			// display only, if said so in the settings of the widget
 			
-			if ($instance[$clp_pagetype]) :
+			if (isset ($clp_pagetype) && $instance[$clp_pagetype]) :
 				
 				// the widget is displayed
 				

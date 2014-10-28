@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 2.2
+Version: 2.2.1
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -158,6 +158,8 @@ class A5_CustomLoginPage {
 		if (!empty(self::$options['svg']) || !empty(self::$options['login_message'])) add_filter('login_message', array(&$this, 'print_login_message'));
 		if (!empty(self::$options['login_form'])) add_action('login_form', array(&$this, 'print_login_form'));
 		if (!empty(self::$options['login_footer'])) add_filter('login_footer', array(&$this, 'print_login_footer'));
+		if (!empty(self::$options['blog_header']))add_action( 'login_head', array (&$this, 'custom_login_header'));
+		if (!empty(self::$options['blog_footer']))add_action( 'login_footer', array (&$this, 'custom_login_footer'));
 		
 		/**
 		 *
@@ -177,6 +179,18 @@ class A5_CustomLoginPage {
 		if (!is_multisite()) $CLP_DynamicJS = new CLP_DynamicJS();
 		
 	}	
+	
+	function custom_login_header() {
+		
+		get_header();
+	
+	}
+	
+	function custom_login_footer() {
+		
+		get_footer();
+		
+	}
 	
 	/**
 	 *
