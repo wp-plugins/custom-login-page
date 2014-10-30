@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 2.2.2
+Version: 2.3
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -65,7 +65,7 @@ class A5_CustomLoginPage {
 	
 	private static $options;
 	
-	const language_file = 'custom-login-page', version = '2.2';
+	const language_file = 'custom-login-page', version = '2.3';
 	
 	function __construct(){
 		
@@ -88,13 +88,7 @@ class A5_CustomLoginPage {
 				
 					self::$options['version'] = self::version;
 					
-					self::$options['override'] = true;
-					
-					self::$options['multisite'] = true;
-					
 					update_site_option('clp_options', self::$options);
-					
-					add_site_option('clp_widget_options');
 					
 				endif;
 				
@@ -110,13 +104,7 @@ class A5_CustomLoginPage {
 						
 						self::$options['version'] = self::version;
 						
-						self::$options['override'] = true;
-						
-						self::$options['multisite'] = false;
-						
 						update_option('clp_options', self::$options);
-						
-						add_option('clp_widget_options');
 						
 					endif;
 					
@@ -136,13 +124,7 @@ class A5_CustomLoginPage {
 					
 					self::$options['version'] = self::version;
 					
-					self::$options['override'] = true;
-					
-					self::$options['multisite'] = false;
-					
 					update_option('clp_options', self::$options);
-					
-					add_option('clp_widget_options');
 					
 				endif;
 				

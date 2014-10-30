@@ -42,7 +42,7 @@ class A5_DynamicFiles {
 		
 		if (true === $inline) :
 		
-			add_action($place.'_head', array(&$this, 'print_'.$place.'_inline'), $priority);
+			add_action($place.'_head', array(&$this, 'print_'.$place.'_inline_'.self::$type), $priority);
 		
 		else :
 		
@@ -267,45 +267,51 @@ class A5_DynamicFiles {
 	
 	// writing styles or scripts inline
 	
-	function print_wp_inline() {
+	function print_wp_inline_css() {
 		
 		$eol = "\r\n";
 		
-		$inline_text = ('css' == self::$type) ? '<style type="text/css" media="'.self::$media.'">'.$eol.'/* CSS Styles created by the A5 Plugin Framework */'.$eol : '<script type="text/javascript">'.$eol.'// JavaScript createtd by the A5 Plugin Framework'.$eol;
-		
-		$inline_text .= ('css' == self::$type) ? self::$wp_styles : self::$wp_scripts;
-		
-		$inline_text .= ('css' == self::$type) ? '</style>'.$eol : '</script>'.$eol;
-		
-		echo $inline_text;	
+		echo '<style type="text/css" media="'.self::$media.'">'.$eol.'/* CSS Styles created by the A5 Plugin Framework */'.$eol.self::$wp_styles.'</style>'.$eol;	
 		
 	}
 	
-	function print_admin_inline() {
+	function print_wp_inline_js() {
 		
 		$eol = "\r\n";
 		
-		$inline_text = ('css' == self::$type) ? '<style type="text/css" media="'.self::$media.'">'.$eol.'/* CSS Styles created by the A5 Plugin Framework */'.$eol : '<script type="text/javascript">'.$eol.'// JavaScript createtd by the A5 Plugin Framework'.$eol;
-		
-		$inline_text .= ('css' == self::$type) ? self::$admin_styles : self::$admin_scripts;
-		
-		$inline_text .= ('css' == self::$type) ? '</style>'.$eol : '</script>'.$eol;
-		
-		echo $inline_text;	
+		echo '<script type="text/javascript">'.$eol.'// JavaScript createtd by the A5 Plugin Framework'.$eol.self::$wp_scripts.'</script>'.$eol;	
 		
 	}
 	
-	function print_login_inline() {
+	function print_admin_inline_css() {
 		
 		$eol = "\r\n";
 		
-		$inline_text = ('css' == self::$type) ? '<style type="text/css" media="'.self::$media.'">'.$eol.'/* CSS Styles created by the A5 Plugin Framework */'.$eol : '<script type="text/javascript">'.$eol.'// JavaScript createtd by the A5 Plugin Framework'.$eol;
+		echo '<style type="text/css" media="'.self::$media.'">'.$eol.'/* CSS Styles created by the A5 Plugin Framework */'.$eol.self::$admin_styles.'</style>'.$eol;	
 		
-		$inline_text .= ('css' == self::$type) ? self::$login_styles : self::$login_scripts;
+	}
+	
+	function print_admin_inline_js() {
 		
-		$inline_text .= ('css' == self::$type) ? '</style>'.$eol : '</script>'.$eol;
+		$eol = "\r\n";
 		
-		echo $inline_text;	
+		echo '<script type="text/javascript">'.$eol.'// JavaScript createtd by the A5 Plugin Framework'.$eol.self::$admin_scripts.'</script>'.$eol;	
+		
+	}
+	
+	function print_login_inline_css() {
+		
+		$eol = "\r\n";
+		
+		echo '<style type="text/css" media="'.self::$media.'">'.$eol.'/* CSS Styles created by the A5 Plugin Framework */'.$eol.self::$login_styles.'</style>'.$eol;	
+		
+	}
+	
+	function print_login_inline_js() {
+		
+		$eol = "\r\n";
+		
+		echo '<script type="text/javascript">'.$eol.'// JavaScript createtd by the A5 Plugin Framework'.$eol.self::$login_scripts.'</script>'.$eol;	
 		
 	}
 	
