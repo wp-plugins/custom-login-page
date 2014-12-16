@@ -26,9 +26,9 @@ class Custom_Login_Widget extends WP_Widget {
 		
 		self::$options = (is_plugin_active_for_network(CLP_BASE)) ? get_site_option('clp_widget_options') : get_option('clp_widget_options');
 		
-		if (!empty(self::$options['login_form_top'])) add_filter('login_form_top', array(&$this, 'print_login_form_top'));
-		if (!empty(self::$options['login_form'])) add_filter('login_form_middle', array(&$this, 'print_login_form_middle'));
-		if (!empty(self::$options['login_form_bottom'])) add_filter('login_form_bottom', array(&$this, 'print_login_form_bottom'));
+		if (!empty(self::$options['login_form_top'])) add_filter('login_form_top', array($this, 'print_login_form_top'));
+		if (!empty(self::$options['login_form'])) add_filter('login_form_middle', array($this, 'print_login_form_middle'));
+		if (!empty(self::$options['login_form_bottom'])) add_filter('login_form_bottom', array($this, 'print_login_form_bottom'));
 	
 	}
 	

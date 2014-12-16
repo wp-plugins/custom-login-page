@@ -5,7 +5,7 @@
  * Class A5 Option Page
  *
  * @ A5 Plugin Framework
- * Version: 1.0 beta
+ * Version: 1.0 beta 20141205
  *
  * Gets all sort of containers for the flexible A5 settings pages
  *
@@ -216,31 +216,50 @@ class A5_OptionPage {
 		 echo $eol.'</div>'.$eol.'<div id="postbox-container-'.$n.'" class="postbox-container">';
 		 
 	 }
+	 
+	/**
+	 *
+	 * Wrapping different sections in containers inside postbox
+	 *
+	 */
+	static function wrapper($id, $label, $postbox_id, $sections, $atts = false) {
+		
+		$wrapper = self::open_sortable($id);
+			
+		$wrapper .=  self::open_postbox($label, $postbox_id);
+		
+		foreach ($sections as $section) $wrapper .= self::wrap_section($section, $atts);
+		
+		$wrapper .= self::clear_it(false);
+		
+		$wrapper .= self::close_postbox();
+		
+		$wrapper .= self::close_sortable();
+		
+		echo $wrapper;
+			
+	}
 	
 	/**
 	 *
-	 * Wrapping sections in containers
+	 * Wrapping section in container
 	 *
 	 */
-	static function wrap_section($section_id, $atts = false) {
+	static function wrap_section($section_id, $attributes = false) {
 		
 		$eol = "\r\n";
 		
 		$tab = "\t";
 		
-		$attributes = '';
-		
-		if (false !== $atts) :
-		
-			foreach ($atts as $attribute => $value) $attributes .= ' '.$attribute.'="'.$value.'"';
-			
-		endif;
-	
-		echo $eol.'<div'.$attributes.'>'.$eol.$tab;
+		ob_start();
 		
 		do_settings_sections($section_id);
 		
-		echo $eol.'</div>'.$eol;
+		$section = ob_get_contents();
+		
+		ob_end_clean();
+	
+		return self::tag_it($section, 'div', 1, $attributes);
 		
 	}
 	
@@ -331,6 +350,8 @@ class A5_OptionPage {
 	static function debug_info($options, $label) {
 	
 		$postbox = self::open_postbox($label, 'debug-info', true);
+		
+		$postbox .= self::tag_it(a5_get_version(), 'p');
 		
 		ob_start();
 		

@@ -17,10 +17,23 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function __construct($multisite) {
 		
-		add_action('admin_init', array(&$this, 'initialize_settings'));
-		add_action('contextual_help', array(&$this, 'add_help_text'));
-		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));	
-		add_action('admin_menu', array(&$this, 'add_admin_menu'));
+		add_action('admin_init', array($this, 'initialize_settings'));
+		add_action('contextual_help', array($this, 'add_help_text'));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));	
+		
+		if ($multisite) :
+		
+			add_action('network_admin_menu', array($this, 'add_admin_menu'));
+				
+			self::$options = get_site_option('clp_options');
+			
+		else :
+			
+			add_action('admin_menu', array($this, 'add_admin_menu'));
+		
+			self::$options = get_option('clp_options');
+			
+		endif;
 		
 		self::$options = ($multisite) ? get_site_option('clp_widget_options') : get_option('clp_widget_options');
 		
@@ -33,7 +46,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	 */
 	function add_admin_menu() {
 		
-		add_submenu_page('clp-settings', 'Custom Login Widget', 'Custom Login Widget', 'administrator', 'clp-widget-settings', array(&$this, 'build_options_page'));
+		add_submenu_page('clp-settings', 'Custom Login Widget', 'Custom Login Widget', 'administrator', 'clp-widget-settings', array($this, 'build_options_page'));
 		
 	}
 	
@@ -46,6 +59,8 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 		if ('a5-custom-login_page_clp-widget-settings' != $hook) return;
 		
+		$min = (WP_DEBUG == false) ? '.min.' : '.';
+		
 		wp_enqueue_script('dashboard');
 		
 		if (wp_is_mobile()) wp_enqueue_script('jquery-touch-punch');
@@ -55,8 +70,20 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, true );
 		
-		wp_register_script('a5-color-picker-script', plugins_url('custom-login-page/color-picker.js'), array('wp-color-picker'), '1.0', true);
+		wp_register_script('a5-color-picker-script', plugins_url('custom-login-page/color-picker'.$min.'js'), array('wp-color-picker'), '1.0', true);
 		wp_enqueue_script('a5-color-picker-script');
+		
+		// getting the media uploader
+		
+		if ( function_exists( 'wp_enqueue_media' ) ) :
+			
+			wp_enqueue_media();
+			
+			wp_register_script( 'a5-media-upload-script', plugins_url('custom-login-page/media-uploader'.$min.'js'), array( 'jquery' ), '1.0', true );
+			
+			wp_enqueue_script('a5-media-upload-script');
+			
+		endif;
 		
 	}
 	
@@ -81,6 +108,14 @@ class clp_WidgetAdmin extends A5_OptionPage {
 			'content' => $content,
 		));
 		
+		$content = self::tag_it(__('In the CSS and HTML textareas, you can use the tab key to format your code.', self::language_file), 'p');
+		
+		$screen->add_help_tab( array(
+			'id'      => 'clp-tab-help',
+			'title'   => __('CSS & HTML', self::language_file),
+			'content' => $content,
+		));
+		
 	}
 	
 	/**
@@ -90,257 +125,261 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	 */
 	function initialize_settings() {
 		
-		register_setting('clp_widget_options', 'clp_widget_options', array(&$this, 'validate'));
+		register_setting('clp_widget_options', 'clp_widget_options', array($this, 'validate'));
 		
 		// main tab
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_main_section'), 'clp_widget_main');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_main_section'), 'clp_widget_main');
 		
-		add_settings_field('clp_widget_label_username', __('Label for Username', self::language_file), array(&$this, 'label_username_input'), 'clp_widget_main', 'clp_widget_options');
+		add_settings_field('clp_widget_label_username', __('Label for Username', self::language_file), array($this, 'label_username_input'), 'clp_widget_main', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_label_password', __('Label for Password', self::language_file), array(&$this, 'label_password_input'), 'clp_widget_main', 'clp_widget_options');
+		add_settings_field('clp_widget_label_password', __('Label for Password', self::language_file), array($this, 'label_password_input'), 'clp_widget_main', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_label_remember', __('Label for Remember Me', self::language_file), array(&$this, 'label_remember_input'), 'clp_widget_main', 'clp_widget_options');
+		add_settings_field('clp_widget_label_remember', __('Label for Remember Me', self::language_file), array($this, 'label_remember_input'), 'clp_widget_main', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_label_login', __('Label for Submit Button', self::language_file), array(&$this, 'label_log_in_input'), 'clp_widget_main', 'clp_widget_options');
+		add_settings_field('clp_widget_label_login', __('Label for Submit Button', self::language_file), array($this, 'label_log_in_input'), 'clp_widget_main', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_hide_remember', __('Hide Remember Me', self::language_file), array(&$this, 'hide_remember_input'), 'clp_widget_main', 'clp_widget_options');
+		add_settings_field('clp_widget_hide_remember', __('Hide Remember Me', self::language_file), array($this, 'hide_remember_input'), 'clp_widget_main', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_value_remember', __('Check Remember Me by Default', self::language_file), array(&$this, 'value_remember_input'), 'clp_widget_main', 'clp_widget_options');
+		add_settings_field('clp_widget_value_remember', __('Check Remember Me by Default', self::language_file), array($this, 'value_remember_input'), 'clp_widget_main', 'clp_widget_options');
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_advanced_section'), 'clp_widget_advanced');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_advanced_section'), 'clp_widget_advanced');
 		
-		add_settings_field('clp_widget_redirect', __('Redirect', self::language_file), array(&$this, 'redirect_input'), 'clp_widget_advanced', 'clp_widget_options', array(__('Enter here the site of your blog to which the user should be redirected, after login. By default this would be the same place where the widget is.', self::language_file)));
+		add_settings_field('clp_widget_redirect', __('Redirect', self::language_file), array($this, 'redirect_input'), 'clp_widget_advanced', 'clp_widget_options', array(__('Enter here the site of your blog to which the user should be redirected, after login. By default this would be the same place where the widget is.', self::language_file)));
 		
-		add_settings_field('clp_widget_form_id', __('Form ID', self::language_file), array(&$this, 'form_id_input'), 'clp_widget_advanced', 'clp_widget_options');
+		add_settings_field('clp_widget_form_id', __('Form ID', self::language_file), array($this, 'form_id_input'), 'clp_widget_advanced', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_id_username', __('User Name ID', self::language_file), array(&$this, 'id_username_input'), 'clp_widget_advanced', 'clp_widget_options');
+		add_settings_field('clp_widget_id_username', __('User Name ID', self::language_file), array($this, 'id_username_input'), 'clp_widget_advanced', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_id_password', __('Password ID', self::language_file), array(&$this, 'id_password_input'), 'clp_widget_advanced', 'clp_widget_options');
+		add_settings_field('clp_widget_id_password', __('Password ID', self::language_file), array($this, 'id_password_input'), 'clp_widget_advanced', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_id_remember', __('Remember Me ID', self::language_file), array(&$this, 'id_remember_input'), 'clp_widget_advanced', 'clp_widget_options');
+		add_settings_field('clp_widget_id_remember', __('Remember Me ID', self::language_file), array($this, 'id_remember_input'), 'clp_widget_advanced', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_id_submit', __('Submit Button ID', self::language_file), array(&$this, 'id_submit_input'), 'clp_widget_advanced', 'clp_widget_options');
+		add_settings_field('clp_widget_id_submit', __('Submit Button ID', self::language_file), array($this, 'id_submit_input'), 'clp_widget_advanced', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_value_username', __('Value for User Name', self::language_file), array(&$this, 'value_username_input'), 'clp_widget_advanced', 'clp_widget_options', __('You can write some default value for the user name here. By default, there is nothing.', self::language_file));
+		add_settings_field('clp_widget_value_username', __('Value for User Name', self::language_file), array($this, 'value_username_input'), 'clp_widget_advanced', 'clp_widget_options', __('You can write some default value for the user name here. By default, there is nothing.', self::language_file));
 		
-		add_settings_section('clp_widget_options', __('Export Settings', self::language_file), array(&$this, 'clp_widget_export_section'), 'clp_widget_export');
+		add_settings_section('clp_widget_options', __('Export Settings', self::language_file), array($this, 'clp_widget_export_section'), 'clp_widget_export');
 		
-		add_settings_field('clp_widget_export', __('Download a file with your settings', self::language_file), array(&$this, 'export_input'), 'clp_widget_export', 'clp_widget_options');
+		add_settings_field('clp_widget_export', __('Download a file with your settings', self::language_file), array($this, 'export_input'), 'clp_widget_export', 'clp_widget_options');
 		
-		add_settings_section('clp_widget_options', __('Import Settings', self::language_file), array(&$this, 'clp_widget_import_section'), 'clp_widget_import');
+		add_settings_section('clp_widget_options', __('Import Settings', self::language_file), array($this, 'clp_widget_import_section'), 'clp_widget_import');
 		
-		add_settings_field('clp_widget_import', __('This will overlay any existing setting, you already have.', self::language_file), array(&$this, 'import_input'), 'clp_widget_import', 'clp_widget_options');
+		add_settings_field('clp_widget_import', __('This will overlay any existing setting, you already have.', self::language_file), array($this, 'import_input'), 'clp_widget_import', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_impex_resize', false, array(&$this, 'impex_resize_field'), 'clp_widget_import', 'clp_widget_options');
+		add_settings_field('clp_widget_impex_resize', false, array($this, 'impex_resize_field'), 'clp_widget_import', 'clp_widget_options');
 		
 		// widget tab
 	
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_container_section'), 'clp_widget_container');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_container_section'), 'clp_widget_container');
 		
-		add_settings_field('clp_widget_container_background', __('Background Picture', self::language_file), array(&$this, 'container_background_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_background', __('Background Picture', self::language_file), array($this, 'container_background_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_img_repeat', __('Background Repeat', self::language_file), array(&$this, 'container_img_repeat_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_img_repeat', __('Background Repeat', self::language_file), array($this, 'container_img_repeat_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_img_pos', __('Position of the Background Picture', self::language_file), array(&$this, 'container_img_pos_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_img_pos', __('Position of the Background Picture', self::language_file), array($this, 'container_img_pos_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_bg_color1', __('Background Colour', self::language_file), array(&$this, 'container_bg_color1_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_bg_color1', __('Background Colour', self::language_file), array($this, 'container_bg_color1_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'container_bg_color2_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'container_bg_color2_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_text_color', __('Text Colour', self::language_file), array(&$this, 'container_text_color_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_text_color', __('Text Colour', self::language_file), array($this, 'container_text_color_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_transparency', __('Transparency (in percent)', self::language_file), array(&$this, 'container_transparency_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_transparency', __('Transparency (in percent)', self::language_file), array($this, 'container_transparency_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_border_style', __('Border Style', self::language_file), array(&$this, 'container_border_style_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_border_style', __('Border Style', self::language_file), array($this, 'container_border_style_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_border_width', __('Border Width (in px)', self::language_file), array(&$this, 'container_border_width_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_border_width', __('Border Width (in px)', self::language_file), array($this, 'container_border_width_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_border_color', __('Border Colour', self::language_file), array(&$this, 'container_border_color_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_border_color', __('Border Colour', self::language_file), array($this, 'container_border_color_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_border_round', __('Rounded Corners (in px)', self::language_file), array(&$this, 'container_border_round_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_border_round', __('Rounded Corners (in px)', self::language_file), array($this, 'container_border_round_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'container_shadow_x_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'container_shadow_x_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'container_shadow_y_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'container_shadow_y_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'container_shadow_softness_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'container_shadow_softness_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'container_shadow_color_input'), 'clp_widget_container', 'clp_widget_options');
+		add_settings_field('clp_widget_container_shadow_color', __('Shadow Colour', self::language_file), array($this, 'container_shadow_color_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_container_pos_section'), 'clp_widget_container_pos');
+		add_settings_field('clp_widget_container_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'container_shadow_inset_input'), 'clp_widget_container', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_container_padding', __('Padding', self::language_file), array(&$this, 'container_padding_input'), 'clp_widget_container_pos', 'clp_widget_options');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_container_pos_section'), 'clp_widget_container_pos');
 		
-		add_settings_field('clp_widget_container_margin', __('Margin', self::language_file), array(&$this, 'container_margin_input'), 'clp_widget_container_pos', 'clp_widget_options');
+		add_settings_field('clp_widget_container_padding', __('Padding', self::language_file), array($this, 'container_padding_input'), 'clp_widget_container_pos', 'clp_widget_options');
+		
+		add_settings_field('clp_widget_container_margin', __('Margin', self::language_file), array($this, 'container_margin_input'), 'clp_widget_container_pos', 'clp_widget_options');
 		
 		// logo tab
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_logo_section'), 'clp_widget_logo');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_logo_section'), 'clp_widget_logo');
 		
-		add_settings_field('clp_copy_logo', __('Copy Settings', self::language_file), array(&$this, 'copy_logo_input'), 'clp_widget_logo', 'clp_widget_options', array(__('Check, to copy the settings for the logo from the login page.', self::language_file)));
+		add_settings_field('clp_widget_logo_url', __('Logo URL', self::language_file), array($this, 'logo_url_input'), 'clp_widget_logo', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_logo_url', __('Logo URL', self::language_file), array(&$this, 'logo_url_input'), 'clp_widget_logo', 'clp_widget_options');
+		add_settings_field('clp_widget_link_url', __('URL to link to', self::language_file), array($this, 'link_url_input'), 'clp_widget_logo', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_url', __('URL to link to', self::language_file), array(&$this, 'link_url_input'), 'clp_widget_logo', 'clp_widget_options');
+		add_settings_field('clp_widget_logo_title', __('Title tag of the logo', self::language_file), array($this, 'logo_title_input'), 'clp_widget_logo', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_logo_title', __('Title tag of the logo', self::language_file), array(&$this, 'logo_title_input'), 'clp_widget_logo', 'clp_widget_options');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_logo_size_section'), 'clp_widget_logo_size');
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_logo_size_section'), 'clp_widget_logo_size');
+		add_settings_field('clp_widget_h1_margin', __('Margin of the Logo Container (CSS)', self::language_file), array($this, 'h1_margin_input'), 'clp_widget_logo_size', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_margin', __('Margin of the Logo Container (CSS)', self::language_file), array(&$this, 'h1_margin_input'), 'clp_widget_logo_size', 'clp_widget_options');
+		add_settings_field('clp_widget_h1_padding', __('Padding of the Logo Container (CSS)', self::language_file), array($this, 'h1_padding_input'), 'clp_widget_logo_size', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_padding', __('Padding of the Logo Container (CSS)', self::language_file), array(&$this, 'h1_padding_input'), 'clp_widget_logo_size', 'clp_widget_options');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_logo_style_section'), 'clp_widget_logo_style');
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_logo_style_section'), 'clp_widget_logo_style');
+		add_settings_field('clp_widget_h1_corner', __('Rounded Corners (in px)', self::language_file), array($this, 'h1_corner_input'), 'clp_widget_logo_style', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_corner', __('Rounded Corners (in px)', self::language_file), array(&$this, 'h1_corner_input'), 'clp_widget_logo_style', 'clp_widget_options');
+		add_settings_field('clp_widget_h1_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'h1_shadow_x_input'), 'clp_widget_logo_style', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'h1_shadow_x_input'), 'clp_widget_logo_style', 'clp_widget_options');
+		add_settings_field('clp_widget_h1_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'h1_shadow_y_input'), 'clp_widget_logo_style', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'h1_shadow_y_input'), 'clp_widget_logo_style', 'clp_widget_options');
+		add_settings_field('clp_widget_h1_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'h1_shadow_softness_input'), 'clp_widget_logo_style', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'h1_shadow_softness_input'), 'clp_widget_logo_style', 'clp_widget_options');
+		add_settings_field('clp_widget_h1_shadow_color', __('Shadow Colour', self::language_file), array($this, 'h1_shadow_color_input'), 'clp_widget_logo_style', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_h1_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'h1_shadow_color_input'), 'clp_widget_logo_style', 'clp_widget_options');
+		add_settings_field('clp_widget_h1_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'h1_shadow_inset_input'), 'clp_widget_logo_style', 'clp_widget_options');
 		
 		// login form tab
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_loginform_section'), 'clp_widget_loginform');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_loginform_section'), 'clp_widget_loginform');
 		
-		add_settings_field('clp_copy_loginform', __('Copy Settings', self::language_file), array(&$this, 'copy_loginform_input'), 'clp_widget_loginform', 'clp_widget_options', array(__('Check, to copy the settings for the login form from the login page.', self::language_file)));
+		add_settings_field('clp_widget_loginform_background', __('Background Picture', self::language_file), array($this, 'loginform_background_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_background', __('Background Picture', self::language_file), array(&$this, 'loginform_background_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_img_repeat', __('Background Repeat', self::language_file), array($this, 'loginform_img_repeat_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_img_repeat', __('Background Repeat', self::language_file), array(&$this, 'loginform_img_repeat_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_img_pos', __('Position of the Background Picture', self::language_file), array($this, 'loginform_img_pos_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_img_pos', __('Position of the Background Picture', self::language_file), array(&$this, 'loginform_img_pos_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_bg_color1', __('Background Colour', self::language_file), array($this, 'loginform_bg_color1_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_bg_color1', __('Background Colour', self::language_file), array(&$this, 'loginform_bg_color1_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'loginform_bg_color2_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'loginform_bg_color2_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_text_color', __('Text Colour', self::language_file), array($this, 'loginform_text_color_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_text_color', __('Text Colour', self::language_file), array(&$this, 'loginform_text_color_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_transparency', __('Transparency (in percent)', self::language_file), array($this, 'loginform_transparency_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_transparency', __('Transparency (in percent)', self::language_file), array(&$this, 'loginform_transparency_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_border_style', __('Border Style', self::language_file), array($this, 'loginform_border_style_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_border_style', __('Border Style', self::language_file), array(&$this, 'loginform_border_style_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_border_width', __('Border Width (in px)', self::language_file), array($this, 'loginform_border_width_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_border_width', __('Border Width (in px)', self::language_file), array(&$this, 'loginform_border_width_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_border_color', __('Border Colour', self::language_file), array($this, 'loginform_border_color_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_border_color', __('Border Colour', self::language_file), array(&$this, 'loginform_border_color_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_border_round', __('Rounded Corners (in px)', self::language_file), array($this, 'loginform_border_round_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_border_round', __('Rounded Corners (in px)', self::language_file), array(&$this, 'loginform_border_round_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_padding', __('Padding', self::language_file), array($this, 'loginform_padding_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_padding', __('Padding', self::language_file), array(&$this, 'loginform_padding_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_margin', __('Margin', self::language_file), array($this, 'loginform_margin_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_margin', __('Margin', self::language_file), array(&$this, 'loginform_margin_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'loginform_shadow_x_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'loginform_shadow_x_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'loginform_shadow_y_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'loginform_shadow_y_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'loginform_shadow_softness_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'loginform_shadow_softness_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_shadow_color', __('Shadow Colour', self::language_file), array($this, 'loginform_shadow_color_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_loginform_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'loginform_shadow_color_input'), 'clp_widget_loginform', 'clp_widget_options');
+		add_settings_field('clp_widget_loginform_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'loginform_shadow_inset_input'), 'clp_widget_loginform', 'clp_widget_options');
 		
 		// input and button tab
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_input_section'), 'clp_widget_input');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_input_section'), 'clp_widget_input');
 		
-		add_settings_field('clp_copy_input', __('Copy Settings', self::language_file), array(&$this, 'copy_input_input'), 'clp_widget_input', 'clp_widget_options', array(__('Check, to copy the settings for the input fields from the login page.', self::language_file)));
+		add_settings_field('clp_widget_input_text_color', __('Text Colour', self::language_file), array($this, 'input_text_color_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_input_text_color', __('Text Colour', self::language_file), array(&$this, 'input_text_color_input'), 'clp_widget_input', 'clp_widget_options');
+		add_settings_field('clp_widget_input_bg_color', __('Background Colour', self::language_file), array($this, 'input_bg_color_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_input_bg_color', __('Background Colour', self::language_file), array(&$this, 'input_bg_color_input'), 'clp_widget_input', 'clp_widget_options');
+		add_settings_field('clp_widget_input_border_color', __('Border Colour', self::language_file), array($this, 'input_border_color_input'), 'clp_widget_input', 'clp_widget_options');	
 		
-		add_settings_field('clp_widget_input_border_color', __('Border Colour', self::language_file), array(&$this, 'input_border_color_input'), 'clp_widget_input', 'clp_widget_options');	
+		add_settings_field('clp_widget_input_float', __('Float', self::language_file), array($this, 'input_float_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_input_float', __('Float', self::language_file), array(&$this, 'input_float_input'), 'clp_widget_input', 'clp_widget_options');	
+		add_settings_field('clp_widget_input_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'loginform_shadow_x_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_widget_button_section'), 'clp_widget_button');
+		add_settings_field('clp_widget_input_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'loginform_shadow_y_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_field('clp_copy_button', __('Copy Settings', self::language_file), array(&$this, 'copy_button_input'), 'clp_widget_button', 'clp_widget_options', array(__('Check, to copy the settings for the login button from the login page.', self::language_file)));
+		add_settings_field('clp_widget_input_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'loginform_shadow_softness_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_button_bg_color1', __('Background Colour', self::language_file), array(&$this, 'button_bg_color1_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_input_shadow_color', __('Shadow Colour', self::language_file), array($this, 'loginform_shadow_color_input'), 'clp_widget_input', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_button_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'button_bg_color2_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_input_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'loginform_shadow_inset_input'), 'clp_widget_input', 'clp_widget_options');	
 		
-		add_settings_field('clp_widget_button_text_color', __('Text Colour', self::language_file), array(&$this, 'button_text_color_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_widget_button_section'), 'clp_widget_button');
 		
-		add_settings_field('clp_widget_button_border_color', __('Border Colour', self::language_file), array(&$this, 'button_border_color_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_button_bg_color1', __('Background Colour', self::language_file), array($this, 'button_bg_color1_input'), 'clp_widget_button', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_btn_hover_bg_color1', __('Hover Background Colour', self::language_file), array(&$this, 'btn_hover_bg_color1_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_button_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'button_bg_color2_input'), 'clp_widget_button', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_btn_hover_bg_color2', __('Second Hover Background Colour (for Gradient)', self::language_file), array(&$this, 'btn_hover_bg_color2_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_button_text_color', __('Text Colour', self::language_file), array($this, 'button_text_color_input'), 'clp_widget_button', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_btn_hover_text_color', __('Hover Text Colour', self::language_file), array(&$this, 'btn_hover_text_color_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_button_border_color', __('Border Colour', self::language_file), array($this, 'button_border_color_input'), 'clp_widget_button', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_btn_hover_border_color', __('Hover Border Colour', self::language_file), array(&$this, 'btn_hover_border_color_input'), 'clp_widget_button', 'clp_widget_options');
+		add_settings_field('clp_widget_btn_hover_bg_color1', __('Hover Background Colour', self::language_file), array($this, 'btn_hover_bg_color1_input'), 'clp_widget_button', 'clp_widget_options');
+		
+		add_settings_field('clp_widget_btn_hover_bg_color2', __('Second Hover Background Colour (for Gradient)', self::language_file), array($this, 'btn_hover_bg_color2_input'), 'clp_widget_button', 'clp_widget_options');
+		
+		add_settings_field('clp_widget_btn_hover_text_color', __('Hover Text Colour', self::language_file), array($this, 'btn_hover_text_color_input'), 'clp_widget_button', 'clp_widget_options');
+		
+		add_settings_field('clp_widget_btn_hover_border_color', __('Hover Border Colour', self::language_file), array($this, 'btn_hover_border_color_input'), 'clp_widget_button', 'clp_widget_options');
 		
 		// link tab
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_link_section'), 'clp_widget_link');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_link_section'), 'clp_widget_link');
 		
-		add_settings_field('clp_copy_link', __('Copy Settings', self::language_file), array(&$this, 'copy_link_input'), 'clp_widget_link', 'clp_widget_options', array(__('Check, to copy the settings for the links from the login page.', self::language_file)));
+		add_settings_field('clp_widget_link_size', __('Font Size', self::language_file), array($this, 'link_size_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_size', __('Font Size', self::language_file), array(&$this, 'link_size_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_field('clp_widget_link_text_color', __('Text Colour', self::language_file), array($this, 'link_text_color_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_text_color', __('Text Colour', self::language_file), array(&$this, 'link_text_color_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_field('clp_widget_link_textdecoration', __('Text Decoration', self::language_file), array($this, 'link_textdecoration_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_textdecoration', __('Text Decoration', self::language_file), array(&$this, 'link_textdecoration_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_field('clp_widget_link_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'link_shadow_x_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'link_shadow_x_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_field('clp_widget_link_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'link_shadow_y_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'link_shadow_y_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_field('clp_widget_link_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'link_shadow_softness_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'link_shadow_softness_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_field('clp_widget_link_shadow_color', __('Shadow Colour', self::language_file), array($this, 'link_shadow_color_input'), 'clp_widget_link', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_link_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'link_shadow_color_input'), 'clp_widget_link', 'clp_widget_options');
+		add_settings_section('clp_widget_options', false, array($this, 'clp_hover_section'), 'clp_widget_hover');
 		
-		add_settings_section('clp_widget_options', false, array(&$this, 'clp_hover_section'), 'clp_widget_hover');
+		add_settings_field('clp_widget_hover_text_color', __('Text Colour', self::language_file), array($this, 'hover_text_color_input'), 'clp_widget_hover', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_hover_text_color', __('Text Colour', self::language_file), array(&$this, 'hover_text_color_input'), 'clp_widget_hover', 'clp_widget_options');
+		add_settings_field('clp_widget_hover_textdecoration', __('Text Decoration', self::language_file), array($this, 'hover_textdecoration_input'), 'clp_widget_hover', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_hover_textdecoration', __('Text Decoration', self::language_file), array(&$this, 'hover_textdecoration_input'), 'clp_widget_hover', 'clp_widget_options');
+		add_settings_field('clp_widget_hover_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'hover_shadow_x_input'), 'clp_widget_hover', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_hover_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'hover_shadow_x_input'), 'clp_widget_hover', 'clp_widget_options');
+		add_settings_field('clp_widget_hover_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'hover_shadow_y_input'), 'clp_widget_hover', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_hover_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'hover_shadow_y_input'), 'clp_widget_hover', 'clp_widget_options');
+		add_settings_field('clp_widget_hover_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'hover_shadow_softness_input'), 'clp_widget_hover', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_hover_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'hover_shadow_softness_input'), 'clp_widget_hover', 'clp_widget_options');
-		
-		add_settings_field('clp_widget_hover_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'hover_shadow_color_input'), 'clp_widget_hover', 'clp_widget_options');
+		add_settings_field('clp_widget_hover_shadow_color', __('Shadow Colour', self::language_file), array($this, 'hover_shadow_color_input'), 'clp_widget_hover', 'clp_widget_options');
 		
 		// css tab
 		
-		add_settings_section('clp_widget_options', __('CSS', self::language_file), array(&$this, 'clp_widget_css_section'), 'clp_widget_css');
+		add_settings_section('clp_widget_options', __('CSS', self::language_file), array($this, 'clp_widget_css_section'), 'clp_widget_css');
 		
-		add_settings_field('clp_widget_css', __('Own CSS', self::language_file), array(&$this, 'css_input'), 'clp_widget_css', 'clp_widget_options');
+		add_settings_field('clp_widget_css', __('Own CSS', self::language_file), array($this, 'css_input'), 'clp_widget_css', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_css_override', __('Override other styles', self::language_file), array(&$this, 'override_input'), 'clp_widget_css', 'clp_widget_options', array(__('By checking this, all other styles will be replaced by your CSS. Otherwise, your CSS is additional.', self::language_file)));
+		add_settings_field('clp_widget_css_override', __('Override other styles', self::language_file), array($this, 'override_input'), 'clp_widget_css', 'clp_widget_options', array(__('By checking this, all other styles will be replaced by your CSS. Otherwise, your CSS is additional.', self::language_file)));
 		
-		add_settings_field('clp_widget_css_resize', false, array(&$this, 'css_resize_field'), 'clp_widget_css', 'clp_widget_options');
+		add_settings_field('clp_widget_css_resize', false, array($this, 'css_resize_field'), 'clp_widget_css', 'clp_widget_options');
 		
 		// html tab
 		
-		add_settings_section('clp_widget_options', __('Aditional html snippets outside of the form', self::language_file), array(&$this, 'clp_widget_html_outside_section'), 'clp_widget_html_outside');
+		add_settings_section('clp_widget_options', __('Aditional html snippets outside of the form', self::language_file), array($this, 'clp_widget_html_outside_section'), 'clp_widget_html_outside');
 		
-		add_settings_field('clp_copy_html', __('Copy Settings', self::language_file), array(&$this, 'copy_html_input'), 'clp_widget_html_outside', 'clp_widget_options', array(__('Check, to copy the settings for the html snippets from the login page.', self::language_file)));
+		add_settings_field('clp_widget_login_message', __('Above Form', self::language_file), array($this, 'login_message_input'), 'clp_widget_html_outside', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_login_message', __('Above Form', self::language_file), array(&$this, 'login_message_input'), 'clp_widget_html_outside', 'clp_widget_options');
+		add_settings_field('clp_widget_login_footer', __('Beneath Form', self::language_file), array($this, 'login_footer_input'), 'clp_widget_html_outside', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_login_footer', __('Beneath Form', self::language_file), array(&$this, 'login_footer_input'), 'clp_widget_html_outside', 'clp_widget_options');
+		add_settings_section('clp_widget_options', __('Aditional html snippets inside of the form', self::language_file), array($this, 'clp_widget_html_inside_section'), 'clp_widget_html_inside');
 		
-		add_settings_section('clp_widget_options', __('Aditional html snippets inside of the form', self::language_file), array(&$this, 'clp_widget_html_inside_section'), 'clp_widget_html_inside');
+		add_settings_field('clp_widget_login_form_top', __('Top', self::language_file), array($this, 'login_form_top_input'), 'clp_widget_html_inside', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_login_form_top', __('Top', self::language_file), array(&$this, 'login_form_top_input'), 'clp_widget_html_inside', 'clp_widget_options');
+		add_settings_field('clp_widget_login_form', __('Middle', self::language_file), array($this, 'login_form_input'), 'clp_widget_html_inside', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_login_form', __('Middle', self::language_file), array(&$this, 'login_form_input'), 'clp_widget_html_inside', 'clp_widget_options');
+		add_settings_field('clp_widget_login_form_bottom', __('Bottom', self::language_file), array($this, 'login_form_bottom_input'), 'clp_widget_html_inside', 'clp_widget_options');
 		
-		add_settings_field('clp_widget_login_form_bottom', __('Bottom', self::language_file), array(&$this, 'login_form_bottom_input'), 'clp_widget_html_inside', 'clp_widget_options');
-		
-		add_settings_field('clp_widget_html_resize', false, array(&$this, 'html_resize_field'), 'clp_widget_html_inside', 'clp_widget_options');
+		add_settings_field('clp_widget_html_resize', false, array($this, 'html_resize_field'), 'clp_widget_html_inside', 'clp_widget_options');
 	
 	}
 	
@@ -396,7 +435,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function clp_widget_advanced_section() {
 	
-		self::tag_it(__('In most cases, it won&#38;t make sense to change anything here. You might some reasons to try something out, though.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('In most cases, it won&#39;t make sense to change anything here. You might for some reasons want to try something out, though.', self::language_file), 'p', 1, false, true);
 		
 	}
 		
@@ -489,7 +528,23 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function container_background_input() {
 		
-		a5_text_field('container_background', 'clp_widget_options[container_background]', @self::$options['container_background']);	
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('container_background_url', 'clp_widget_options[container_background]', @self::$options['container_background']);
+			
+			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['container_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('container_background', 'clp_widget_options[container_background]', @self::$options['container_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;
 		
 	}
 	
@@ -581,6 +636,12 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	}
 	
+	function container_shadow_inset_input() {
+		
+		a5_checkbox('container_shadow_inset', 'clp_widget_options[container_shadow_inset]', ' inset', false, false, @self::$options['container_shadow_inset']);
+	
+	}
+	
 	function clp_widget_container_pos_section() {
 		
 		self::tag_it(__('Depending on what you do to the widget itself, you might want to change it&#39;s padding and margin as well.', self::language_file), 'p', 1, false, true);
@@ -607,18 +668,32 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		self::tag_it(__('You can enter the url of the logo, that you want to have in the widget. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('In the URL field, you enter the URL to which the logo should link.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can leave the fields empty if you don&#39;t want a logo in the widget. Or just copy the settings from the login page, to have a down-sized version of the logo in the widget.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can as well copy the settings for the logo from the login page.', self::language_file), 'p', 1, false, true);
 		
-	}
-	
-	function copy_logo_input($labels) {
-		
-		a5_checkbox('copy_logo', 'clp_widget_options[copy_logo]', false, $labels[0]);
+		submit_button(__('Copy Settings', self::language_file), 'secondary', 'clp_widget_options[copy_logo]', true, array('id' => 'copy_logo'));
 		
 	}
 	
 	function logo_url_input() {
+		
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('logo_url', 'clp_widget_options[logo]', @self::$options['logo']);
 			
-		a5_text_field('logo', 'clp_widget_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['logo'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('logo', 'clp_widget_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;
 		
 	}
 		
@@ -688,6 +763,12 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 	}
 	
+	function h1_shadow_inset_input() {
+		
+		a5_checkbox('h1_shadow_inset', 'clp_widget_options[h1_shadow_inset]', ' inset', false, false, @self::$options['h1_shadow_inset']);
+	
+	}
+	
 	// loginform tab
 	
 	function clp_widget_loginform_section() {
@@ -698,18 +779,31 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		self::tag_it(__('Margin and Padding are given as css values.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('At last, give the form a shadow (is not supported by all browsers).', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can as well copy the settings for the login form from the login page.', self::language_file), 'p', 1, false, true);
 		
-	}
-	
-	function copy_loginform_input($labels) {
-		
-		a5_checkbox('copy_loginform', 'clp_widget_options[copy_loginform]', false, $labels[0]);
+		submit_button(__('Copy Settings', self::language_file), 'secondary', 'clp_widget_options[copy_loginform]', true, array('id' => 'copy_loginform'));
 		
 	}
 	
 	function loginform_background_input() {
 		
-		a5_text_field('loginform_background', 'clp_widget_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));	
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('loginform_background_url', 'clp_widget_options[loginform_background]', @self::$options['loginform_background']);
+			
+			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['loginform_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('loginform_background', 'clp_widget_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;
 		
 	}
 	
@@ -777,12 +871,6 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 	}
 	
-	function loginform_shadow_x_input() {
-		
-		a5_number_field('loginform_shadow_x', 'clp_widget_options[loginform_shadow_x]', @self::$options['loginform_shadow_x'], false, array('step' => 1));
-		
-	}
-	
 	function loginform_padding_input() {
 		
 		a5_text_field('loginform_padding', 'clp_widget_options[loginform_padding]', @self::$options['loginform_padding']);
@@ -792,6 +880,12 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	function loginform_margin_input() {
 		
 		a5_text_field('loginform_margin', 'clp_widget_options[loginform_margin]', @self::$options['loginform_margin']);
+		
+	}
+	
+	function loginform_shadow_x_input() {
+		
+		a5_number_field('loginform_shadow_x', 'clp_widget_options[loginform_shadow_x]', @self::$options['loginform_shadow_x'], false, array('step' => 1));
 		
 	}
 		
@@ -813,17 +907,20 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	}
 	
+	function loginform_shadow_inset_input() {
+		
+		a5_checkbox('loginform_shadow_inset', 'clp_widget_options[loginform_shadow_inset]', ' inset', false, false, @self::$options['loginform_shadow_inset']);
+	
+	}
+	
 	// input and button tab
 	
 	function clp_widget_input_section() {
 		
 		self::tag_it(__('This changes the colours of the name and password fields of the log in form.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can as well copy the settings for the input fields from the login page.', self::language_file), 'p', 1, false, true);
 		
-	}
-	
-	function copy_input_input($labels) {
-		
-		a5_checkbox('copy_input', 'clp_widget_options[copy_input]', false, $labels[0]);
+		submit_button(__('Copy Settings', self::language_file), 'secondary', 'clp_widget_options[copy_input]', true, array('id' => 'copy_input'));
 		
 	}
 		
@@ -853,15 +950,42 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 	}
 	
-	function clp_widget_button_section() {
+	function input_shadow_x_input() {
 		
-		self::tag_it(__('Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then.', self::language_file), 'p', 1, false, true);
+		a5_number_field('input_shadow_x', 'clp_widget_options[input_shadow_x]', @self::$options['input_shadow_x'], false, array('step' => 1));
+		
+	}
+		
+	function input_shadow_y_input() {
+		
+		a5_number_field('input_shadow_y', 'clp_widget_options[input_shadow_y]', @self::$options['input_shadow_y'], false, array('step' => 1));
 		
 	}
 	
-	function copy_button_input($labels) {
+	function input_shadow_softness_input() {
+			
+		a5_number_field('input_shadow_softness', 'clp_widget_options[input_shadow_softness]', @self::$options['input_shadow_softness'], false, array('step' => 1));
 		
-		a5_checkbox('copy_button', 'clp_widget_options[copy_button]', false, $labels[0]);
+	}
+	
+	function input_shadow_color_input() {
+		
+		a5_text_field('input_shadow_color', 'clp_widget_options[input_shadow_color]', @self::$options['input_shadow_color'], false, array('class' => 'color-picker'));
+	
+	}
+	
+	function input_shadow_inset_input() {
+		
+		a5_checkbox('input_shadow_inset', 'clp_widget_options[input_shadow_inset]', ' inset', false, false, @self::$options['input_shadow_inset']);
+	
+	}
+	
+	function clp_widget_button_section() {
+		
+		self::tag_it(__('Enter the background, text and border colour of the submit button here. The button will look static if you don&#39;t give values for the hover state of it. If you want to have a gradient, enter two background colours. The first one will be up then.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can as well copy the settings for the button from the login page.', self::language_file), 'p', 1, false, true);
+		
+		submit_button(__('Copy Settings', self::language_file), 'secondary', 'clp_widget_options[copy_button]', true, array('id' => 'copy_button'));
 		
 	}
 	
@@ -920,12 +1044,9 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		self::tag_it(__('Style the links by giving a text colour, text decoration and shadow for the link and the hover style.', self::language_file), 'p', 1, false, true);
 		self::tag_it(sprintf(__('For the font size, give a css value, such as %1$s or %2$s.', self::language_file), '<em>&#39;12px&#39;</em>', '<em>&#39;1em&#39;</em>'), 'p', 1, false, true);
 		self::tag_it(__('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can as well copy the settings for the links from the login page.', self::language_file), 'p', 1, false, true);
 		
-	}
-	
-	function copy_link_input($labels) {
-		
-		a5_checkbox('copy_links', 'clp_widget_options[copy_links]', false, $labels[0]);
+		submit_button(__('Copy Settings', self::language_file), 'secondary', 'clp_widget_options[copy_links]', true, array('id' => 'copy_links'));
 		
 	}
 	
@@ -1025,11 +1146,13 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		self::tag_it(__('This gives you much more freedom with styling your login widget than the rather foolproof but very limited options .', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can of course copy the style sheet written by the plugin, paste it here and start finetuning.', self::language_file), 'p', 1, false, true);
 		
+		submit_button(__('Copy'), 'secondary', 'clp_widget_options[copy_stylesheet]', true, array('id' => 'copy_stylesheet'));
+		
 	}
 	
 	function css_input() {
 	
-		a5_textarea('css', 'clp_widget_options[css]', @self::$options['css'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('css', 'clp_widget_options[css]', @self::$options['css'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
@@ -1051,24 +1174,21 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 		self::tag_it(__('If you want to have some additional html outside your login form, there are two places to put it. Above the form and under it. This is done for conformity with the login page and it&#39;s filters.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can use the additional css to style the html snippets that you enter here.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can as well copy the html from the login page.', self::language_file), 'p', 1, false, true);
 		
-	}
-	
-	function copy_html_input($labels) {
-		
-		a5_checkbox('copy_html', 'clp_widget_options[copy_html]', false, $labels[0]);
+		submit_button(__('Copy Settings', self::language_file), 'secondary', 'clp_widget_options[copy_html]', true, array('id' => 'copy_html'));
 		
 	}
 	
 	function login_message_input() {
 	
-		a5_textarea('login_message', 'clp_widget_options[login_message]', @self::$options['login_message'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_message', 'clp_widget_options[login_message]', @self::$options['login_message'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
 	function login_footer_input() {
 	
-		a5_textarea('login_footer', 'clp_widget_options[login_footer]', @self::$options['login_footer'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_footer', 'clp_widget_options[login_footer]', @self::$options['login_footer'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
@@ -1081,19 +1201,19 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function login_form_top_input() {
 	
-		a5_textarea('login_form_top', 'clp_widget_options[login_form_top]', @self::$options['login_form_top'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_form_top', 'clp_widget_options[login_form_top]', @self::$options['login_form_top'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
 	function login_form_input() {
 	
-		a5_textarea('login_form', 'clp_widget_options[login_form]', @self::$options['login_form'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_form', 'clp_widget_options[login_form]', @self::$options['login_form'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
 	function login_form_bottom_input() {
 	
-		a5_textarea('login_form_bottom', 'clp_widget_options[login_form_bottom]', @self::$options['login_form_bottom'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_form_bottom', 'clp_widget_options[login_form_bottom]', @self::$options['login_form_bottom'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
@@ -1372,6 +1492,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 					self::$options['container_shadow_y'] = trim($input['container_shadow_y']);
 					self::$options['container_shadow_softness'] = trim($input['container_shadow_softness']);
 					self::$options['container_shadow_color'] = trim($input['container_shadow_color']);
+					self::$options['container_shadow_inset'] = @$input['container_shadow_inset'];
 					self::$options['container_padding'] = trim($input['container_padding']);
 					self::$options['container_margin'] = trim($input['container_margin']);
 				
@@ -1397,6 +1518,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 						self::$options['h1_shadow_y'] = trim($input['h1_shadow_y']);
 						self::$options['h1_shadow_softness'] = trim($input['h1_shadow_softness']);
 						self::$options['h1_shadow_color'] = trim($input['h1_shadow_color']);
+						self::$options['h1_shadow_inset'] = @$input['h1_shadow_inset'];
 						
 					endif;
 					
@@ -1429,6 +1551,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 						self::$options['loginform_shadow_y'] = trim($input['loginform_shadow_y']);
 						self::$options['loginform_shadow_softness'] = trim($input['loginform_shadow_softness']);
 						self::$options['loginform_shadow_color'] = trim($input['loginform_shadow_color']);
+						self::$options['loginform_shadow_inset'] = @$input['loginform_shadow_inset'];
 						
 					endif;
 				
@@ -1438,7 +1561,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 				
 					if (isset($input['copy_input'])) :
 
-						$settings = array('input_text_color', 'input_bg_color', 'input_border_color');
+						$settings = array('input_text_color', 'input_bg_color', 'input_border_color', 'input_shadow_x', 'input_shadow_y', 'input_shadow_softness', 'input_shadow_color', 'input_shadow_inset');
 
 						self::copy_settings($settings);
 						
@@ -1447,6 +1570,11 @@ class clp_WidgetAdmin extends A5_OptionPage {
 						self::$options['input_text_color'] = trim($input['input_text_color']);
 						self::$options['input_bg_color'] = trim($input['input_bg_color']);
 						self::$options['input_border_color'] = trim($input['input_border_color']);
+						self::$options['input_shadow_x'] = trim($input['input_shadow_x']);
+						self::$options['input_shadow_y'] = trim($input['input_shadow_y']);
+						self::$options['input_shadow_softness'] = trim($input['input_shadow_softness']);
+						self::$options['input_shadow_color'] = trim($input['input_shadow_color']);
+						self::$options['input_shadow_inset'] = @$input['input_shadow_inset'];
 					
 					endif;
 					
@@ -1503,6 +1631,15 @@ class clp_WidgetAdmin extends A5_OptionPage {
 					
 				case 'css_tab' :
 				
+					if (isset($input['copy_stylesheet'])) :
+					
+						self::$options['css'] = CLP_DynamicCSS::$widget_css;
+						self::$options['override'] = true;
+						
+						return self::$options;
+					
+					endif;
+				
 					self::$options['css'] = trim($input['css']);
 					self::$options['override'] = (@$input['override']) ? true : NULL;
 				
@@ -1550,11 +1687,11 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 		echo self::open_sortable('side_top');
 		
-		echo self::open_postbox(__('Preview'), 'widget-preview');
+		echo self::open_postbox(__('Preview'), 'preview-box');
 		
-		echo '<div id="custom_login_widget" class="widget widget_custom_login_widget" style="margin: 5px; padding: 20px;">'.$eol;
+		echo '<div id="custom_login_widget" class="widget_custom_login_widget" style="margin: 5px; padding: 20px;">'.$eol;
 		
-		echo '<h3 class="widget-title">'.__('Testing Widget', self::language_file).'</h3>'.$eol;
+		echo '<div class="widget-title"><h3>'.__('Testing Widget', self::language_file).'</h3></div>'.$eol;
 		
 		$formargs['redirect'] = (isset(self::$options['redirect']) && !empty(self::$options['redirect'])) ? self::$options['redirect'] : site_url( $_SERVER['REQUEST_URI'] );
 		$formargs['form_id'] = (isset(self::$options['form_id']) && !empty(self::$options['form_id'])) ? self::$options['form_id'] : 'loginform';
@@ -1572,9 +1709,9 @@ class clp_WidgetAdmin extends A5_OptionPage {
 		
 		if (isset(self::$options['title']) && !empty(self::$options['title'])) $title_tag = ' title="'.self::$options['title'].'"';
 		
-		if (isset(self::$options['logo']) && !empty(self::$options['logo'])) $img_tag = '<img src="'.self::$options['logo'].'"'.$title_tag.' />';
+		if (isset(self::$options['logo']) && !empty(self::$options['logo'])) $img_tag = '<img src="'.self::$options['logo'].'"'.@$title_tag.' />';
 		
-		if (isset($img_tag)) echo (isset(self::$options['url']) && !empty(self::$options['url'])) ? '<a href="'.self::$options['url'].'"'.$title_tag.'>'.$img_tag.'</a>' : $img_tag;
+		if (isset($img_tag)) echo (isset(self::$options['url']) && !empty(self::$options['url'])) ? '<a href="'.self::$options['url'].'"'.@$title_tag.'>'.$img_tag.'</a>' : $img_tag;
 			
 		if (isset(self::$options['login_message']) && !empty(self::$options['login_message'])) echo self::$options['login_message'];
 		

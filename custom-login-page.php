@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 2.3
+Version: 2.4
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -60,21 +60,20 @@ if (!class_exists('CLP_DynamicCSS')) require_once CLP_PATH.'class-lib/CLP_Dynami
 if (!class_exists('CLP_DynamicJS')) require_once CLP_PATH.'class-lib/CLP_DynamicJSClass.php';
 if (!class_exists('Custom_Login_Widget')) require_once CLP_PATH.'class-lib/CLP_WidgetClass.php';
 
-
 class A5_CustomLoginPage {
 	
 	private static $options;
 	
-	const language_file = 'custom-login-page', version = '2.3';
+	const language_file = 'custom-login-page', version = 2.4;
 	
 	function __construct(){
 		
-		register_activation_hook(__FILE__, array(&$this, '_install')); 
-		register_deactivation_hook(__FILE__, array(&$this, '_uninstall'));	
+		register_activation_hook(__FILE__, array($this, '_install')); 
+		register_deactivation_hook(__FILE__, array($this, '_uninstall'));	
 		
-		add_filter('plugin_row_meta', array(&$this, 'register_links'), 10, 2);
+		add_filter('plugin_row_meta', array($this, 'register_links'), 10, 2);
 		
-		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));
 		
 		if (is_multisite()) :
 		
@@ -86,9 +85,7 @@ class A5_CustomLoginPage {
 				
 				if (self::$options['version'] != self::version) :
 				
-					self::$options['version'] = self::version;
-					
-					update_site_option('clp_options', self::$options);
+					$this->_update_options(self::$options['multisite']);
 					
 				endif;
 				
@@ -100,13 +97,7 @@ class A5_CustomLoginPage {
 				
 					self::$options = get_option('clp_options');
 					
-					if (self::$options['version'] != self::version) :
-						
-						self::$options['version'] = self::version;
-						
-						update_option('clp_options', self::$options);
-						
-					endif;
+					if (self::$options['version'] != self::version) $this->_update_options(self::$options['multisite']);
 					
 				endif;
 				
@@ -120,29 +111,30 @@ class A5_CustomLoginPage {
 			
 				self::$options = get_option('clp_options');
 				
-				if (self::$options['version'] != self::version) :
-					
-					self::$options['version'] = self::version;
-					
-					update_option('clp_options', self::$options);
-					
-				endif;
+				if (self::$options['version'] != self::version) $this->_update_options(self::$options['multisite']);
 				
 			endif;
 		
 		endif;
 		
-		if (!empty(self::$options['url'])) add_filter('login_headerurl', array(&$this, 'change_headerurl'));
-		if (!empty(self::$options['title'])) add_filter('login_headertitle', array(&$this, 'change_headertitle'));
-		if (!empty(self::$options['error_custom_message'])) add_filter('login_errors', array(&$this, 'custom_error'));
-		if (!empty(self::$options['logout_custom_message'])) add_filter('login_messages', array(&$this, 'custom_logout'));
-		if (!empty(self::$options['admin_redirect']) && !empty(self::$options['user_redirect'])) add_filter('login_redirect', array(&$this, 'login_redirect'), 10, 3);
-		if (!empty(self::$options['svg']) || !empty(self::$options['login_message'])) add_filter('login_message', array(&$this, 'print_login_message'));
-		if (!empty(self::$options['login_form'])) add_action('login_form', array(&$this, 'print_login_form'));
-		if (!empty(self::$options['login_footer'])) add_filter('login_footer', array(&$this, 'print_login_footer'));
-		if (!empty(self::$options['blog_header']))add_action( 'login_head', array (&$this, 'custom_login_header'));
-		if (!empty(self::$options['blog_footer']))add_action( 'login_footer', array (&$this, 'custom_login_footer'));
-		
+		if (!empty(self::$options['url'])) add_filter('login_headerurl', array($this, 'change_headerurl'));
+		if (!empty(self::$options['title'])) add_filter('login_headertitle', array($this, 'change_headertitle'));
+		if (!empty(self::$options['error_custom_message'])) add_filter('login_errors', array($this, 'custom_error'));
+		if (!empty(self::$options['logout_custom_message'])) add_filter('login_messages', array($this, 'custom_logout'));
+		if (!empty(self::$options['custom_redirect'])) add_filter('login_redirect', array($this, 'login_redirect'), 10, 3);
+		if (!empty(self::$options['hide_backend'])) :
+			add_action('show_admin_bar', array($this, 'disable_admin_bar'));
+			add_action('admin_init', array($this, 'redirect_from_admin'));
+		endif;
+		if (!empty(self::$options['svg']) || !empty(self::$options['login_message'])) add_filter('login_message', array($this, 'print_login_message'));
+		if (!empty(self::$options['login_form'])) add_action('login_form', array($this, 'print_login_form'));
+		if (!empty(self::$options['login_footer'])) add_filter('login_footer', array($this, 'print_login_footer'));
+		if (!empty(self::$options['blog_header'])) add_action( 'login_head', array ($this, 'custom_login_header'));
+		if (!empty(self::$options['blog_footer'])) add_action( 'login_footer', array ($this, 'custom_login_footer'));
+		if (!empty(self::$options['disable_reg'])) add_filter('option_users_can_register', array($this, 'disable_registration'));
+		if (!empty(self::$options['disable_pass']))	add_action ('lost_password', array($this, 'disable_password_reset'));
+		if (!empty(self::$options['disable_pass']))	add_filter('gettext', array($this, 'remove_lostpassword_text'));
+
 		/**
 		 *
 		 * Importing language file
@@ -152,15 +144,45 @@ class A5_CustomLoginPage {
 		
 		// redirecting to the export file
 		
-		add_action('init', array (&$this, 'add_rewrite'));
-		add_action('template_redirect', array (&$this, 'export_template'));
+		add_action('init', array ($this, 'add_rewrite'));
+		add_action('template_redirect', array ($this, 'export_template'));
 		
 		$CLP_DynamicCSS = new CLP_DynamicCSS(self::$options['multisite']);
 		$CLP_Admin = new CLP_Admin(self::$options['multisite']);
 		$CLP_WidgetAdmin = new CLP_WidgetAdmin(self::$options['multisite']);
 		if (!is_multisite()) $CLP_DynamicJS = new CLP_DynamicJS();
 		
-	}	
+	}
+	
+	function disable_registration($value) {
+		
+		$script = basename(parse_url($_SERVER['SCRIPT_NAME'], PHP_URL_PATH));
+		
+		if ($script == 'wp-login.php') $value = false;
+		
+		return $value;
+		
+	}
+	
+	function disable_password_reset() {
+		
+		wp_redirect(home_url());
+		
+	}
+	
+	function remove_lostpassword_text ($text) {
+		
+		remove_filter('gettext', array($this, 'remove_lostpassword_text'));
+		
+		if ($text == __('Lost your password?')) $text = '';
+		if ($text == __('<strong>ERROR</strong>: Invalid username. <a href="%s">Lost your password</a>?')) $text = __('<strong>ERROR</strong>: Invalid username.', self::language_file);
+		if ($text == __('<strong>ERROR</strong>: The password you entered for the username <strong>%1$s</strong> is incorrect. <a href="%2$s">Lost your password</a>?')) $text = __('<strong>ERROR</strong>: The password you entered for the username <strong>%1$s</strong> is incorrect.', self::language_file);
+		
+		add_filter('gettext', array($this, 'remove_lostpassword_text'));
+		
+		return $text;
+		 
+	}
 	
 	function custom_login_header() {
 		
@@ -197,7 +219,9 @@ class A5_CustomLoginPage {
 		
 		if ($hook != 'widgets.php' && $hook != 'post.php' && 'toplevel_page_clp-settings' != $hook && 'a5-custom-login_page_clp-widget-settings' != $hook) return;
 		
-		wp_register_script('ta-expander-script', plugins_url('ta-expander.js', __FILE__), array('jquery'), '3.0', true);
+		$min = (WP_DEBUG == false) ? '.min.' : '.';
+		
+		wp_register_script('ta-expander-script', plugins_url('ta-expander'.$min.'js', __FILE__), array('jquery'), '3.0', true);
 		wp_enqueue_script('ta-expander-script');
 		
 	}
@@ -275,6 +299,35 @@ class A5_CustomLoginPage {
 		
 		endif;
 	
+	}
+	
+	/**
+	 *
+	 * Hide backend from user roles
+	 *
+	 */
+	 function disable_admin_bar() {
+		
+		$user = wp_get_current_user();
+		
+		if (!isset($user->roles) || empty($user->roles)) return false;
+		
+		if (in_array($user->roles[0], self::$options['hide_backend'])) return false;
+	
+	}
+	
+	function redirect_from_admin(){
+		
+		$user = wp_get_current_user();
+		
+		if (isset($user->roles) && in_array($user->roles[0], self::$options['hide_backend'])) :
+		
+			$redirect = (self::$options['custom_redirect'][$user->roles[0]]) ? self::$options['custom_redirect'][$user->roles[0]] : home_url();
+			
+			wp_redirect($redirect);
+		
+		endif;
+		
 	}
 
 	/**
@@ -401,6 +454,37 @@ class A5_CustomLoginPage {
 			exit;
 		
 		endif;
+		
+	}
+	
+	
+	/**
+	 *
+	 * updating database
+	 *
+	 */
+	function _update_options($multisite) {
+		
+		$options_old = ($multisite) ? get_site_option('clp_options') : get_option('clp_options');
+		
+		$options_new = ($multisite) ? get_site_option('clp_options') : get_option('clp_options');
+		
+		unset($options_new['hide_nav']);
+		
+		if (isset($options_old['hide_nav']) && !empty($options_old['hide_nav'])) :
+					
+			$options_new['disable_reg'] = true;
+			$options_new['disable_pass'] = true;	
+			
+		endif;
+		
+		$options_new['version'] = self::version;
+		
+		if ($multisite) update_site_option('clp_options', $options_new);
+		
+		else update_option('clp_options', $options_new);
+		
+		return;
 		
 	}
 	

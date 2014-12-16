@@ -17,10 +17,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function __construct($multisite) {
 		
-		add_action('admin_init', array(&$this, 'initialize_settings'));
-		add_action('contextual_help', array(&$this, 'add_help_text'));
-		add_action('admin_enqueue_scripts', array(&$this, 'enqueue_scripts'));	
-		add_action('admin_menu', array(&$this, 'add_admin_menu'));
+		add_action('admin_init', array($this, 'initialize_settings'));
+		add_action('contextual_help', array($this, 'add_help_text'));
+		add_action('admin_enqueue_scripts', array($this, 'enqueue_scripts'));	
+		
+		if ($multisite) :
+		
+			add_action('network_admin_menu', array($this, 'add_admin_menu'));
+				
+			self::$options = get_site_option('clp_options');
+			
+		else :
+			
+			add_action('admin_menu', array($this, 'add_admin_menu'));
+		
+			self::$options = get_option('clp_options');
+			
+		endif;
 		
 		self::$options = ($multisite) ? get_site_option('clp_options') : get_option('clp_options');
 		
@@ -33,9 +46,9 @@ class CLP_Admin extends A5_OptionPage {
 	 */
 	function add_admin_menu() {
 		
-		add_menu_page('A5 Custom Login', 'A5 Custom Login', 'administrator', 'clp-settings', array(&$this, 'build_options_page'), plugins_url('custom-login-page/img/a5-icon-16.png'), 62);
+		add_menu_page('A5 Custom Login', 'A5 Custom Login', 'administrator', 'clp-settings', array($this, 'build_options_page'), plugins_url('custom-login-page/img/a5-icon-16.png'), 62);
 		
-		add_submenu_page('clp-settings', 'Custom Login Page', 'Custom Login Page', 'administrator', 'clp-settings', array(&$this, 'build_options_page'));
+		add_submenu_page('clp-settings', 'Custom Login Page', 'Custom Login Page', 'administrator', 'clp-settings', array($this, 'build_options_page'));
 		
 	}
 	
@@ -48,6 +61,8 @@ class CLP_Admin extends A5_OptionPage {
 		
 		if ('toplevel_page_clp-settings' != $hook) return;
 		
+		$min = (WP_DEBUG == false) ? '.min.' : '.';
+		
 		wp_enqueue_script('dashboard');
 		
 		if (wp_is_mobile()) wp_enqueue_script('jquery-touch-punch');
@@ -57,8 +72,20 @@ class CLP_Admin extends A5_OptionPage {
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'iris', admin_url( 'js/iris.min.js' ), array( 'jquery-ui-draggable', 'jquery-ui-slider', 'jquery-touch-punch' ), false, true );
 		
-		wp_register_script('a5-color-picker-script', plugins_url('custom-login-page/color-picker.js'), array('wp-color-picker'), '1.0', true);
+		wp_register_script('a5-color-picker-script', plugins_url('custom-login-page/color-picker'.$min.'js'), array('wp-color-picker'), '1.0', true);
 		wp_enqueue_script('a5-color-picker-script');
+		
+		// getting the media uploader
+		
+		if ( function_exists( 'wp_enqueue_media' ) ) :
+			
+			wp_enqueue_media();
+			
+			wp_register_script( 'a5-media-upload-script', plugins_url('custom-login-page/media-uploader'.$min.'js'), array( 'jquery' ), '1.0', true );
+			
+			wp_enqueue_script('a5-media-upload-script');
+			
+		endif;
 		
 	}
 	
@@ -75,7 +102,7 @@ class CLP_Admin extends A5_OptionPage {
 		
 		$content = self::tag_it(__('In these settings you will be guided step by step through the process of styling your login page. The basic options are very foolproof but also very limited.', self::language_file), 'p');
 		$content .= self::tag_it(__('If you are familiar with coding your own css, you can use only the css tab to write your entire style sheet there. Next to the input for the css, you find a help box with all the elements on the page that you can style.', self::language_file), 'p');
-		if (!is_multisite()) $content .= self::tag_it(__('There is also a priview. So, you just can play around a bit and after saving the settings see, how it looks. No need to have two browser windows open.', self::language_file), 'p');
+		if (!is_multisite()) $content .= self::tag_it(__('There is also a preview. So, you just can play around a bit and after saving the settings see, how it looks. No need to have two browser windows open.', self::language_file), 'p');
 		
 		$screen->add_help_tab( array(
 			'id'      => 'clp-general-help',
@@ -101,6 +128,23 @@ class CLP_Admin extends A5_OptionPage {
 			'content' => $content,
 		));
 		
+		$content = self::tag_it(__('By setting the background size you don&#39;t only change the size of the background image, but also it&#39; behaviour.', self::language_file), 'p');
+		$content .= self::tag_it(sprintf(__('Next to actual sizes in percent or px, the values %s can be used.', self::language_file), '<strong>auto, cover, contain, initial, inherit</strong>'), 'p');
+		
+		$screen->add_help_tab( array(
+			'id'      => 'clp-background-help',
+			'title'   => __('Background Size', self::language_file),
+			'content' => $content,
+		));
+		
+		$content = self::tag_it(__('In the CSS and HTML textareas, you can use the tab key to format your code.', self::language_file), 'p');
+		
+		$screen->add_help_tab( array(
+			'id'      => 'clp-tab-help',
+			'title'   => __('CSS & HTML', self::language_file),
+			'content' => $content,
+		));
+		
 		
 	}
 	
@@ -112,295 +156,319 @@ class CLP_Admin extends A5_OptionPage {
 	 
 	function initialize_settings() {
 		
-		register_setting('clp_options', 'clp_options', array(&$this, 'validate'));
+		register_setting('clp_options', 'clp_options', array($this, 'validate'));
 		
 		// main tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_custom_message_section'), 'clp_message');
+		add_settings_section('clp_options', false, array($this, 'clp_custom_message_section'), 'clp_message');
 		
-		add_settings_field('clp_logout_custom_message', __('Logout Message', self::language_file), array(&$this, 'logout_custom_message_input'), 'clp_message', 'clp_options');
+		add_settings_field('clp_logout_custom_message', __('Logout Message', self::language_file), array($this, 'logout_custom_message_input'), 'clp_message', 'clp_options');
 		
-		add_settings_field('clp_error_custom_message', __('Error Message', self::language_file), array(&$this, 'error_custom_message_input'), 'clp_message', 'clp_options');
+		add_settings_field('clp_error_custom_message', __('Error Message', self::language_file), array($this, 'error_custom_message_input'), 'clp_message', 'clp_options');
 		
-		add_settings_section('clp_options', __('Export Settings', self::language_file), array(&$this, 'clp_export_section'), 'clp_export');
+		add_settings_section('clp_options', __('Export Settings', self::language_file), array($this, 'clp_export_section'), 'clp_export');
 		
-		add_settings_field('clp_export', __('Download a file with your settings', self::language_file), array(&$this, 'export_input'), 'clp_export', 'clp_options');
+		add_settings_field('clp_export', __('Download a file with your settings', self::language_file), array($this, 'export_input'), 'clp_export', 'clp_options');
 		
-		add_settings_section('clp_options', __('Import Settings', self::language_file), array(&$this, 'clp_import_section'), 'clp_import');
+		add_settings_section('clp_options', __('Import Settings', self::language_file), array($this, 'clp_import_section'), 'clp_import');
 		
-		add_settings_field('clp_import', __('This will overlay any existing setting, you already have.', self::language_file), array(&$this, 'import_input'), 'clp_import', 'clp_options');
+		add_settings_field('clp_import', __('This will overlay any existing setting, you already have.', self::language_file), array($this, 'import_input'), 'clp_import', 'clp_options');
 		
-		add_settings_field('clp_impex_resize', false, array(&$this, 'impex_resize_field'), 'clp_import', 'clp_options');
+		add_settings_field('clp_impex_resize', false, array($this, 'impex_resize_field'), 'clp_import', 'clp_options');
 		
 		// advanced tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_custom_redirect_section'), 'clp_redirect');
+		add_settings_section('clp_options', false, array($this, 'clp_blog_section'), 'clp_blog');
 		
-		add_settings_field('clp_custom_redirect', __('Redirect per User Role', self::language_file), array(&$this, 'custom_redirect_input'), 'clp_redirect', 'clp_options');
+		add_settings_field('clp_blog_header', __('Blog Header', self::language_file), array($this, 'blog_header_input'), 'clp_blog', 'clp_options', array(__('Check, to include the header of the frontend into your login page.', self::language_file)));
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_blog_section'), 'clp_blog');
+		add_settings_field('clp_blog_footer', __('Blog Footer', self::language_file), array($this, 'blog_footer_input'), 'clp_blog', 'clp_options', array(__('Check, to include the footer of the frontend into your login page.', self::language_file)));
 		
-		add_settings_field('clp_blog_header', __('Blog Header', self::language_file), array(&$this, 'blog_header_input'), 'clp_blog', 'clp_options', array(__('Check, to include the header of the frontend into your login page.', self::language_file)));
+		add_settings_section('clp_options', false, array($this, 'clp_hide_section'), 'clp_hide');
 		
-		add_settings_field('clp_blog_footer', __('Blog Footer', self::language_file), array(&$this, 'blog_footer_input'), 'clp_blog', 'clp_options', array(__('Check, to include the footer of the frontend into your login page.', self::language_file)));
+		add_settings_field('clp_disable_reg', __('Hide register link.', self::language_file), array($this, 'disable_reg_input'), 'clp_hide', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_hide_section'), 'clp_hide');
+		add_settings_field('clp_disable_pass', __('Hide lost password link.', self::language_file), array($this, 'disable_pass_input'), 'clp_hide', 'clp_options');
 		
-		add_settings_field('clp_hide_nav', __('Hide register and lost password links.', self::language_file), array(&$this, 'hide_nav_input'), 'clp_hide', 'clp_options');
+		add_settings_field('clp_hide_backlink', __('Hide back to blog link.', self::language_file), array($this, 'hide_backlink_input'), 'clp_hide', 'clp_options');
 		
-		add_settings_field('clp_hide_backlink', __('Hide back to blog link.', self::language_file), array(&$this, 'hide_backlink_input'), 'clp_hide', 'clp_options');
+		add_settings_section('clp_options', false, array($this, 'clp_debug_section'), 'clp_debug');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_debug_section'), 'clp_debug');
+		add_settings_field('clp_compress', __('Compress Style Sheet', self::language_file), array($this, 'compress_field'), 'clp_debug', 'clp_options', array(__('Click here to compress the style sheet.', self::language_file)));
 		
-		add_settings_field('clp_compress', __('Compress Style Sheet:', self::language_file), array(&$this, 'compress_field'), 'clp_debug', 'clp_options', array(__('Click here to compress the style sheet.', self::language_file)));
+		add_settings_field('clp_debug', __('Check, to write styles inline instead of to a virtual CSS file.', self::language_file), array($this, 'debug_input'), 'clp_debug', 'clp_options');
 		
-		add_settings_field('clp_debug', __('Check, to write styles inline instead of to a virtual CSS file.', self::language_file), array(&$this, 'debug_input'), 'clp_debug', 'clp_options');
+		if (isset(self::$options['inline']) && !empty(self::$options['inline'])) add_settings_field('clp_priority', __('Give a value for the priority of the style inline (this can help with other plugins overriding our styles).', self::language_file), array($this, 'priority_input'), 'clp_debug', 'clp_options');
 		
-		if (isset(self::$options['inline']) && !empty(self::$options['inline'])) add_settings_field('clp_priority', __('Give a value for the priority of the style inline (this can help with other plugins overriding our styles).', self::language_file), array(&$this, 'priority_input'), 'clp_debug', 'clp_options');
+		add_settings_section('clp_options', false, array($this, 'clp_custom_redirect_section'), 'clp_redirect');
+		
+		add_settings_field('clp_custom_redirect', __('Redirect per User Role', self::language_file), array($this, 'custom_redirect_input'), 'clp_redirect', 'clp_options');
 		
 		// body and button tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_body_section'), 'clp_body');
+		add_settings_section('clp_options', false, array($this, 'clp_body_section'), 'clp_body');
 		
-		add_settings_field('clp_body_background', __('Background Picture', self::language_file), array(&$this, 'body_background_input'), 'clp_body', 'clp_options');
+		add_settings_field('clp_body_background', __('Background Picture', self::language_file), array($this, 'body_background_input'), 'clp_body', 'clp_options');
 		
-		add_settings_field('clp_body_img_repeat', __('Background Repeat', self::language_file), array(&$this, 'body_img_repeat_input'), 'clp_body', 'clp_options');
+		add_settings_field('clp_body_img_repeat', __('Background Repeat', self::language_file), array($this, 'body_img_repeat_input'), 'clp_body', 'clp_options');
 		
-		add_settings_field('clp_body_img_pos', __('Position of the Background Picture', self::language_file), array(&$this, 'body_img_pos_input'), 'clp_body', 'clp_options');
+		add_settings_field('clp_body_img_pos', __('Position of the Background Picture', self::language_file), array($this, 'body_img_pos_input'), 'clp_body', 'clp_options');
 		
-		add_settings_field('clp_body_bg_color1', __('Background Colour', self::language_file), array(&$this, 'body_bg_color1_input'), 'clp_body', 'clp_options');
+		add_settings_field('clp_body_bg_color1', __('Background Colour', self::language_file), array($this, 'body_bg_color1_input'), 'clp_body', 'clp_options');
 		
-		add_settings_field('clp_body_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'body_bg_color2_input'), 'clp_body', 'clp_options');
+		add_settings_field('clp_body_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'body_bg_color2_input'), 'clp_body', 'clp_options');
 		
-		add_settings_field('clp_body_bg_size', __('Background Size', self::language_file), array(&$this, 'body_bg_size_input'), 'clp_body', 'clp_options');	
+		add_settings_field('clp_body_bg_size', __('Background Size', self::language_file), array($this, 'body_bg_size_input'), 'clp_body', 'clp_options');	
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_button_section'), 'clp_button');
+		add_settings_section('clp_options', false, array($this, 'clp_button_section'), 'clp_button');
 		
-		add_settings_field('clp_button_bg_color1', __('Background Colour', self::language_file), array(&$this, 'button_bg_color1_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_button_bg_color1', __('Background Colour', self::language_file), array($this, 'button_bg_color1_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_button_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'button_bg_color2_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_button_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'button_bg_color2_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_button_text_color', __('Text Colour', self::language_file), array(&$this, 'button_text_color_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_button_text_color', __('Text Colour', self::language_file), array($this, 'button_text_color_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_button_border_color', __('Border Colour', self::language_file), array(&$this, 'button_border_color_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_button_border_color', __('Border Colour', self::language_file), array($this, 'button_border_color_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_btn_hover_bg_color1', __('Hover Background Colour', self::language_file), array(&$this, 'btn_hover_bg_color1_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_btn_hover_bg_color1', __('Hover Background Colour', self::language_file), array($this, 'btn_hover_bg_color1_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_btn_hover_bg_color2', __('Second Hover Background Colour (for Gradient)', self::language_file), array(&$this, 'btn_hover_bg_color2_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_btn_hover_bg_color2', __('Second Hover Background Colour (for Gradient)', self::language_file), array($this, 'btn_hover_bg_color2_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_btn_hover_text_color', __('Hover Text Colour', self::language_file), array(&$this, 'btn_hover_text_color_input'), 'clp_button', 'clp_options');
+		add_settings_field('clp_btn_hover_text_color', __('Hover Text Colour', self::language_file), array($this, 'btn_hover_text_color_input'), 'clp_button', 'clp_options');
 		
-		add_settings_field('clp_btn_hover_border_color', __('Hover Border Colour', self::language_file), array(&$this, 'btn_hover_border_color_input'), 'clp_button', 'clp_options');	
+		add_settings_field('clp_btn_hover_border_color', __('Hover Border Colour', self::language_file), array($this, 'btn_hover_border_color_input'), 'clp_button', 'clp_options');	
 		
 		// logo tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_logo_section'), 'clp_logo');
+		add_settings_section('clp_options', false, array($this, 'clp_logo_section'), 'clp_logo');
 		
-		add_settings_field('clp_logo_url', __('Logo URL', self::language_file), array(&$this, 'logo_url_input'), 'clp_logo', 'clp_options');
+		add_settings_field('clp_hide_logo', __('Hide Logo', self::language_file), array($this, 'hide_logo_input'), 'clp_logo', 'clp_options', array(__('Check to have no logo at all.', self::language_file)));
 		
-		add_settings_field('clp_link_url', __('URL to link to', self::language_file), array(&$this, 'link_url_input'), 'clp_logo', 'clp_options');
+		add_settings_field('clp_logo_url', __('Logo URL', self::language_file), array($this, 'logo_url_input'), 'clp_logo', 'clp_options');
 		
-		add_settings_field('clp_logo_title', __('Title tag of the logo', self::language_file), array(&$this, 'logo_title_input'), 'clp_logo', 'clp_options');
+		add_settings_field('clp_link_url', __('URL to link to', self::language_file), array($this, 'link_url_input'), 'clp_logo', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_logo_size_section'), 'clp_logo_size');
+		add_settings_field('clp_logo_title', __('Title tag of the logo', self::language_file), array($this, 'logo_title_input'), 'clp_logo', 'clp_options');
 		
-		add_settings_field('clp_logo_width', __('Width of the Logo (in px)', self::language_file), array(&$this, 'logo_width_input'), 'clp_logo_size', 'clp_options');
+		add_settings_section('clp_options', false, array($this, 'clp_logo_size_section'), 'clp_logo_size');
 		
-		add_settings_field('clp_logo_height', __('Height of the Logo (in px)', self::language_file), array(&$this, 'logo_height_input'), 'clp_logo_size', 'clp_options');
+		add_settings_field('clp_logo_width', __('Width of the Logo (in px)', self::language_file), array($this, 'logo_width_input'), 'clp_logo_size', 'clp_options');
 		
-		add_settings_field('clp_h1_width', __('Width of the Logo Container (in px)', self::language_file), array(&$this, 'h1_width_input'), 'clp_logo_size', 'clp_options');
+		add_settings_field('clp_logo_height', __('Height of the Logo (in px)', self::language_file), array($this, 'logo_height_input'), 'clp_logo_size', 'clp_options');
 		
-		add_settings_field('clp_h1_height', __('Height of the Logo Container (in px)', self::language_file), array(&$this, 'h1_height_input'), 'clp_logo_size', 'clp_options');
+		add_settings_field('clp_h1_width', __('Width of the Logo Container (in px)', self::language_file), array($this, 'h1_width_input'), 'clp_logo_size', 'clp_options');
 		
-		add_settings_field('clp_h1_margin', __('Margin of the Logo Container (CSS)', self::language_file), array(&$this, 'h1_margin_input'), 'clp_logo_size', 'clp_options');
+		add_settings_field('clp_h1_height', __('Height of the Logo Container (in px)', self::language_file), array($this, 'h1_height_input'), 'clp_logo_size', 'clp_options');
 		
-		add_settings_field('clp_h1_padding', __('Padding of the Logo Container (CSS)', self::language_file), array(&$this, 'h1_padding_input'), 'clp_logo_size', 'clp_options');
+		add_settings_field('clp_h1_margin', __('Margin of the Logo Container (CSS)', self::language_file), array($this, 'h1_margin_input'), 'clp_logo_size', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_logo_style_section'), 'clp_logo_style');
+		add_settings_field('clp_h1_padding', __('Padding of the Logo Container (CSS)', self::language_file), array($this, 'h1_padding_input'), 'clp_logo_size', 'clp_options');
 		
-		add_settings_field('clp_h1_corner', __('Rounded Corners (in px)', self::language_file), array(&$this, 'h1_corner_input'), 'clp_logo_style', 'clp_options');
+		add_settings_section('clp_options', false, array($this, 'clp_logo_style_section'), 'clp_logo_style');
 		
-		add_settings_field('clp_h1_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'h1_shadow_x_input'), 'clp_logo_style', 'clp_options');
+		add_settings_field('clp_h1_corner', __('Rounded Corners (in px)', self::language_file), array($this, 'h1_corner_input'), 'clp_logo_style', 'clp_options');
 		
-		add_settings_field('clp_h1_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'h1_shadow_y_input'), 'clp_logo_style', 'clp_options');
+		add_settings_field('clp_h1_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'h1_shadow_x_input'), 'clp_logo_style', 'clp_options');
 		
-		add_settings_field('clp_h1_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'h1_shadow_softness_input'), 'clp_logo_style', 'clp_options');
+		add_settings_field('clp_h1_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'h1_shadow_y_input'), 'clp_logo_style', 'clp_options');
 		
-		add_settings_field('clp_h1_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'h1_shadow_color_input'), 'clp_logo_style', 'clp_options');
+		add_settings_field('clp_h1_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'h1_shadow_softness_input'), 'clp_logo_style', 'clp_options');
+		
+		add_settings_field('clp_h1_shadow_color', __('Shadow Colour', self::language_file), array($this, 'h1_shadow_color_input'), 'clp_logo_style', 'clp_options');
+		
+		add_settings_field('clp_h1_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'h1_shadow_inset_input'), 'clp_logo_style', 'clp_options');
 		
 		// logindiv tab
 	
-		add_settings_section('clp_options', false, array(&$this, 'clp_logindiv_section'), 'clp_logindiv');
+		add_settings_section('clp_options', false, array($this, 'clp_logindiv_section'), 'clp_logindiv');
 		
-		add_settings_field('clp_logindiv_background', __('Background Picture', self::language_file), array(&$this, 'logindiv_background_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_background', __('Background Picture', self::language_file), array($this, 'logindiv_background_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_img_repeat', __('Background Repeat', self::language_file), array(&$this, 'logindiv_img_repeat_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_img_repeat', __('Background Repeat', self::language_file), array($this, 'logindiv_img_repeat_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_img_pos', __('Position of the Background Picture', self::language_file), array(&$this, 'logindiv_img_pos_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_img_pos', __('Position of the Background Picture', self::language_file), array($this, 'logindiv_img_pos_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_bg_color1', __('Background Colour', self::language_file), array(&$this, 'logindiv_bg_color1_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_bg_color1', __('Background Colour', self::language_file), array($this, 'logindiv_bg_color1_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'logindiv_bg_color2_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'logindiv_bg_color2_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_text_color', __('Text Colour', self::language_file), array(&$this, 'logindiv_text_color_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_bg_size', __('Background Size', self::language_file), array($this, 'logindiv_bg_size_input'), 'clp_logindiv', 'clp_options');	
 		
-		add_settings_field('clp_logindiv_transparency', __('Transparency (in percent)', self::language_file), array(&$this, 'logindiv_transparency_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_text_color', __('Text Colour', self::language_file), array($this, 'logindiv_text_color_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_border_style', __('Border Style', self::language_file), array(&$this, 'logindiv_border_style_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_transparency', __('Transparency (in percent)', self::language_file), array($this, 'logindiv_transparency_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_border_width', __('Border Width (in px)', self::language_file), array(&$this, 'logindiv_border_width_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_border_style', __('Border Style', self::language_file), array($this, 'logindiv_border_style_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_border_color', __('Border Colour', self::language_file), array(&$this, 'logindiv_border_color_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_border_width', __('Border Width (in px)', self::language_file), array($this, 'logindiv_border_width_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_border_round', __('Rounded Corners (in px)', self::language_file), array(&$this, 'logindiv_border_round_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_border_color', __('Border Colour', self::language_file), array($this, 'logindiv_border_color_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'logindiv_shadow_x_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_border_round', __('Rounded Corners (in px)', self::language_file), array($this, 'logindiv_border_round_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'logindiv_shadow_y_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'logindiv_shadow_x_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'logindiv_shadow_softness_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'logindiv_shadow_y_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'logindiv_shadow_color_input'), 'clp_logindiv', 'clp_options');
+		add_settings_field('clp_logindiv_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'logindiv_shadow_softness_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_logindiv_pos_section'), 'clp_logindiv_pos');
+		add_settings_field('clp_logindiv_shadow_color', __('Shadow Colour', self::language_file), array($this, 'logindiv_shadow_color_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_left', __('Position (x-direction in px)', self::language_file), array(&$this, 'logindiv_left_input'), 'clp_logindiv_pos', 'clp_options');
+		add_settings_field('clp_logiondiv_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'logindiv_shadow_inset_input'), 'clp_logindiv', 'clp_options');
 		
-		add_settings_field('clp_logindiv_top', __('Position (y-direction in px)', self::language_file), array(&$this, 'logindiv_top_input'), 'clp_logindiv_pos', 'clp_options');
+		add_settings_section('clp_options', false, array($this, 'clp_logindiv_pos_section'), 'clp_logindiv_pos');
 		
-		add_settings_field('clp_logindiv_width', __('Width (in px)', self::language_file), array(&$this, 'logindiv_width_input'), 'clp_logindiv_pos', 'clp_options');
+		add_settings_field('clp_logindiv_left', __('Position (x-direction in px)', self::language_file), array($this, 'logindiv_left_input'), 'clp_logindiv_pos', 'clp_options');
 		
-		add_settings_field('clp_logindiv_height', __('Height (in px)', self::language_file), array(&$this, 'logindiv_height_input'), 'clp_logindiv_pos', 'clp_options');
+		add_settings_field('clp_logindiv_top', __('Position (y-direction in px)', self::language_file), array($this, 'logindiv_top_input'), 'clp_logindiv_pos', 'clp_options');
 		
-		add_settings_field('clp_logindiv_padding', __('Padding', self::language_file), array(&$this, 'logindiv_padding_input'), 'clp_logindiv_pos', 'clp_options');
+		add_settings_field('clp_logindiv_width', __('Width (in px)', self::language_file), array($this, 'logindiv_width_input'), 'clp_logindiv_pos', 'clp_options');
 		
-		add_settings_field('clp_logindiv_margin', __('Margin', self::language_file), array(&$this, 'logindiv_margin_input'), 'clp_logindiv_pos', 'clp_options');
+		add_settings_field('clp_logindiv_height', __('Height (in px)', self::language_file), array($this, 'logindiv_height_input'), 'clp_logindiv_pos', 'clp_options');
+		
+		add_settings_field('clp_logindiv_padding', __('Padding', self::language_file), array($this, 'logindiv_padding_input'), 'clp_logindiv_pos', 'clp_options');
+		
+		add_settings_field('clp_logindiv_margin', __('Margin', self::language_file), array($this, 'logindiv_margin_input'), 'clp_logindiv_pos', 'clp_options');
 		
 		// login form tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_loginform_section'), 'clp_loginform');
+		add_settings_section('clp_options', false, array($this, 'clp_loginform_section'), 'clp_loginform');
 		
-		add_settings_field('clp_loginform_background', __('Background Picture', self::language_file), array(&$this, 'loginform_background_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_background', __('Background Picture', self::language_file), array($this, 'loginform_background_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_img_repeat', __('Background Repeat', self::language_file), array(&$this, 'loginform_img_repeat_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_img_repeat', __('Background Repeat', self::language_file), array($this, 'loginform_img_repeat_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_img_pos', __('Position of the Background Picture', self::language_file), array(&$this, 'loginform_img_pos_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_img_pos', __('Position of the Background Picture', self::language_file), array($this, 'loginform_img_pos_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_bg_color1', __('Background Colour', self::language_file), array(&$this, 'loginform_bg_color1_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_bg_color1', __('Background Colour', self::language_file), array($this, 'loginform_bg_color1_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array(&$this, 'loginform_bg_color2_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_bg_color2', __('Second Background Colour (for Gradient)', self::language_file), array($this, 'loginform_bg_color2_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_text_color', __('Text Colour', self::language_file), array(&$this, 'loginform_text_color_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_bg_size', __('Background Size', self::language_file), array($this, 'loginform_bg_size_input'), 'clp_loginform', 'clp_options');	
 		
-		add_settings_field('clp_loginform_transparency', __('Transparency (in percent)', self::language_file), array(&$this, 'loginform_transparency_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_text_color', __('Text Colour', self::language_file), array($this, 'loginform_text_color_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_border_style', __('Border Style', self::language_file), array(&$this, 'loginform_border_style_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_transparency', __('Transparency (in percent)', self::language_file), array($this, 'loginform_transparency_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_border_width', __('Border Width (in px)', self::language_file), array(&$this, 'loginform_border_width_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_border_style', __('Border Style', self::language_file), array($this, 'loginform_border_style_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_border_color', __('Border Colour', self::language_file), array(&$this, 'loginform_border_color_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_border_width', __('Border Width (in px)', self::language_file), array($this, 'loginform_border_width_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_border_round', __('Rounded Corners (in px)', self::language_file), array(&$this, 'loginform_border_round_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_border_color', __('Border Colour', self::language_file), array($this, 'loginform_border_color_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_padding', __('Padding', self::language_file), array(&$this, 'loginform_padding_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_border_round', __('Rounded Corners (in px)', self::language_file), array($this, 'loginform_border_round_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_margin', __('Margin', self::language_file), array(&$this, 'loginform_margin_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_padding', __('Padding', self::language_file), array($this, 'loginform_padding_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'loginform_shadow_x_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_margin', __('Margin', self::language_file), array($this, 'loginform_margin_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'loginform_shadow_y_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'loginform_shadow_x_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'loginform_shadow_softness_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'loginform_shadow_y_input'), 'clp_loginform', 'clp_options');
 		
-		add_settings_field('clp_loginform_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'loginform_shadow_color_input'), 'clp_loginform', 'clp_options');
+		add_settings_field('clp_loginform_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'loginform_shadow_softness_input'), 'clp_loginform', 'clp_options');
+		
+		add_settings_field('clp_loginform_shadow_color', __('Shadow Colour', self::language_file), array($this, 'loginform_shadow_color_input'), 'clp_loginform', 'clp_options');
+		
+		add_settings_field('clp_logionform_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'loginform_shadow_inset_input'), 'clp_loginform', 'clp_options');
 		
 		// message tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_logout_message_section'), 'clp_logout_message');
+		add_settings_section('clp_options', false, array($this, 'clp_logout_message_section'), 'clp_logout_message');
 		
-		add_settings_field('clp_loggedout_text_color', __('Text Colour', self::language_file), array(&$this, 'loggedout_text_color_input'), 'clp_logout_message', 'clp_options');
+		add_settings_field('clp_loggedout_text_color', __('Text Colour', self::language_file), array($this, 'loggedout_text_color_input'), 'clp_logout_message', 'clp_options');
 		
-		add_settings_field('clp_loggedout_bg_color', __('Background Colour', self::language_file), array(&$this, 'loggedout_bg_color_input'), 'clp_logout_message', 'clp_options');
+		add_settings_field('clp_loggedout_bg_color', __('Background Colour', self::language_file), array($this, 'loggedout_bg_color_input'), 'clp_logout_message', 'clp_options');
 		
-		add_settings_field('clp_loggedout_border_color', __('Border Colour', self::language_file), array(&$this, 'loggedout_border_color_input'), 'clp_logout_message', 'clp_options');
+		add_settings_field('clp_loggedout_border_color', __('Border Colour', self::language_file), array($this, 'loggedout_border_color_input'), 'clp_logout_message', 'clp_options');
 		
-		add_settings_field('clp_loggedout_transparency', __('Transparency (in percent)', self::language_file), array(&$this, 'loggedout_transparency_input'), 'clp_logout_message', 'clp_options');
+		add_settings_field('clp_loggedout_transparency', __('Transparency (in percent)', self::language_file), array($this, 'loggedout_transparency_input'), 'clp_logout_message', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_error_message_section'), 'clp_error_message');
+		add_settings_section('clp_options', false, array($this, 'clp_error_message_section'), 'clp_error_message');
 		
-		add_settings_field('clp_error_text_color', __('Text Colour', self::language_file), array(&$this, 'error_text_color_input'), 'clp_error_message', 'clp_options');
+		add_settings_field('clp_error_text_color', __('Text Colour', self::language_file), array($this, 'error_text_color_input'), 'clp_error_message', 'clp_options');
 		
-		add_settings_field('clp_error_bg_color', __('Background Colour', self::language_file), array(&$this, 'error_bg_color_input'), 'clp_error_message', 'clp_options');
+		add_settings_field('clp_error_bg_color', __('Background Colour', self::language_file), array($this, 'error_bg_color_input'), 'clp_error_message', 'clp_options');
 		
-		add_settings_field('clp_error_border_color', __('Border Colour', self::language_file), array(&$this, 'error_border_color_input'), 'clp_error_message', 'clp_options');
+		add_settings_field('clp_error_border_color', __('Border Colour', self::language_file), array($this, 'error_border_color_input'), 'clp_error_message', 'clp_options');
 		
-		add_settings_field('clp_error_transparency', __('Transparency (in percent)', self::language_file), array(&$this, 'error_transparency_input'), 'clp_error_message', 'clp_options');
+		add_settings_field('clp_error_transparency', __('Transparency (in percent)', self::language_file), array($this, 'error_transparency_input'), 'clp_error_message', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_input_section'), 'clp_input');
+		add_settings_section('clp_options', false, array($this, 'clp_input_section'), 'clp_input');
 		
-		add_settings_field('clp_input_text_color', __('Text Colour', self::language_file), array(&$this, 'input_text_color_input'), 'clp_input', 'clp_options');
+		add_settings_field('clp_input_text_color', __('Text Colour', self::language_file), array($this, 'input_text_color_input'), 'clp_input', 'clp_options');
 		
-		add_settings_field('clp_input_bg_color', __('Background Colour', self::language_file), array(&$this, 'input_bg_color_input'), 'clp_input', 'clp_options');
+		add_settings_field('clp_input_bg_color', __('Background Colour', self::language_file), array($this, 'input_bg_color_input'), 'clp_input', 'clp_options');
 		
-		add_settings_field('clp_input_border_color', __('Border Colour', self::language_file), array(&$this, 'input_border_color_input'), 'clp_input', 'clp_options');
+		add_settings_field('clp_input_border_color', __('Border Colour', self::language_file), array($this, 'input_border_color_input'), 'clp_input', 'clp_options');
+		
+		add_settings_field('clp_input_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'input_shadow_x_input'), 'clp_input', 'clp_options');
+		
+		add_settings_field('clp_input_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'input_shadow_y_input'), 'clp_input', 'clp_options');
+		
+		add_settings_field('clp_input_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'input_shadow_softness_input'), 'clp_input', 'clp_options');
+		
+		add_settings_field('clp_input_shadow_color', __('Shadow Colour', self::language_file), array($this, 'input_shadow_color_input'), 'clp_input', 'clp_options');
+		
+		add_settings_field('clp_input_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'input_shadow_inset_input'), 'clp_input', 'clp_options');
 		
 		// link tab
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_link_section'), 'clp_link');
+		add_settings_section('clp_options', false, array($this, 'clp_link_section'), 'clp_link');
 		
-		add_settings_field('clp_link_size', __('Font Size', self::language_file), array(&$this, 'link_size_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_size', __('Font Size', self::language_file), array($this, 'link_size_input'), 'clp_link', 'clp_options');
 		
-		add_settings_field('clp_link_text_color', __('Text Colour', self::language_file), array(&$this, 'link_text_color_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_text_color', __('Text Colour', self::language_file), array($this, 'link_text_color_input'), 'clp_link', 'clp_options');
 		
-		add_settings_field('clp_link_textdecoration', __('Text Decoration', self::language_file), array(&$this, 'link_textdecoration_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_textdecoration', __('Text Decoration', self::language_file), array($this, 'link_textdecoration_input'), 'clp_link', 'clp_options');
 		
-		add_settings_field('clp_link_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'link_shadow_x_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'link_shadow_x_input'), 'clp_link', 'clp_options');
 		
-		add_settings_field('clp_link_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'link_shadow_y_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'link_shadow_y_input'), 'clp_link', 'clp_options');
 		
-		add_settings_field('clp_link_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'link_shadow_softness_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'link_shadow_softness_input'), 'clp_link', 'clp_options');
 		
-		add_settings_field('clp_link_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'link_shadow_color_input'), 'clp_link', 'clp_options');
+		add_settings_field('clp_link_shadow_color', __('Shadow Colour', self::language_file), array($this, 'link_shadow_color_input'), 'clp_link', 'clp_options');
 		
-		add_settings_section('clp_options', false, array(&$this, 'clp_hover_section'), 'clp_hover');
+		add_settings_section('clp_options', false, array($this, 'clp_hover_section'), 'clp_hover');
 		
-		add_settings_field('clp_hover_text_color', __('Text Colour', self::language_file), array(&$this, 'hover_text_color_input'), 'clp_hover', 'clp_options');
+		add_settings_field('clp_hover_text_color', __('Text Colour', self::language_file), array($this, 'hover_text_color_input'), 'clp_hover', 'clp_options');
 		
-		add_settings_field('clp_hover_textdecoration', __('Text Decoration', self::language_file), array(&$this, 'hover_textdecoration_input'), 'clp_hover', 'clp_options');
+		add_settings_field('clp_hover_textdecoration', __('Text Decoration', self::language_file), array($this, 'hover_textdecoration_input'), 'clp_hover', 'clp_options');
 		
-		add_settings_field('clp_hover_shadow_x', __('Shadow (x-direction in px)', self::language_file), array(&$this, 'hover_shadow_x_input'), 'clp_hover', 'clp_options');
+		add_settings_field('clp_hover_shadow_x', __('Shadow (x-direction in px)', self::language_file), array($this, 'hover_shadow_x_input'), 'clp_hover', 'clp_options');
 		
-		add_settings_field('clp_hover_shadow_y', __('Shadow (y-direction in px)', self::language_file), array(&$this, 'hover_shadow_y_input'), 'clp_hover', 'clp_options');
+		add_settings_field('clp_hover_shadow_y', __('Shadow (y-direction in px)', self::language_file), array($this, 'hover_shadow_y_input'), 'clp_hover', 'clp_options');
 		
-		add_settings_field('clp_hover_shadow_softness', __('Shadow (softness in px)', self::language_file), array(&$this, 'hover_shadow_softness_input'), 'clp_hover', 'clp_options');
+		add_settings_field('clp_hover_shadow_softness', __('Shadow (softness in px)', self::language_file), array($this, 'hover_shadow_softness_input'), 'clp_hover', 'clp_options');
 		
-		add_settings_field('clp_hover_shadow_color', __('Shadow Colour', self::language_file), array(&$this, 'hover_shadow_color_input'), 'clp_hover', 'clp_options');
+		add_settings_field('clp_hover_shadow_color', __('Shadow Colour', self::language_file), array($this, 'hover_shadow_color_input'), 'clp_hover', 'clp_options');
 		
 		// css tab
 		
-		add_settings_section('clp_options', __('CSS', self::language_file), array(&$this, 'clp_css_section'), 'clp_css');
+		add_settings_section('clp_options', __('CSS', self::language_file), array($this, 'clp_css_section'), 'clp_css');
 		
-		add_settings_field('clp_css', __('Own CSS', self::language_file), array(&$this, 'css_input'), 'clp_css', 'clp_options');
+		add_settings_field('clp_css', __('Own CSS', self::language_file), array($this, 'css_input'), 'clp_css', 'clp_options');
 		
-		add_settings_field('clp_css_override', __('Override other styles', self::language_file), array(&$this, 'override_input'), 'clp_css', 'clp_options', array(__('By checking this, all other styles will be replaced by your CSS. Otherwise, your CSS is additional.', self::language_file)));
+		add_settings_field('clp_css_override', __('Override other styles', self::language_file), array($this, 'override_input'), 'clp_css', 'clp_options', array(__('By checking this, all other styles will be replaced by your CSS. Otherwise, your CSS is additional.', self::language_file)));
 		
-		add_settings_field('clp_css_resize', false, array(&$this, 'css_resize_field'), 'clp_css', 'clp_options');
+		add_settings_field('clp_css_resize', false, array($this, 'css_resize_field'), 'clp_css', 'clp_options');
 		
-		add_settings_section('clp_options', __('SVG', self::language_file), array(&$this, 'clp_svg_section'), 'clp_svg');
+		add_settings_section('clp_options', __('SVG', self::language_file), array($this, 'clp_svg_section'), 'clp_svg');
 		
-		add_settings_field('clp_svg', __('Some SVG', self::language_file), array(&$this, 'svg_input'), 'clp_svg', 'clp_options');
+		add_settings_field('clp_svg', __('Some SVG', self::language_file), array($this, 'svg_input'), 'clp_svg', 'clp_options');
 		
 		// html tab
 		
-		add_settings_section('clp_options', __('Aditional html snippets', self::language_file), array(&$this, 'clp_html_section'), 'clp_html');
+		add_settings_section('clp_options', __('Aditional html snippets', self::language_file), array($this, 'clp_html_section'), 'clp_html');
 		
-		add_settings_field('clp_login_message', __('Above Form', self::language_file), array(&$this, 'login_message_input'), 'clp_html', 'clp_options');
+		add_settings_field('clp_login_message', __('Above Form', self::language_file), array($this, 'login_message_input'), 'clp_html', 'clp_options');
 		
-		add_settings_field('clp_login_form', __('Inside Form', self::language_file), array(&$this, 'login_form_input'), 'clp_html', 'clp_options');
+		add_settings_field('clp_login_form', __('Inside Form', self::language_file), array($this, 'login_form_input'), 'clp_html', 'clp_options');
 		
-		add_settings_field('clp_login_footer', __('Beneath Form', self::language_file), array(&$this, 'login_footer_input'), 'clp_html', 'clp_options');
+		add_settings_field('clp_login_footer', __('Beneath Form', self::language_file), array($this, 'login_footer_input'), 'clp_html', 'clp_options');
 		
-		add_settings_field('clp_html_resize', false, array(&$this, 'html_resize_field'), 'clp_html', 'clp_options');
+		add_settings_field('clp_html_resize', false, array($this, 'html_resize_field'), 'clp_html', 'clp_options');
 	
 	}
 	
@@ -454,40 +522,11 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function impex_resize_field() {
 		
-		a5_resize_textarea(array('import'), true);
+		a5_resize_textarea('import', true);
 		
 	}
 	
 	// advanced tab
-	
-	function clp_custom_redirect_section() {
-	
-		self::tag_it(__('You can enter redirections for each user role of the blog.', self::language_file), 'p', 1, false, true);
-		self::tag_it(__('If you leave a field empty, the plugin will redirect to the default page.', self::language_file), 'p', 1, false, true);
-		
-	}
-	
-	function custom_redirect_input() {
-		
-		$userroles = get_editable_roles();
-		
-		$rows = '';
-			
-		foreach ($userroles as $role => $details) :
-		
-			$nicename = translate_user_role($details['name']);
-			
-			$cells = self::tag_it('<label for="custom_redirect-'.$role.'">'.$nicename.'</label>', 'td', 2);
-			
-			$cells .= self::tag_it(a5_url_field('custom_redirect-'.$role, 'clp_options[custom_redirect]['.$role.']', @self::$options['custom_redirect'][$role], false, array('style' => 'min-width: 350px; max-width: 500px;', 'placeholder' => 'http://example.com'), false), 'td', 2);
-			
-			$rows .= self::tag_it($cells, 'tr', 1);
-			
-		endforeach;
-		
-		self::tag_it($rows, 'table', 0, false, true);
-		
-	}
 	
 	function clp_blog_section() {
 	
@@ -513,9 +552,15 @@ class CLP_Admin extends A5_OptionPage {
 		
 	}
 	
-	function hide_nav_input() {
+	function disable_reg_input() {
 		
-		a5_checkbox('hide_nav', 'clp_options[hide_nav]', @self::$options['hide_nav']);
+		a5_checkbox('disable_reg', 'clp_options[disable_reg]', @self::$options['disable_reg']);
+	
+	}
+	
+	function disable_pass_input() {
+		
+		a5_checkbox('disable_pass', 'clp_options[disable_pass]', @self::$options['disable_pass']);
 	
 	}
 	
@@ -549,11 +594,42 @@ class CLP_Admin extends A5_OptionPage {
 	
 	}
 	
+	function clp_custom_redirect_section() {
+	
+		self::tag_it(__('You can enter redirections for each user role of the blog.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('If you leave a field empty, the plugin will redirect to the default page.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function custom_redirect_input() {
+		
+		$userroles = get_editable_roles();
+		
+		$rows = '';
+			
+		foreach ($userroles as $role => $details) :
+		
+			$nicename = translate_user_role($details['name']);
+			
+			$cells = self::tag_it('<label for="custom_redirect-'.$role.'">'.$nicename.'</label>', 'td', 2);
+			
+			$cells .= self::tag_it(a5_url_field('custom_redirect-'.$role, 'clp_options[custom_redirect]['.$role.']', @self::$options['custom_redirect'][$role], false, array('style' => 'min-width: 350px; max-width: 500px;', 'placeholder' => 'http://example.com'), false), 'td', 2);
+			
+			$cells .= ('administrator' != $role) ? self::tag_it(a5_checkbox('hide_backend-'.$role, 'clp_options[hide_backend]['.$role.']', $role, sprintf(__('Hide backend for %s.', self::language_file), $nicename), false, @self::$options['hide_backend'][$role], false), 'td', 2) : self::tag_it('&nbsp;', 'td', 2);
+			
+			$rows .= self::tag_it($cells, 'tr', 1);
+			
+		endforeach;
+		
+		self::tag_it($rows, 'table', 0, false, true);
+		
+	}
+	
 	// body and button tab
 	
 	function clp_body_section() {
 		
-		self::tag_it(__('You can enter the url of the background picture, that you want to have on the login page. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;. If you want the background picture to cover the whole screen, put &#39;cover&#39; as size. Otherwise, fill in any css (like &#39;auto 150px&#39;).', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Just upload any picture via the uploader. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('In the last section, you choose the background colour and the colour of the text in the html body element. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file), 'p', 1, false, true);
 		
@@ -561,7 +637,24 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function body_background_input() {
 		
-		a5_text_field('body_background', 'clp_options[body_background]', @self::$options['body_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('body_background_url', 'clp_options[body_background]', @self::$options['body_background']);
+			
+			self::tag_it(a5_button('upload-body_background', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['body_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-body_background', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('body_background', 'clp_options[body_background]', @self::$options['body_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;
 		
 	}
 	
@@ -655,15 +748,38 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function clp_logo_section() {
 		
-		self::tag_it(__('You can enter the url of the logo, that you want to have in place of the WP logo on the login screen. Just upload any picture (best is a png or gif with transparent background) via the uploader on the Media section and copy the url of that file here.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Just upload any picture (best is a png or gif with transparent background) via the uploader.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('In the URL field, you enter the URL to which the logo should link.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file), 'p', 1, false, true);
 		
 	}
 	
+	function hide_logo_input($labels) {
+	
+		a5_checkbox('hide_logo', 'clp_options[hide_logo]', @self::$options['hide_logo'], $labels[0]);
+	
+	}
+	
 	function logo_url_input() {
+		
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('logo_url', 'clp_options[logo]', @self::$options['logo']);
 			
-		a5_text_field('logo', 'clp_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['logo'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('logo', 'clp_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;
 		
 	}
 		
@@ -681,32 +797,32 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function clp_logo_size_section() {
 		
-		self::tag_it(__('If your logo is larger than the default WP-logo (274px by 63px), you can enter the width and the height of it here.', self::language_file), 'p', 1, false, true);
-		self::tag_it(__('The width and height of the logo-container are by default 326px and 67px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('If your logo is larger than the default WP-logo (84px by 84px), you can enter the width and the height of it here.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('The width and height of the logo-container are by default 84px and 84px. They are used to move the Logo around, since the background-position is always &#39;center top&#39;.', self::language_file), 'p', 1, false, true);
 		
 	}
 	
 	function logo_width_input() {
 		
-		a5_number_field('logo_width', 'clp_options[logo_width]', @self::$options['logo_width'], false, array('step' => 1));
+		a5_number_field('logo_width', 'clp_options[logo_width]', @self::$options['logo_width'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
 	function logo_height_input() {
 		
-		a5_number_field('logo_height', 'clp_options[logo_height]', @self::$options['logo_height'], false, array('step' => 1));
+		a5_number_field('logo_height', 'clp_options[logo_height]', @self::$options['logo_height'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
 	function h1_width_input() {
 		
-		a5_number_field('h1_width', 'clp_options[h1_width]', @self::$options['h1_width'], false, array('step' => 1));
+		a5_number_field('h1_width', 'clp_options[h1_width]', @self::$options['h1_width'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
 	function h1_height_input() {
 		
-		a5_number_field('h1_height', 'clp_options[h1_height]', @self::$options['h1_height'], false, array('step' => 1));
+		a5_number_field('h1_height', 'clp_options[h1_height]', @self::$options['h1_height'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -730,7 +846,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function h1_corner_input() {
 		
-		a5_number_field('h1_corner', 'clp_options[h1_corner]', @self::$options['h1_corner'], false, array('step' => 1));
+		a5_number_field('h1_corner', 'clp_options[h1_corner]', @self::$options['h1_corner'], false, array('step' => 1, 'min' => 0));
 		
 	}
 		
@@ -748,7 +864,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function h1_shadow_softness_input() {
 		
-		a5_number_field('h1_shadow_softness', 'clp_options[h1_shadow_softness]', @self::$options['h1_shadow_softness'], false, array('step' => 1));
+		a5_number_field('h1_shadow_softness', 'clp_options[h1_shadow_softness]', @self::$options['h1_shadow_softness'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -758,11 +874,17 @@ class CLP_Admin extends A5_OptionPage {
 		
 	}
 	
+	function h1_shadow_inset_input() {
+	
+		a5_checkbox('h1_shadow_inset', 'clp_options[h1_shadow_inset]', ' inset', false, false, @self::$options['h1_shadow_inset']);
+	
+	}
+	
 	// logindiv tab
 	
 	function clp_logindiv_section() {
 		
-		self::tag_it(__('You can enter the url of the background picture, that you want to have on the login container. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39;center top&#39;.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Just upload any picture via the uploader. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39;center top&#39;.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('In the next section, you choose the background colour and the colour of the text in the login container. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('At last, give the container a shadow (is not supported by all browsers).', self::language_file), 'p', 1, false, true);
@@ -772,7 +894,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logindiv_background_input() {
 		
-		a5_text_field('logindiv_background', 'clp_options[logindiv_background]', @self::$options['logindiv_background']);	
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('logindiv_background_url', 'clp_options[logindiv_background]', @self::$options['logindiv_background']);
+			
+			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['logindiv_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('logindiv_background', 'clp_options[logindiv_background]', @self::$options['logindiv_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;	
 		
 	}
 	
@@ -802,6 +940,12 @@ class CLP_Admin extends A5_OptionPage {
 		
 	}
 	
+	function logindiv_bg_size_input() {
+		
+		a5_text_field('logindiv_bg_size', 'clp_options[logindiv_bg_size]', @self::$options['logindiv_bg_size'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		
+	}
+	
 	function logindiv_text_color_input() {
 	
 		a5_text_field('logindiv_text_color', 'clp_options[logindiv_text_color]', @self::$options['logindiv_text_color'], false, array('class' => 'color-picker'));
@@ -824,7 +968,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logindiv_border_width_input() {
 		
-		a5_number_field('logindiv_border_width', 'clp_options[logindiv_border_width]', @self::$options['logindiv_border_width'], false, array('step' => 1));
+		a5_number_field('logindiv_border_width', 'clp_options[logindiv_border_width]', @self::$options['logindiv_border_width'], false, array('step' => 1, 'min' => 1));
 		
 	}
 	
@@ -836,7 +980,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logindiv_border_round_input() {
 		
-		a5_number_field('logindiv_border_round', 'clp_options[logindiv_border_round]', @self::$options['logindiv_border_round'], false, array('step' => 1));
+		a5_number_field('logindiv_border_round', 'clp_options[logindiv_border_round]', @self::$options['logindiv_border_round'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -854,13 +998,19 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logindiv_shadow_softness_input() {
 			
-		a5_number_field('logindiv_shadow_softness', 'clp_options[logindiv_shadow_softness]', @self::$options['logindiv_shadow_softness'], false, array('step' => 1));
+		a5_number_field('logindiv_shadow_softness', 'clp_options[logindiv_shadow_softness]', @self::$options['logindiv_shadow_softness'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
 	function logindiv_shadow_color_input() {
 		
 		a5_text_field('logindiv_shadow_color', 'clp_options[logindiv_shadow_color]', @self::$options['logindiv_shadow_color'], false, array('class' => 'color-picker'));
+	
+	}
+	
+	function logindiv_shadow_inset_input() {
+	
+		a5_checkbox('logindiv_shadow_inset', 'clp_options[logindiv_shadow_inset]', ' inset', false, false, @self::$options['logindiv_shadow_inset']);
 	
 	}
 	
@@ -885,13 +1035,13 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logindiv_width_input() {
 		
-		a5_number_field('logindiv_width', 'clp_options[logindiv_width]', @self::$options['logindiv_width'], false, array('step' => 1));
+		a5_number_field('logindiv_width', 'clp_options[logindiv_width]', @self::$options['logindiv_width'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
 	function logindiv_height_input() {
 		
-		a5_number_field('logindiv_height', 'clp_options[logindiv_height]', @self::$options['logindiv_height'], false, array('step' => 1));
+		a5_number_field('logindiv_height', 'clp_options[logindiv_height]', @self::$options['logindiv_height'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -911,7 +1061,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function clp_loginform_section() {
 		
-		self::tag_it(__('You can enter the url of the background picture, that you want to have in the login form. Just upload any picture via the uploader on the Media section and copy the url of that file here. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Just upload any picture via the uploader. Leave it empty, if you don&#39;t want a picture. Background images are tiled by default. You can select the direction of repeating the image or to not repeat it. The position of the image can be something like &#39;100px 50%&#39; or &#39center top&#39;.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('In the next section, you choose the background colour and the colour of the text in the login form. If you give two background colours, you can create a gradient. Colour no. 1 will always be up.', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('Choose a border, if wanting one. Define style, width and whether or not, you want to have rounded corners (is not supported by all browsers).', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('Margin and Padding are given as css values. The form has a left margin of 8px by default and a padding of 26px 24px 46px. By changing the top and the bottom padding, you can stretch the form in its length.', self::language_file), 'p', 1, false, true);
@@ -922,7 +1072,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function loginform_background_input() {
 		
-		a5_text_field('loginform_background', 'clp_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));	
+		if (function_exists('wp_enqueue_media')) :
+		
+			a5_hidden_field('loginform_background_url', 'clp_options[loginform_background]', @self::$options['loginform_background']);
+			
+			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['loginform_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			
+		else :
+		
+			// making it compatible with older versions of WP
+		
+			a5_text_field('loginform_background', 'clp_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			
+		endif;	
 		
 	}
 	
@@ -952,6 +1118,12 @@ class CLP_Admin extends A5_OptionPage {
 		
 	}
 	
+	function loginform_bg_size_input() {
+		
+		a5_text_field('loginform_bg_size', 'clp_options[loginform_bg_size]', @self::$options['loginform_bg_size'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		
+	}
+	
 	function loginform_text_color_input() {
 	
 		a5_text_field('loginform_text_color', 'clp_options[loginform_text_color]', @self::$options['loginform_text_color'], false, array('class' => 'color-picker'));
@@ -974,7 +1146,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function loginform_border_width_input() {
 		
-		a5_number_field('loginform_border_width', 'clp_options[loginform_border_width]', @self::$options['loginform_border_width'], false, array('step' => 1));
+		a5_number_field('loginform_border_width', 'clp_options[loginform_border_width]', @self::$options['loginform_border_width'], false, array('step' => 1, 'min' => 1));
 		
 	}
 	
@@ -986,13 +1158,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function loginform_border_round_input() {
 		
-		a5_number_field('loginform_border_round', 'clp_options[loginform_border_round]', @self::$options['loginform_border_round'], false, array('step' => 1));
-		
-	}
-	
-	function loginform_shadow_x_input() {
-		
-		a5_number_field('loginform_shadow_x', 'clp_options[loginform_shadow_x]', @self::$options['loginform_shadow_x'], false, array('step' => 1));
+		a5_number_field('loginform_border_round', 'clp_options[loginform_border_round]', @self::$options['loginform_border_round'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -1007,6 +1173,12 @@ class CLP_Admin extends A5_OptionPage {
 		a5_text_field('loginform_margin', 'clp_options[loginform_margin]', @self::$options['loginform_margin']);
 		
 	}
+	
+	function loginform_shadow_x_input() {
+		
+		a5_number_field('loginform_shadow_x', 'clp_options[loginform_shadow_x]', @self::$options['loginform_shadow_x'], false, array('step' => 1));
+		
+	}
 		
 	function loginform_shadow_y_input() {
 		
@@ -1016,13 +1188,19 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function loginform_shadow_softness_input() {
 			
-		a5_number_field('loginform_shadow_softness', 'clp_options[loginform_shadow_softness]', @self::$options['loginform_shadow_softness'], false, array('step' => 1));
+		a5_number_field('loginform_shadow_softness', 'clp_options[loginform_shadow_softness]', @self::$options['loginform_shadow_softness'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
 	function loginform_shadow_color_input() {
 		
 		a5_text_field('loginform_shadow_color', 'clp_options[loginform_shadow_color]', @self::$options['loginform_shadow_color'], false, array('class' => 'color-picker'));
+	
+	}
+	
+	function loginform_shadow_inset_input() {
+	
+		a5_checkbox('loginform_shadow_inset', 'clp_options[loginform_shadow_inset]', ' inset', false, false, @self::$options['loginform_shadow_inset']);
 	
 	}
 	
@@ -1113,6 +1291,36 @@ class CLP_Admin extends A5_OptionPage {
 		
 	}
 	
+	function input_shadow_x_input() {
+		
+		a5_number_field('input_shadow_x', 'clp_options[input_shadow_x]', @self::$options['input_shadow_x'], false, array('step' => 1));
+		
+	}
+		
+	function input_shadow_y_input() {
+		
+		a5_number_field('input_shadow_y', 'clp_options[input_shadow_y]', @self::$options['input_shadow_y'], false, array('step' => 1));
+		
+	}
+	
+	function input_shadow_softness_input() {
+			
+		a5_number_field('input_shadow_softness', 'clp_options[input_shadow_softness]', @self::$options['input_shadow_softness'], false, array('step' => 1, 'min' => 0));
+		
+	}
+	
+	function input_shadow_color_input() {
+		
+		a5_text_field('input_shadow_color', 'clp_options[input_shadow_color]', @self::$options['input_shadow_color'], false, array('class' => 'color-picker'));
+	
+	}
+	
+	function input_shadow_inset_input() {
+	
+		a5_checkbox('input_shadow_inset', 'clp_options[input_shadow_inset]', ' inset', false, false, @self::$options['input_shadow_inset']);
+	
+	}
+	
 	// link tab
 	
 	function clp_link_section() {
@@ -1157,7 +1365,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function link_shadow_softness_input() {
 		
-		a5_number_field('link_shadow_softness', 'clp_options[link_shadow_softness]', @self::$options['link_shadow_softness'], false, array('step' => 1));
+		a5_number_field('link_shadow_softness', 'clp_options[link_shadow_softness]', @self::$options['link_shadow_softness'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -1201,7 +1409,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function hover_shadow_softness_input() {
 		
-		a5_number_field('hover_shadow_softness', 'clp_options[hover_shadow_softness]', @self::$options['hover_shadow_softness'], false, array('step' => 1));
+		a5_number_field('hover_shadow_softness', 'clp_options[hover_shadow_softness]', @self::$options['hover_shadow_softness'], false, array('step' => 1, 'min' => 0));
 		
 	}
 	
@@ -1219,11 +1427,13 @@ class CLP_Admin extends A5_OptionPage {
 		self::tag_it(__('This gives you much more freedom with styling your login widget than the rather foolproof but very limited options .', self::language_file), 'p', 1, false, true);
 		self::tag_it(__('You can of course copy the style sheet written by the plugin, paste it here and start finetuning.', self::language_file), 'p', 1, false, true);
 		
+		submit_button(__('Copy'), 'secondary', 'clp_options[copy_stylesheet]', true, array('id' => 'copy_stylesheet'));
+		
 	}
 	
 	function css_input() {
 	
-		a5_textarea('css', 'clp_options[css]', @self::$options['css'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('css', 'clp_options[css]', @self::$options['css'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
@@ -1241,7 +1451,7 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function svg_input() {
 	
-		a5_textarea('svg', 'clp_options[svg]', @self::$options['svg'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('svg', 'clp_options[svg]', @self::$options['svg'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
@@ -1262,19 +1472,19 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function login_message_input() {
 	
-		a5_textarea('login_message', 'clp_options[login_message]', @self::$options['login_message'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_message', 'clp_options[login_message]', @self::$options['login_message'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
 	function login_form_input() {
 	
-		a5_textarea('login_form', 'clp_options[login_form]', @self::$options['login_form'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_form', 'clp_options[login_form]', @self::$options['login_form'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
 	function login_footer_input() {
 	
-		a5_textarea('login_footer', 'clp_options[login_footer]', @self::$options['login_footer'], false, array('style' => 'height: 200px; min-width: 100%;'));
+		a5_textarea('login_footer', 'clp_options[login_footer]', @self::$options['login_footer'], false, array('style' => 'height: 200px; min-width: 100%;', 'class' => 'tabbed'));
 	
 	}
 	
@@ -1381,13 +1591,13 @@ class CLP_Admin extends A5_OptionPage {
 		
 			self::open_tab();
 			
-			self::sortable('top', self::postbox(__('Custom Redirects', self::language_file), 'redirect', 'clp_redirect'));
+			self::sortable('top', self::postbox(__('Include Header & Footer from Frontend', self::language_file), 'include-frontend', 'clp_blog'));
 			
-			self::sortable('up', self::postbox(__('Include Header & Footer from Frontend', self::language_file), 'include-frontend', 'clp_blog'));
+			self::sortable('upper-middle', self::postbox(__('Hide Links', self::language_file), 'hide-links', 'clp_hide'));
 			
-			self::sortable('down', self::postbox(__('Hide Links', self::language_file), 'hide-links', 'clp_hide'));
+			self::sortable('lower-middle', self::postbox(__('Debug dynamical CSS', self::language_file), 'debug-css', 'clp_debug'));
 			
-			self::sortable('bottom', self::postbox(__('Debug dynamical CSS', self::language_file), 'debug-css', 'clp_debug'));
+			self::sortable('bottom', self::postbox(__('Custom Redirects', self::language_file), 'redirect', 'clp_redirect'));
 			
 			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
@@ -1630,14 +1840,16 @@ class CLP_Admin extends A5_OptionPage {
 					
 				case 'advanced_tab' :
 				
-					self::$options['custom_redirect'] = ($input['custom_redirect']);
 					self::$options['blog_header'] = (@$input['blog_header']) ? true : false;
 					self::$options['blog_footer'] = (@$input['blog_footer']) ? true : false;
-					self::$options['hide_nav'] = (@$input['hide_nav']) ? true : false;
+					self::$options['disable_reg'] = (@$input['disable_reg']) ? true : false;
+					self::$options['disable_pass'] = (@$input['disable_pass']) ? true : false;
 					self::$options['hide_backlink'] = (@$input['hide_backlink']) ? true : false;
 					self::$options['compress'] = (@$input['compress']) ? true : false;
 					self::$options['inline'] = (@$input['inline']) ? true : false;
 					self::$options['priority'] = @trim($input['priority']);
+					self::$options['custom_redirect'] = @$input['custom_redirect'];
+					self::$options['hide_backend'] = @$input['hide_backend'];
 					
 					break;
 					
@@ -1661,7 +1873,8 @@ class CLP_Admin extends A5_OptionPage {
 					break;
 					
 				case 'logo_tab' :
-					
+				
+					self::$options['hide_logo'] = (@$input['hide_logo']) ? true : false;
 					self::$options['logo'] = trim($input['logo']);
 					self::$options['url'] = trim($input['url']);
 					self::$options['title'] = trim($input['title']);
@@ -1676,6 +1889,7 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['h1_shadow_y'] = trim($input['h1_shadow_y']);
 					self::$options['h1_shadow_softness'] = trim($input['h1_shadow_softness']);
 					self::$options['h1_shadow_color'] = trim($input['h1_shadow_color']);
+					self::$options['h1_shadow_inset'] = @$input['h1_shadow_inset'];
 					
 					break;
 					
@@ -1686,6 +1900,7 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['logindiv_img_pos'] = trim($input['logindiv_img_pos']);
 					self::$options['logindiv_bg_color1'] = trim($input['logindiv_bg_color1']);
 					self::$options['logindiv_bg_color2'] = trim($input['logindiv_bg_color2']);
+					self::$options['logindiv_bg_size'] = trim($input['logindiv_bg_size']);
 					self::$options['logindiv_text_color'] = trim($input['logindiv_text_color']);
 					self::$options['logindiv_transparency'] = trim($input['logindiv_transparency']);
 					self::$options['logindiv_border_style'] = trim($input['logindiv_border_style']);
@@ -1696,6 +1911,7 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['logindiv_shadow_y'] = trim($input['logindiv_shadow_y']);
 					self::$options['logindiv_shadow_softness'] = trim($input['logindiv_shadow_softness']);
 					self::$options['logindiv_shadow_color'] = trim($input['logindiv_shadow_color']);
+					self::$options['logindiv_shadow_inset'] = @$input['logindiv_shadow_inset'];
 					self::$options['logindiv_left'] = trim($input['logindiv_left']);
 					self::$options['logindiv_top'] = trim($input['logindiv_top']);
 					self::$options['logindiv_width'] = trim($input['logindiv_width']);
@@ -1712,6 +1928,7 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['loginform_img_pos'] = trim($input['loginform_img_pos']);
 					self::$options['loginform_bg_color1'] = trim($input['loginform_bg_color1']);
 					self::$options['loginform_bg_color2'] = trim($input['loginform_bg_color2']);
+					self::$options['loginform_bg_size'] = trim($input['loginform_bg_size']);
 					self::$options['loginform_text_color'] = trim($input['loginform_text_color']);
 					self::$options['loginform_transparency'] = trim($input['loginform_transparency']);				
 					self::$options['loginform_border_style'] = trim($input['loginform_border_style']);
@@ -1724,6 +1941,7 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['loginform_shadow_y'] = trim($input['loginform_shadow_y']);
 					self::$options['loginform_shadow_softness'] = trim($input['loginform_shadow_softness']);
 					self::$options['loginform_shadow_color'] = trim($input['loginform_shadow_color']);
+					self::$options['loginform_shadow_inset'] = @$input['loginform_shadow_inset'];
 				
 					break;
 					
@@ -1740,6 +1958,11 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['input_text_color'] = trim($input['input_text_color']);
 					self::$options['input_bg_color'] = trim($input['input_bg_color']);
 					self::$options['input_border_color'] = trim($input['input_border_color']);
+					self::$options['input_shadow_x'] = trim($input['input_shadow_x']);
+					self::$options['input_shadow_y'] = trim($input['input_shadow_y']);
+					self::$options['input_shadow_softness'] = trim($input['input_shadow_softness']);
+					self::$options['input_shadow_color'] = trim($input['input_shadow_color']);
+					self::$options['input_shadow_inset'] = @$input['input_shadow_inset'];
 				
 					break;
 					
@@ -1762,6 +1985,15 @@ class CLP_Admin extends A5_OptionPage {
 					break;
 					
 				case 'css_tab' :
+				
+					if (isset($input['copy_stylesheet'])) :
+						
+						self::$options['css'] = CLP_DynamicCSS::$custom_css;
+						self::$options['override'] = true;
+						
+						return self::$options;
+					
+					endif;
 				
 					self::$options['css'] = trim($input['css']);
 					self::$options['override'] = (@$input['override']) ? true : NULL;

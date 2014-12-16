@@ -239,3 +239,23 @@ jQuery(document).ready(function(){
 	});
 	
 });
+
+// use the tab key in textboxes
+jQuery(document).delegate('.tabbed', 'keydown', function(e) { 
+  var keyCode = e.keyCode || e.which; 
+
+  if (keyCode == 9) { 
+    e.preventDefault(); 
+    var start = jQuery(this).get(0).selectionStart;
+    var end = jQuery(this).get(0).selectionEnd;
+
+    // set textarea value to: text before caret + tab + text after caret
+    jQuery(this).val(jQuery(this).val().substring(0, start)
+                + "\t"
+                + jQuery(this).val().substring(end));
+
+    // put caret at right position again
+    jQuery(this).get(0).selectionStart = 
+    jQuery(this).get(0).selectionEnd = start + 1;
+  } 
+});

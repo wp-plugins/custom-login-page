@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof, login redirect, login widget, own css, additional html, inject css 
 Requires at least: 3.1
 Tested up to: 4.1
-Stable tag: 2.3
+Stable tag: 2.4
 
 Style your login page differently.
 
@@ -37,6 +37,14 @@ In the case your login screen is not changing after saving the settings, go to t
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 2.4 =
+
+* Uploader added
+* More accurate redirection
+* Possibility to hide backend from users
+* Inner shadow in foolproof mood
+* You can now import the plugin's stylesheet and start fine tuning
 
 = 2.3 =
 
@@ -252,3 +260,7 @@ Other small bug fixed
 = 2.3 =
 
 Framework updated
+
+= 2.4 =
+
+Uploader added; more accurate redirection; possibility to hide backend from users; inner shadow in foolproof mood

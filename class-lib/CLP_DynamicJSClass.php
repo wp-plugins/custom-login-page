@@ -18,7 +18,7 @@ class CLP_DynamicJS extends A5_DynamicFiles {
 		
 		$link = wp_login_url().'?TB_iframe=true&width=800&height=600&sandbox=""';
 		
-		parent::A5_DynamicFiles('admin', 'js', false, array('appearance_page_clp-settings', 'toplevel_page_clp-settings'), true);
+		parent::A5_DynamicFiles('admin', 'js', false, 'toplevel_page_clp-settings', true);
 		
 		parent::$admin_scripts .= $eol.'jQuery(document).ready(function(){jQuery(\'#prev\').attr(\'href\', \''.$link.'\');});'.$eol;
 		
