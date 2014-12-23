@@ -33,6 +33,15 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 		$eol = (self::$options['compress']) ? '' : "\r\n";
 		$tab = (self::$options['compress']) ? '' : "\t";
 		
+		if (!isset(self::$options['h1_shadow_inset'])) self::$options['h1_shadow_inset'] = '';
+		if (!isset(self::$options['logindiv_shadow_inset'])) self::$options['logindiv_shadow_inset'] = '';
+		if (!isset(self::$options['loginform_shadow_inset'])) self::$options['loginform_shadow_inset'] = '';
+		if (!isset(self::$options['input_shadow_inset'])) self::$options['input_shadow_inset'] = '';
+		if (!isset(self::$widget['container_shadow_inset'])) self::$widget['container_shadow_inset'] = '';
+		if (!isset(self::$widget['h1_shadow_inset'])) self::$widget['h1_shadow_inset'] = '';
+		if (!isset(self::$widget['loginform_shadow_inset'])) self::$widget['loginform_shadow_inset'] = '';
+		if (!isset(self::$widget['input_shadow_inset'])) self::$widget['input_shadow_inset'] = '';
+		
 		// part of the Custom Login Page
 		
 		parent::A5_DynamicFiles('login', 'css', 'all', false, self::$options['inline'], self::$options['priority']);
@@ -83,10 +92,10 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			if (!empty(self::$options['logo'])) :
 			
-				$bg_width = (!empty(self::$options['logo_width'])) ? self::$options['logo_width'] : '84';
-				$bg_height = (!empty(self::$options['logo_height'])) ? self::$options['logo_height'] : 'auto';
-				$h1_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '84';
-				$h1_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'] : '84';
+				$bg_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '84';
+				$bg_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'].'px' : 'auto';
+				$h1_width = (!empty(self::$options['logo_width'])) ? self::$options['logo_width'] : '84';
+				$h1_height = (!empty(self::$options['logo_height'])) ? self::$options['logo_height'] : '84';
 			
 				$h1_style .= $eol.$tab.'background-image: url('.self::$options['logo'].');';
 				$h1_style .= $eol.$tab.'background-position: center top;';
