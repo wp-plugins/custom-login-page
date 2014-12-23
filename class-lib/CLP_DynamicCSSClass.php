@@ -33,6 +33,15 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 		$eol = (self::$options['compress']) ? '' : "\r\n";
 		$tab = (self::$options['compress']) ? '' : "\t";
 		
+		if (!isset(self::$options['h1_shadow_inset'])) self::$options['h1_shadow_inset'] = '';
+		if (!isset(self::$options['logindiv_shadow_inset'])) self::$options['logindiv_shadow_inset'] = '';
+		if (!isset(self::$options['loginform_shadow_inset'])) self::$options['loginform_shadow_inset'] = '';
+		if (!isset(self::$options['input_shadow_inset'])) self::$options['input_shadow_inset'] = '';
+		if (!isset(self::$widget['container_shadow_inset'])) self::$widget['container_shadow_inset'] = '';
+		if (!isset(self::$widget['h1_shadow_inset'])) self::$widget['h1_shadow_inset'] = '';
+		if (!isset(self::$widget['loginform_shadow_inset'])) self::$widget['loginform_shadow_inset'] = '';
+		if (!isset(self::$widget['input_shadow_inset'])) self::$widget['input_shadow_inset'] = '';
+		
 		// part of the Custom Login Page
 		
 		parent::A5_DynamicFiles('login', 'css', 'all', false, self::$options['inline'], self::$options['priority']);
