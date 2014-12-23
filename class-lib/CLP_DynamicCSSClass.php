@@ -83,10 +83,10 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			if (!empty(self::$options['logo'])) :
 			
-				$bg_width = (!empty(self::$options['logo_width'])) ? self::$options['logo_width'] : '84';
-				$bg_height = (!empty(self::$options['logo_height'])) ? self::$options['logo_height'] : 'auto';
-				$h1_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '84';
-				$h1_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'] : '84';
+				$bg_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '84';
+				$bg_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'].'px' : 'auto';
+				$h1_width = (!empty(self::$options['logo_width'])) ? self::$options['logo_width'] : '84';
+				$h1_height = (!empty(self::$options['logo_height'])) ? self::$options['logo_height'] : '84';
 			
 				$h1_style .= $eol.$tab.'background-image: url('.self::$options['logo'].');';
 				$h1_style .= $eol.$tab.'background-position: center top;';
