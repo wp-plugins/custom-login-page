@@ -2,7 +2,7 @@
 /*
 Plugin Name: A5 Custom Login Page
 Description: Just customize your login page (or that of your community etc.) by giving the WP login page a different look, with your own logo and special colours and styles.
-Version: 2.4.2
+Version: 2.5
 Author: Waldemar Stoffel
 Author URI: http://www.waldemarstoffel.com
 Plugin URI: http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-page
@@ -10,7 +10,7 @@ License: GPL3
 Text Domain: custom-login-page
 */
 
-/*  Copyright 2011 - 2014 Waldemar Stoffel  (email: stoffel@atelier-fuenf.de)
+/*  Copyright 2011 - 2015 Waldemar Stoffel  (email: stoffel@atelier-fuenf.de)
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -134,6 +134,10 @@ class A5_CustomLoginPage {
 		if (!empty(self::$options['disable_reg'])) add_filter('option_users_can_register', array($this, 'disable_registration'));
 		if (!empty(self::$options['disable_pass']))	add_action ('lost_password', array($this, 'disable_password_reset'));
 		if (!empty(self::$options['disable_pass']))	add_filter('gettext', array($this, 'remove_lostpassword_text'));
+		if (isset(self::$options['video']) && !empty(self::$options['video'])) add_filter('login_message', array($this, 'print_video'));
+		
+		add_action( 'add_meta_boxes', array($this, 'clp_add_meta_box'));
+		add_action('wp_ajax_video_preview', array($this, 'ajax_video_preview'));
 
 		/**
 		 *
@@ -313,6 +317,8 @@ class A5_CustomLoginPage {
 		if (!isset($user->roles) || empty($user->roles)) return false;
 		
 		if (in_array($user->roles[0], self::$options['hide_backend'])) return false;
+		
+		return true;
 	
 	}
 	
@@ -330,6 +336,53 @@ class A5_CustomLoginPage {
 		
 	}
 
+	/**
+	 *
+	 * Printing the video
+	 *
+	 */
+	function print_video() {
+		
+		$attr = array(
+			'src' => self::$options['video'],
+			'poster' => self::$options['video_poster'],
+			'loop' => self::$options['video_loop'],
+			'autoplay' => self::$options['video_autoplay'],
+			'preload' => self::$options['video_preload'],
+			'class' => self::$options['video_class'],
+			'id' => self::$options['video_id']
+		);
+		
+		if (!empty(self::$options['video_height'])) $attr['height'] = self::$options['video_height'];
+		if (!empty(self::$options['video_width'])) $attr['width'] = self::$options['video_width'];
+		
+		return wp_video_shortcode($attr);
+		
+	}
+	
+	function ajax_video_preview() {
+		
+		check_ajax_referer('zwetschgenbremmel', 'ajax_nonce');
+		
+		$attr = array(
+			'src' => $_POST['video_url'],
+			'poster' => $_POST['video_poster'],
+			'loop' => @$_POST['video_loop'],
+			'autoplay' => @$_POST['video_autoplay'],
+			'preload' => $_POST['video_preload'],
+			'class' => $_POST['video_class'],
+			'id' => $_POST['video_id']
+		);
+		
+		if (!empty($_POST['video_height'])) $attr['height'] = $_POST['video_height'];
+		if (!empty($_POST['video_width'])) $attr['width'] = $_POST['video_width'];
+		
+		echo wp_video_shortcode($attr);
+		
+		die();
+		
+	}
+	
 	/**
 	 *
 	 * Printing the additional html
@@ -457,6 +510,22 @@ class A5_CustomLoginPage {
 		
 	}
 	
+	/**
+	 * Adds a box to the main column on the Post and Page edit screens.
+	 */
+	function clp_add_meta_box() {
+		
+		#add_meta_box( 'add-custom-links', __( 'Links' ), 'wp_nav_menu_item_link_meta_box', 'nav-menus', 'side', 'default' );
+	
+		add_meta_box('add-clp-logout-link', __('Logout Link', self::language_file), array($this, 'print_meta_box'), 'nav_menus', 'side', 'default');
+	
+	}
+	
+	function print_meta_box() {
+		
+		echo 'Reuzenlul';
+		
+	}
 	
 	/**
 	 *
