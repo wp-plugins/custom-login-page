@@ -5,7 +5,7 @@
  * Class A5 FormField
  *
  * @ A5 Plugin Framework
- * Version: 1.0 beta 20141205
+ * Version: 1.0 beta 20150113
  *
  * Gets all sort of input fields for plugins by Atelier 5 
  *
@@ -15,7 +15,7 @@
 
 class A5_FormField {
 	
-	const version = '1.0 beta 20141205';
+	const version = '1.0 beta 20150113 CLP';
 	
 	public $formfield;
 	
@@ -198,12 +198,14 @@ class A5_FormField {
  
 function a5_textarea($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'textarea',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$textarea = new A5_FormField($args);
@@ -230,6 +232,8 @@ function a5_checkbox($field_id, $field_name, $value = false, $label = false, $at
 		
 	endif;
 	
+	if (false === $attributes) $attributes = array();
+	
 	if ($checked == $value) $attributes['checked'] = 'checked';
 	
 	$args = array ( 'type' => 'checkbox',
@@ -237,9 +241,8 @@ function a5_checkbox($field_id, $field_name, $value = false, $label = false, $at
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
+					'attributes' => $attributes
 					);
-					
-	if ($attributes) $args['attributes'] = (array) $attributes;
 					
 	$checkbox = new A5_FormField($args);
 	
@@ -265,16 +268,17 @@ function a5_radio($field_id, $field_name, $value = false, $label = false, $attri
 		
 	endif;
 	
+	if (false === $attributes) $attributes = array();
+	
 	if ($checked == $value) $attributes['checked'] = 'checked';
 	
 	$args = array ( 'type' => 'radio',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
-					'label' => $label
+					'label' => $label,
+					'attributes' => $attributes
 					);
-					
-	if ($attributes) $args['attributes'] = (array) $attributes;
 					
 	$radio = new A5_FormField($args);
 	
@@ -292,14 +296,20 @@ function a5_radio($field_id, $field_name, $value = false, $label = false, $attri
  
 function a5_select($field_id, $field_name, $options, $value = false, $label = false, $default = false, $attributes = false, $echo = true) {
 	
+	if (!is_array($options)) $options = array($options);
+	
+	if (false === $value) $value = array();
+	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'select',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
-					'options' => (array) $options,
-					'value' => (array) $value,
+					'options' => $options,
+					'value' => $value,
 					'label' => $label,
 					'default' => $default,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$select = new A5_FormField($args);
@@ -340,12 +350,14 @@ function a5_hidden_field($field_id, $field_name, $value = false, $echo = true) {
  
 function a5_text_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'text',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$text_field = new A5_FormField($args);
@@ -364,12 +376,14 @@ function a5_text_field($field_id, $field_name, $value = false, $label = false, $
  
 function a5_file_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'file',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$file_field = new A5_FormField($args);
@@ -388,6 +402,8 @@ function a5_file_field($field_id, $field_name, $value = false, $label = false, $
  
 function a5_image_field($field_id, $field_name, $scr, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$attributes['scr'] = $scr;
 	
 	$args = array ( 'type' => 'img',
@@ -395,7 +411,7 @@ function a5_image_field($field_id, $field_name, $scr, $value = false, $label = f
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$img_field = new A5_FormField($args);
@@ -414,12 +430,14 @@ function a5_image_field($field_id, $field_name, $scr, $value = false, $label = f
  
 function a5_button($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'button',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$button = new A5_FormField($args);
@@ -438,12 +456,14 @@ function a5_button($field_id, $field_name, $value = false, $label = false, $attr
  
 function a5_submit($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'submit',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$submit = new A5_FormField($args);
@@ -462,12 +482,14 @@ function a5_submit($field_id, $field_name, $value = false, $label = false, $attr
  
 function a5_reset($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'reset',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$reset = new A5_FormField($args);
@@ -490,12 +512,14 @@ function a5_reset($field_id, $field_name, $value = false, $label = false, $attri
  
 function a5_color_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'color',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$color_field = new A5_FormField($args);
@@ -514,12 +538,14 @@ function a5_color_field($field_id, $field_name, $value = false, $label = false, 
  
 function a5_date_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'date',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$date_field = new A5_FormField($args);
@@ -538,12 +564,14 @@ function a5_date_field($field_id, $field_name, $value = false, $label = false, $
  
 function a5_datetime_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'datetime',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$datetime_field = new A5_FormField($args);
@@ -562,12 +590,14 @@ function a5_datetime_field($field_id, $field_name, $value = false, $label = fals
  
 function a5_datetime_local_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'datetime-local',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$datetime_local_field = new A5_FormField($args);
@@ -586,12 +616,14 @@ function a5_datetime_local_field($field_id, $field_name, $value = false, $label 
  
 function a5_email_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'email',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$email_field = new A5_FormField($args);
@@ -611,12 +643,14 @@ function a5_email_field($field_id, $field_name, $value = false, $label = false, 
  
 function a5_month_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'month',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$month_field = new A5_FormField($args);
@@ -635,12 +669,14 @@ function a5_month_field($field_id, $field_name, $value = false, $label = false, 
  
 function a5_number_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'number',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$number_field = new A5_FormField($args);
@@ -658,6 +694,8 @@ function a5_number_field($field_id, $field_name, $value = false, $label = false,
  */
  
 function a5_range_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+	
+	if (false === $attributes) $attributes = array();
 	 
 	$attributes['min'] = $min;
 	
@@ -668,7 +706,7 @@ function a5_range_field($field_id, $field_name, $min, $max, $value = false, $lab
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$range_field = new A5_FormField($args);
@@ -687,12 +725,14 @@ function a5_range_field($field_id, $field_name, $min, $max, $value = false, $lab
  
 function a5_search_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'search',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$search_field = new A5_FormField($args);
@@ -711,12 +751,14 @@ function a5_search_field($field_id, $field_name, $value = false, $label = false,
  
 function a5_tel_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'tel',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$tel_field = new A5_FormField($args);
@@ -735,12 +777,14 @@ function a5_tel_field($field_id, $field_name, $value = false, $label = false, $a
  
 function a5_time_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'time',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$time_field = new A5_FormField($args);
@@ -759,12 +803,14 @@ function a5_time_field($field_id, $field_name, $value = false, $label = false, $
  
 function a5_url_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'url',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$url_field = new A5_FormField($args);
@@ -783,12 +829,14 @@ function a5_url_field($field_id, $field_name, $value = false, $label = false, $a
  
 function a5_week_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
 	
+	if (false === $attributes) $attributes = array();
+	
 	$args = array ( 'type' => 'week',
 					'field_id' => $field_id,
 					'field_name' => $field_name,
 					'value' => $value,
 					'label' => $label,
-					'attributes' => (array) $attributes
+					'attributes' => $attributes
 					);
 					
 	$week_field = new A5_FormField($args);
@@ -853,7 +901,7 @@ function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = fa
 						'label' => $options[3],
 						'attributes' => $attributes
 						);
-		# a5_checkbox($field_id / $options[0], $field_name / $options[1], [$value / $options[2]], [$label / $options[3]], [array($attributes) / $options[4]], [$checked / $options[5]], [$echo / $options[6]])				
+		
 		$checkbox = new A5_FormField($args);
 		
 		$boxes .= $checkbox->formfield;

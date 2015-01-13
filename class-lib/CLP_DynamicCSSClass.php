@@ -72,7 +72,14 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			endif;
 			
-			if (!empty(self::$options['body_bg_color1'])) $body_style .= $eol.$tab.'background-color: '.self::$options['body_bg_color1'].';';	
+			if (!empty(self::$options['body_bg_color1'])) : 
+			
+				$body_style .= $eol.$tab.'background-color: '.self::$options['body_bg_color1'].';';
+				
+				$body_style .= $eol.$tab.'height: auto;';
+				
+			endif;
+				
 			if (!empty(self::$options['body_bg_color2'])) :
 				
 				$body_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['body_bg_color1'].'), to('.self::$options['body_bg_color2'].'));';

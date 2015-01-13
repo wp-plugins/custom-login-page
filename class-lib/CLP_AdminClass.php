@@ -278,6 +278,32 @@ class CLP_Admin extends A5_OptionPage {
 		
 		add_settings_field('clp_h1_shadow_inset', __('Inner Shadow', self::language_file), array($this, 'h1_shadow_inset_input'), 'clp_logo_style', 'clp_options');
 		
+		// video tab
+		
+		add_settings_section('clp_options', false, array($this, 'clp_video_section'), 'clp_video');
+		
+		add_settings_field('clp_video_url', __('Video URL', self::language_file), array($this, 'video_url_input'), 'clp_video', 'clp_options');
+		
+		add_settings_field('clp_video_width', __('Width of the Video', self::language_file), array($this, 'video_width_input'), 'clp_video', 'clp_options');
+		
+		add_settings_field('clp_video_height', __('Height of the Video', self::language_file), array($this, 'video_height_input'), 'clp_video', 'clp_options');
+		
+		add_settings_section('clp_options', __('Additional Parameters', self::language_file), array($this, 'clp_video_parameter_section'), 'clp_video_parameters');
+		
+		add_settings_field('clp_video_poster', __('Video Poster', self::language_file), array($this, 'video_poster_input'), 'clp_video_parameters', 'clp_options');
+		
+		add_settings_field('clp_video_poster', __('Video Poster', self::language_file), array($this, 'video_poster_input'), 'clp_video_parameters', 'clp_options');
+		
+		add_settings_field('clp_video_loop', __('Loop Video', self::language_file), array($this, 'video_loop_input'), 'clp_video_parameters', 'clp_options');
+		
+		add_settings_field('clp_video_autoplay', __('Autoplay Video', self::language_file), array($this, 'video_autoplay_input'), 'clp_video_parameters', 'clp_options');
+		
+		add_settings_field('clp_video_preload', __('Video Preload', self::language_file), array($this, 'video_preload_input'), 'clp_video_parameters', 'clp_options');
+		
+		add_settings_field('clp_video_class', __('Class for the Video Container', self::language_file), array($this, 'video_class_input'), 'clp_video_parameters', 'clp_options');
+		
+		add_settings_field('clp_video_id', __('ID of the Video Container', self::language_file), array($this, 'video_id_input'), 'clp_video_parameters', 'clp_options');
+		
 		// logindiv tab
 	
 		add_settings_section('clp_options', false, array($this, 'clp_logindiv_section'), 'clp_logindiv');
@@ -637,24 +663,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function body_background_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('body_background_url', 'clp_options[body_background]', @self::$options['body_background']);
-			
-			self::tag_it(a5_button('upload-body_background', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-body_background', 'body', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'body_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['body_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['body_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'body_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-body_background', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-body_background', 'body', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'body_remove', 'style' => 'display: none;'), true);
 			
-			
-		else :
-		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('body_background', 'clp_options[body_background]', @self::$options['body_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			$label = __('Or enter a URL', self::language_file);
 			
 		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+		
+		a5_url_field('body_url', 'clp_options[body_background]', @self::$options['body_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
 		
 	}
 	
@@ -762,24 +787,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logo_url_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('logo_url', 'clp_options[logo]', @self::$options['logo']);
-			
-			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-logo', 'logo', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'logo_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['logo'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['logo'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'logo_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-logo', 'logo', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'logo_remove', 'style' => 'display: none;'), true);
 			
-			
-		else :
-		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('logo', 'clp_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			$label = __('Or enter a URL', self::language_file);
 			
 		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('logo_url', 'clp_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
 		
 	}
 		
@@ -880,6 +904,120 @@ class CLP_Admin extends A5_OptionPage {
 	
 	}
 	
+	//video tab
+	
+	function clp_video_section() {
+		
+		self::tag_it(__('Just upload any video via the uploader.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Give it a width and height if you don&#39;t want to use the default settings of WP.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('You can leave any of the fields empty to keep the default settings of Wordpress.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function video_url_input() {
+		
+		$label = __('Enter a URL', self::language_file);
+		
+		global $A5_CustomLoginPage;
+		
+		if (function_exists('wp_enqueue_media')) :
+		
+			$video_preview = (empty(self::$options['video'])) ? '' : $A5_CustomLoginPage->print_video();
+		
+			self::tag_it(a5_button('upload-video', 'video', __('Select Video', self::language_file), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'video_upload', 'style' => 'display: none;'), true);
+			
+			self::tag_it($video_preview, 'div', 1, array('id' => 'video_preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-video', 'video', __('Remove Video', self::language_file), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'video_remove', 'style' => 'display: none;'), true);
+			
+			$label = __('Or enter a URL', self::language_file);
+			
+		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('video_url', 'clp_options[video]', @self::$options['video'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		
+	}
+	
+	function video_width_input() {
+		
+		a5_number_field('video_width', 'clp_options[video_width]', @self::$options['video_width'], false, array('step' => 1, 'min' => 0));
+		
+	}
+	
+	function video_height_input() {
+		
+		a5_number_field('video_height', 'clp_options[video_height]', @self::$options['video_height'], false, array('step' => 1, 'min' => 0));
+		
+	}
+	
+	function clp_video_parameter_section() {
+		
+		self::tag_it(__('You can enter a couple of parameters for the video here.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('However, this is absolute in beta stage and I don&#39;t really know what the parameters do.', self::language_file), 'p', 1, false, true);
+		self::tag_it(__('Leave everything empty to fall back to the default values of WordPress.', self::language_file), 'p', 1, false, true);
+		
+	}
+		
+	function video_poster_input() {
+		
+		$label = __('Enter a URL', self::language_file);
+		
+		if (function_exists('wp_enqueue_media')) :
+		
+			self::tag_it(a5_button('upload-poster', 'poster', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'poster_upload', 'style' => 'display: none;'), true);
+				
+			self::tag_it('<img src="'.@self::$options['video_poster'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'poster_preview', 'style' => 'display: none;'), true);
+			
+			self::tag_it(a5_button('remove-poster', 'poster', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'poster_remove', 'style' => 'display: none;'), true);
+			
+			$label = __('Or enter a URL', self::language_file);
+			
+		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('poster_url', 'clp_options[video_poster]', @self::$options['video_poster'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+		
+	}
+	
+	function video_loop_input() {
+	
+		a5_checkbox('video_loop', 'clp_options[video_loop]', @self::$options['video_loop']);
+	
+	}
+	
+	function video_autoplay_input() {
+	
+		a5_checkbox('video_autoplay', 'clp_options[video_autoplay]', @self::$options['video_autoplay']);
+	
+	}
+	
+	function video_preload_input() {
+		
+		$options = array(
+			array('auto', 'auto'),
+			array('metadata', 'metadata'),
+			array('none', 'none')
+		);	
+
+		a5_select('video_preload', 'clp_options[video_preload]', $options, @self::$options['video_preload']);
+		
+	}
+	
+	function video_class_input() {	
+
+		a5_text_field('video_class', 'clp_options[video_class]', @self::$options['video_class']);
+		
+	}
+	
+	function video_id_input() {	
+
+		a5_text_field('video_id', 'clp_options[video_id]', @self::$options['video_id']);
+		
+	}
+	
 	// logindiv tab
 	
 	function clp_logindiv_section() {
@@ -894,23 +1032,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function logindiv_background_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('logindiv_background_url', 'clp_options[logindiv_background]', @self::$options['logindiv_background']);
-			
-			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-logindiv', 'logindiv', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'logindiv_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['logindiv_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['logindiv_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'logindiv_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-logindiv', 'logindiv', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'logindiv_remove', 'style' => 'display: none;'), true);
 			
-		else :
+			$label = __('Or enter a URL', self::language_file);
+			
+		endif;
 		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('logindiv_background', 'clp_options[logindiv_background]', @self::$options['logindiv_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
-			
-		endif;	
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('logindiv_url', 'clp_options[logindiv_background]', @self::$options['logindiv_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));	
 		
 	}
 	
@@ -1072,23 +1210,23 @@ class CLP_Admin extends A5_OptionPage {
 	
 	function loginform_background_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('loginform_background_url', 'clp_options[loginform_background]', @self::$options['loginform_background']);
-			
-			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-loginform', 'loginform', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'loginform_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['loginform_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['loginform_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'loginform_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-loginform', 'loginform', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'loginform_remove', 'style' => 'display: none;'), true);
 			
-		else :
+			$label = __('Or enter a URL', self::language_file);
+			
+		endif;
 		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('loginform_background', 'clp_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
-			
-		endif;	
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('loginform_url', 'clp_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
 		
 	}
 	
@@ -1539,6 +1677,7 @@ class CLP_Admin extends A5_OptionPage {
 		$tabs ['advanced_tab'] = array( 'class' => ($active == 'advanced_tab') ? ' nav-tab-active' : '', 'text' => __('Advanced Options', self::language_file));
 		$tabs ['body_tab'] = array( 'class' => ($active == 'body_tab') ? ' nav-tab-active' : '', 'text' => __('Body & Submit Button', self::language_file));
 		$tabs ['logo_tab'] = array( 'class' => ($active == 'logo_tab') ? ' nav-tab-active' : '', 'text' => __('Logo', self::language_file));
+		$tabs ['video_tab'] = array( 'class' => ($active == 'video_tab') ? ' nav-tab-active' : '', 'text' => __('Video', self::language_file));
 		$tabs ['logindiv_tab'] = array( 'class' => ($active == 'logindiv_tab') ? ' nav-tab-active' : '', 'text' => __('Login Container', self::language_file));
 		$tabs ['loginform_tab'] = array( 'class' => ($active == 'loginform_tab') ? ' nav-tab-active' : '', 'text' => __('Login Form', self::language_file));
 		$tabs ['message_tab'] = array( 'class' => ($active == 'message_tab') ? ' nav-tab-active' : '', 'text' => __('Messages & Input Fields', self::language_file));
@@ -1632,6 +1771,24 @@ class CLP_Admin extends A5_OptionPage {
 			self::sortable('middle', self::postbox(__('Position and Size of the Logo', self::language_file), 'logo-pos', 'clp_logo_size'));
 			
 			self::sortable('bottom', self::postbox(__('Styling of the Logo', self::language_file), 'logo-style', 'clp_logo_style'));
+			
+			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
+			
+			submit_button();
+			
+			self::close_tab();;
+			
+		endif;
+		
+		if ($active == 'video_tab') :
+		
+			self::open_tab();
+			
+			a5_hidden_field('ajax_nonce', 'ajax_nonce', wp_create_nonce('zwetschgenbremmel'));
+			
+			self::sortable('top', self::postbox(__('Video above the Login Lorm', self::language_file), 'video', 'clp_video'));
+			
+			self::sortable('middle', self::postbox(__('Additional Parameters', self::language_file), 'video-paameters', 'clp_video_parameters'));
 			
 			if (WP_DEBUG === true) self::sortable('deep-down', self::debug_info(self::$options, __('Debug Info', self::language_file)));
 			
@@ -1890,6 +2047,20 @@ class CLP_Admin extends A5_OptionPage {
 					self::$options['h1_shadow_softness'] = trim($input['h1_shadow_softness']);
 					self::$options['h1_shadow_color'] = trim($input['h1_shadow_color']);
 					self::$options['h1_shadow_inset'] = @$input['h1_shadow_inset'];
+					
+					break;
+					
+				case 'video_tab' :
+				
+					self::$options['video'] = trim($input['video']);
+					self::$options['video_width'] = trim($input['video_width']);
+					self::$options['video_height'] = trim($input['video_height']);
+					self::$options['video_poster'] = trim($input['video_poster']);
+					self::$options['video_loop'] = (@$input['video_loop']) ? true : NULL;
+					self::$options['video_autoplay'] = (@$input['video_autoplay']) ? true : NULL;
+					self::$options['video_preload'] = trim($input['video_preload']);
+					self::$options['video_class'] = trim($input['video_class']);
+					self::$options['video_id'] = trim($input['video_id']);
 					
 					break;
 					

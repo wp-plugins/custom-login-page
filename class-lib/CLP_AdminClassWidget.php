@@ -510,7 +510,7 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function impex_resize_field() {
 		
-		a5_resize_textarea(array('import'), true);
+		a5_resize_textarea('import', true);
 		
 	}
 	
@@ -528,23 +528,23 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function container_background_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('container_background_url', 'clp_widget_options[container_background]', @self::$options['container_background']);
-			
-			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-container_background', 'container', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'container_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['container_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['container_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'container_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-container_background', 'container', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'container_remove', 'style' => 'display: none;'), true);
 			
-		else :
-		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('container_background', 'clp_widget_options[container_background]', @self::$options['container_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			$label = __('Or enter a URL', self::language_file);
 			
 		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+		
+		a5_url_field('container_url', 'clp_widget_options[container_background]', @self::$options['container_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
 		
 	}
 	
@@ -676,24 +676,23 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function logo_url_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('logo_url', 'clp_widget_options[logo]', @self::$options['logo']);
-			
-			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-logo', 'logo', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'logo_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['logo'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['logo'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'logo_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-logo', 'logo', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'logo_remove', 'style' => 'display: none;'), true);
 			
-			
-		else :
-		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('logo', 'clp_widget_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			$label = __('Or enter a URL', self::language_file);
 			
 		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('logo_url', 'clp_widget_options[logo]', @self::$options['logo'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
 		
 	}
 		
@@ -787,23 +786,23 @@ class clp_WidgetAdmin extends A5_OptionPage {
 	
 	function loginform_background_input() {
 		
+		$label = __('Enter a URL', self::language_file);
+		
 		if (function_exists('wp_enqueue_media')) :
 		
-			a5_hidden_field('loginform_background_url', 'clp_widget_options[loginform_background]', @self::$options['loginform_background']);
-			
-			self::tag_it(a5_button('upload-logo', NULL, __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'upload', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('upload-loginform', 'loginform', __('Select Image'), false, array('class' => 'button upload-button'), false), 'p', 1, array('id' => 'loginform_upload', 'style' => 'display: none;'), true);
 				
-			self::tag_it('<img src="'.@self::$options['loginform_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'preview', 'style' => 'display: none;'), true);
+			self::tag_it('<img src="'.@self::$options['loginform_background'].'" alt="'.__('Preview').'" style="max-width: 320px; height: auto;" />', 'p', 1, array('id' => 'loginform_preview', 'style' => 'display: none;'), true);
 			
-			self::tag_it(a5_button('remove-logo', NULL, __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'remove', 'style' => 'display: none;'), true);
+			self::tag_it(a5_button('remove-loginform', 'loginform', __('Remove Image'), false, array('class' => 'button remove-button'), false), 'p', 1, array('id' => 'loginform_remove', 'style' => 'display: none;'), true);
 			
-		else :
-		
-			// making it compatible with older versions of WP
-		
-			a5_text_field('loginform_background', 'clp_widget_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
+			$label = __('Or enter a URL', self::language_file);
 			
 		endif;
+		
+		self::tag_it($label, 'p', false, false, true);
+				
+		a5_url_field('loginform_url', 'clp_widget_options[loginform_background]', @self::$options['loginform_background'], false, array('style' => 'min-width: 350px; max-width: 500px;'));
 		
 	}
 	
