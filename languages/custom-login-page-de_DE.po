@@ -4,8 +4,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: A5 Custom Login Page 1.9.2\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/tag/custom-login-page\n"
-"POT-Creation-Date: 2015-01-05 14:27+0200\n"
-"PO-Revision-Date: 2015-01-05 14:34+0200\n"
+"POT-Creation-Date: 2015-02-08 17:55+0200\n"
+"PO-Revision-Date: 2015-02-08 17:55+0200\n"
 "Last-Translator: Waldemar Stoffel <stoffel@atelier-furnf.de>\n"
 "Language-Team: Atelier 5 <stoffel@atelier-fuenf.de>\n"
 "Language: de_DE\n"
@@ -102,7 +102,7 @@ msgstr ""
 "Mit der Padding des Logos kannst du dessen Schatten genauer platzieren. Gib "
 "hier einen CSS-Wert ein. Z.B. %s, um ihn loszuwerden."
 
-#: class-lib/CLP_AdminClass.php:127 class-lib/CLP_AdminClass.php:1681
+#: class-lib/CLP_AdminClass.php:127 class-lib/CLP_AdminClass.php:1687
 #: class-lib/CLP_AdminClassWidget.php:1269
 msgid "Logo"
 msgstr "Logo"
@@ -122,8 +122,8 @@ msgstr ""
 "Neben eigentlichen Größenangaben in Prozent oder px können folgende Werte "
 "eingesetzt werden: %s"
 
-#: class-lib/CLP_AdminClass.php:136 class-lib/CLP_AdminClass.php:221
-#: class-lib/CLP_AdminClass.php:321 class-lib/CLP_AdminClass.php:373
+#: class-lib/CLP_AdminClass.php:136 class-lib/CLP_AdminClass.php:223
+#: class-lib/CLP_AdminClass.php:323 class-lib/CLP_AdminClass.php:375
 msgid "Background Size"
 msgstr "Hintergrund Größe"
 
@@ -138,11 +138,11 @@ msgstr ""
 msgid "CSS & HTML"
 msgstr "CSS & HTML"
 
-#: class-lib/CLP_AdminClass.php:165 class-lib/CLP_AdminClass.php:1837
+#: class-lib/CLP_AdminClass.php:165 class-lib/CLP_AdminClass.php:1843
 msgid "Logout Message"
 msgstr "Meldung beim Abmelden"
 
-#: class-lib/CLP_AdminClass.php:167 class-lib/CLP_AdminClass.php:1839
+#: class-lib/CLP_AdminClass.php:167 class-lib/CLP_AdminClass.php:1845
 msgid "Error Message"
 msgstr "Fehlermeldung"
 
@@ -179,30 +179,34 @@ msgid "Check, to include the footer of the frontend into your login page."
 msgstr "Anklicken, um den Footer des Frontends auf der Login Seite zu haben."
 
 #: class-lib/CLP_AdminClass.php:189
+msgid "Hide &#39;remember me&#39; checkbox."
+msgstr "&#39;Angemeldet bleiben&#39;-Link verstecken"
+
+#: class-lib/CLP_AdminClass.php:191
 msgid "Hide register link."
 msgstr "Verstecke den Link zum Registrieren"
 
-#: class-lib/CLP_AdminClass.php:191
+#: class-lib/CLP_AdminClass.php:193
 msgid "Hide lost password link."
 msgstr "Verstecke den Link für vergessenes Passwort"
 
-#: class-lib/CLP_AdminClass.php:193
+#: class-lib/CLP_AdminClass.php:195
 msgid "Hide back to blog link."
 msgstr "Verstecke den Link zur Startseite"
 
-#: class-lib/CLP_AdminClass.php:197
+#: class-lib/CLP_AdminClass.php:199
 msgid "Compress Style Sheet"
 msgstr "Stylesheet Komprimieren"
 
-#: class-lib/CLP_AdminClass.php:197
+#: class-lib/CLP_AdminClass.php:199
 msgid "Click here to compress the style sheet."
 msgstr "Anklicken, um das Stylesheet zu komprimieren."
 
-#: class-lib/CLP_AdminClass.php:199
+#: class-lib/CLP_AdminClass.php:201
 msgid "Check, to write styles inline instead of to a virtual CSS file."
 msgstr "Anklicken, um CSS inline zu schreiben."
 
-#: class-lib/CLP_AdminClass.php:201
+#: class-lib/CLP_AdminClass.php:203
 msgid ""
 "Give a value for the priority of the style inline (this can help with other "
 "plugins overriding our styles)."
@@ -210,50 +214,50 @@ msgstr ""
 "Gib einen Wert für die Priorität der Inline-Stile ein (das kann helfen, "
 "falls andere Plugins unser CSS überschreiben)."
 
-#: class-lib/CLP_AdminClass.php:205
+#: class-lib/CLP_AdminClass.php:207
 msgid "Redirect per User Role"
 msgstr "Umleitungen pro Nutzerrolle"
 
-#: class-lib/CLP_AdminClass.php:211 class-lib/CLP_AdminClass.php:311
-#: class-lib/CLP_AdminClass.php:363 class-lib/CLP_AdminClassWidget.php:176
+#: class-lib/CLP_AdminClass.php:213 class-lib/CLP_AdminClass.php:313
+#: class-lib/CLP_AdminClass.php:365 class-lib/CLP_AdminClassWidget.php:176
 #: class-lib/CLP_AdminClassWidget.php:248
 msgid "Background Picture"
 msgstr "Hintergrundbild"
 
-#: class-lib/CLP_AdminClass.php:213 class-lib/CLP_AdminClass.php:313
-#: class-lib/CLP_AdminClass.php:365 class-lib/CLP_AdminClassWidget.php:178
+#: class-lib/CLP_AdminClass.php:215 class-lib/CLP_AdminClass.php:315
+#: class-lib/CLP_AdminClass.php:367 class-lib/CLP_AdminClassWidget.php:178
 #: class-lib/CLP_AdminClassWidget.php:250
 msgid "Background Repeat"
 msgstr "Wiederholung des Hintergrundbildes"
 
-#: class-lib/CLP_AdminClass.php:215 class-lib/CLP_AdminClass.php:315
-#: class-lib/CLP_AdminClass.php:367 class-lib/CLP_AdminClassWidget.php:180
+#: class-lib/CLP_AdminClass.php:217 class-lib/CLP_AdminClass.php:317
+#: class-lib/CLP_AdminClass.php:369 class-lib/CLP_AdminClassWidget.php:180
 #: class-lib/CLP_AdminClassWidget.php:252
 msgid "Position of the Background Picture"
 msgstr "Position des Hintergrundbildes"
 
-#: class-lib/CLP_AdminClass.php:217 class-lib/CLP_AdminClass.php:225
-#: class-lib/CLP_AdminClass.php:317 class-lib/CLP_AdminClass.php:369
-#: class-lib/CLP_AdminClass.php:407 class-lib/CLP_AdminClass.php:417
-#: class-lib/CLP_AdminClass.php:427 class-lib/CLP_AdminClassWidget.php:182
+#: class-lib/CLP_AdminClass.php:219 class-lib/CLP_AdminClass.php:227
+#: class-lib/CLP_AdminClass.php:319 class-lib/CLP_AdminClass.php:371
+#: class-lib/CLP_AdminClass.php:409 class-lib/CLP_AdminClass.php:419
+#: class-lib/CLP_AdminClass.php:429 class-lib/CLP_AdminClassWidget.php:182
 #: class-lib/CLP_AdminClassWidget.php:254
 #: class-lib/CLP_AdminClassWidget.php:290
 #: class-lib/CLP_AdminClassWidget.php:308
 msgid "Background Colour"
 msgstr "Hintergrundfarbe"
 
-#: class-lib/CLP_AdminClass.php:219 class-lib/CLP_AdminClass.php:227
-#: class-lib/CLP_AdminClass.php:319 class-lib/CLP_AdminClass.php:371
+#: class-lib/CLP_AdminClass.php:221 class-lib/CLP_AdminClass.php:229
+#: class-lib/CLP_AdminClass.php:321 class-lib/CLP_AdminClass.php:373
 #: class-lib/CLP_AdminClassWidget.php:184
 #: class-lib/CLP_AdminClassWidget.php:256
 #: class-lib/CLP_AdminClassWidget.php:310
 msgid "Second Background Colour (for Gradient)"
 msgstr "Zweite Hintergrundfarbe (für einen Verlauf)"
 
-#: class-lib/CLP_AdminClass.php:229 class-lib/CLP_AdminClass.php:323
-#: class-lib/CLP_AdminClass.php:375 class-lib/CLP_AdminClass.php:405
-#: class-lib/CLP_AdminClass.php:415 class-lib/CLP_AdminClass.php:425
-#: class-lib/CLP_AdminClass.php:447 class-lib/CLP_AdminClass.php:461
+#: class-lib/CLP_AdminClass.php:231 class-lib/CLP_AdminClass.php:325
+#: class-lib/CLP_AdminClass.php:377 class-lib/CLP_AdminClass.php:407
+#: class-lib/CLP_AdminClass.php:417 class-lib/CLP_AdminClass.php:427
+#: class-lib/CLP_AdminClass.php:449 class-lib/CLP_AdminClass.php:463
 #: class-lib/CLP_AdminClassWidget.php:186
 #: class-lib/CLP_AdminClassWidget.php:258
 #: class-lib/CLP_AdminClassWidget.php:288
@@ -263,9 +267,9 @@ msgstr "Zweite Hintergrundfarbe (für einen Verlauf)"
 msgid "Text Colour"
 msgstr "Textfarbe"
 
-#: class-lib/CLP_AdminClass.php:231 class-lib/CLP_AdminClass.php:331
-#: class-lib/CLP_AdminClass.php:383 class-lib/CLP_AdminClass.php:409
-#: class-lib/CLP_AdminClass.php:419 class-lib/CLP_AdminClass.php:429
+#: class-lib/CLP_AdminClass.php:233 class-lib/CLP_AdminClass.php:333
+#: class-lib/CLP_AdminClass.php:385 class-lib/CLP_AdminClass.php:411
+#: class-lib/CLP_AdminClass.php:421 class-lib/CLP_AdminClass.php:431
 #: class-lib/CLP_AdminClassWidget.php:194
 #: class-lib/CLP_AdminClassWidget.php:266
 #: class-lib/CLP_AdminClassWidget.php:292
@@ -273,76 +277,76 @@ msgstr "Textfarbe"
 msgid "Border Colour"
 msgstr "Rahmenfarbe"
 
-#: class-lib/CLP_AdminClass.php:233 class-lib/CLP_AdminClassWidget.php:316
+#: class-lib/CLP_AdminClass.php:235 class-lib/CLP_AdminClassWidget.php:316
 msgid "Hover Background Colour"
 msgstr "Hintergrundfarbe für den Hovereffekt"
 
-#: class-lib/CLP_AdminClass.php:235 class-lib/CLP_AdminClassWidget.php:318
+#: class-lib/CLP_AdminClass.php:237 class-lib/CLP_AdminClassWidget.php:318
 msgid "Second Hover Background Colour (for Gradient)"
 msgstr "Zweite Hintergrundfarbe für den Hovereffekt (für einen Verlauf)"
 
-#: class-lib/CLP_AdminClass.php:237 class-lib/CLP_AdminClassWidget.php:320
+#: class-lib/CLP_AdminClass.php:239 class-lib/CLP_AdminClassWidget.php:320
 msgid "Hover Text Colour"
 msgstr "Textfarbe für den Hovereffekt"
 
-#: class-lib/CLP_AdminClass.php:239 class-lib/CLP_AdminClassWidget.php:322
+#: class-lib/CLP_AdminClass.php:241 class-lib/CLP_AdminClassWidget.php:322
 msgid "Hover Border Colour"
 msgstr "Rahmenfarbe für den Hovereffekt"
 
-#: class-lib/CLP_AdminClass.php:245
+#: class-lib/CLP_AdminClass.php:247
 msgid "Hide Logo"
 msgstr "Logo Verstecken"
 
-#: class-lib/CLP_AdminClass.php:245
+#: class-lib/CLP_AdminClass.php:247
 msgid "Check to have no logo at all."
 msgstr "Anklicken, um kein Logo zu haben."
 
-#: class-lib/CLP_AdminClass.php:247 class-lib/CLP_AdminClassWidget.php:218
+#: class-lib/CLP_AdminClass.php:249 class-lib/CLP_AdminClassWidget.php:218
 msgid "Logo URL"
 msgstr "URL des Logos"
 
-#: class-lib/CLP_AdminClass.php:249 class-lib/CLP_AdminClassWidget.php:220
+#: class-lib/CLP_AdminClass.php:251 class-lib/CLP_AdminClassWidget.php:220
 msgid "URL to link to"
 msgstr "URL, zu der verlinkt werden soll"
 
-#: class-lib/CLP_AdminClass.php:251 class-lib/CLP_AdminClassWidget.php:222
+#: class-lib/CLP_AdminClass.php:253 class-lib/CLP_AdminClassWidget.php:222
 msgid "Title tag of the logo"
 msgstr "Title Tag des Logos"
 
-#: class-lib/CLP_AdminClass.php:255
+#: class-lib/CLP_AdminClass.php:257
 msgid "Width of the Logo (in px)"
 msgstr "Breite des Logos (in px)"
 
-#: class-lib/CLP_AdminClass.php:257
+#: class-lib/CLP_AdminClass.php:259
 msgid "Height of the Logo (in px)"
 msgstr "Höhe des Logos (in px)"
 
-#: class-lib/CLP_AdminClass.php:259
+#: class-lib/CLP_AdminClass.php:261
 msgid "Width of the Logo Container (in px)"
 msgstr "Breite des Logo Containers (in px)"
 
-#: class-lib/CLP_AdminClass.php:261
+#: class-lib/CLP_AdminClass.php:263
 msgid "Height of the Logo Container (in px)"
 msgstr "Höhe des Logo Containers (in px)"
 
-#: class-lib/CLP_AdminClass.php:263 class-lib/CLP_AdminClassWidget.php:226
+#: class-lib/CLP_AdminClass.php:265 class-lib/CLP_AdminClassWidget.php:226
 msgid "Margin of the Logo Container (CSS)"
 msgstr "Margin des Logo Containers (CSS)"
 
-#: class-lib/CLP_AdminClass.php:265 class-lib/CLP_AdminClassWidget.php:228
+#: class-lib/CLP_AdminClass.php:267 class-lib/CLP_AdminClassWidget.php:228
 msgid "Padding of the Logo Container (CSS)"
 msgstr "Padding des Logo Containers (CSS)"
 
-#: class-lib/CLP_AdminClass.php:269 class-lib/CLP_AdminClass.php:333
-#: class-lib/CLP_AdminClass.php:385 class-lib/CLP_AdminClassWidget.php:196
+#: class-lib/CLP_AdminClass.php:271 class-lib/CLP_AdminClass.php:335
+#: class-lib/CLP_AdminClass.php:387 class-lib/CLP_AdminClassWidget.php:196
 #: class-lib/CLP_AdminClassWidget.php:232
 #: class-lib/CLP_AdminClassWidget.php:268
 msgid "Rounded Corners (in px)"
 msgstr "Abgerundete Ecken (in px)"
 
-#: class-lib/CLP_AdminClass.php:271 class-lib/CLP_AdminClass.php:335
-#: class-lib/CLP_AdminClass.php:391 class-lib/CLP_AdminClass.php:431
-#: class-lib/CLP_AdminClass.php:451 class-lib/CLP_AdminClass.php:465
+#: class-lib/CLP_AdminClass.php:273 class-lib/CLP_AdminClass.php:337
+#: class-lib/CLP_AdminClass.php:393 class-lib/CLP_AdminClass.php:433
+#: class-lib/CLP_AdminClass.php:453 class-lib/CLP_AdminClass.php:467
 #: class-lib/CLP_AdminClassWidget.php:198
 #: class-lib/CLP_AdminClassWidget.php:234
 #: class-lib/CLP_AdminClassWidget.php:274
@@ -352,9 +356,9 @@ msgstr "Abgerundete Ecken (in px)"
 msgid "Shadow (x-direction in px)"
 msgstr "Schatten (x-Richtung in px)"
 
-#: class-lib/CLP_AdminClass.php:273 class-lib/CLP_AdminClass.php:337
-#: class-lib/CLP_AdminClass.php:393 class-lib/CLP_AdminClass.php:433
-#: class-lib/CLP_AdminClass.php:453 class-lib/CLP_AdminClass.php:467
+#: class-lib/CLP_AdminClass.php:275 class-lib/CLP_AdminClass.php:339
+#: class-lib/CLP_AdminClass.php:395 class-lib/CLP_AdminClass.php:435
+#: class-lib/CLP_AdminClass.php:455 class-lib/CLP_AdminClass.php:469
 #: class-lib/CLP_AdminClassWidget.php:200
 #: class-lib/CLP_AdminClassWidget.php:236
 #: class-lib/CLP_AdminClassWidget.php:276
@@ -364,9 +368,9 @@ msgstr "Schatten (x-Richtung in px)"
 msgid "Shadow (y-direction in px)"
 msgstr "Schatten (y-Richtung in px)"
 
-#: class-lib/CLP_AdminClass.php:275 class-lib/CLP_AdminClass.php:339
-#: class-lib/CLP_AdminClass.php:395 class-lib/CLP_AdminClass.php:435
-#: class-lib/CLP_AdminClass.php:455 class-lib/CLP_AdminClass.php:469
+#: class-lib/CLP_AdminClass.php:277 class-lib/CLP_AdminClass.php:341
+#: class-lib/CLP_AdminClass.php:397 class-lib/CLP_AdminClass.php:437
+#: class-lib/CLP_AdminClass.php:457 class-lib/CLP_AdminClass.php:471
 #: class-lib/CLP_AdminClassWidget.php:202
 #: class-lib/CLP_AdminClassWidget.php:238
 #: class-lib/CLP_AdminClassWidget.php:278
@@ -376,9 +380,9 @@ msgstr "Schatten (y-Richtung in px)"
 msgid "Shadow (softness in px)"
 msgstr "Softeffekt (in px)"
 
-#: class-lib/CLP_AdminClass.php:277 class-lib/CLP_AdminClass.php:341
-#: class-lib/CLP_AdminClass.php:397 class-lib/CLP_AdminClass.php:437
-#: class-lib/CLP_AdminClass.php:457 class-lib/CLP_AdminClass.php:471
+#: class-lib/CLP_AdminClass.php:279 class-lib/CLP_AdminClass.php:343
+#: class-lib/CLP_AdminClass.php:399 class-lib/CLP_AdminClass.php:439
+#: class-lib/CLP_AdminClass.php:459 class-lib/CLP_AdminClass.php:473
 #: class-lib/CLP_AdminClassWidget.php:204
 #: class-lib/CLP_AdminClassWidget.php:240
 #: class-lib/CLP_AdminClassWidget.php:280
@@ -388,8 +392,8 @@ msgstr "Softeffekt (in px)"
 msgid "Shadow Colour"
 msgstr "Schattenfarbe"
 
-#: class-lib/CLP_AdminClass.php:279 class-lib/CLP_AdminClass.php:343
-#: class-lib/CLP_AdminClass.php:399 class-lib/CLP_AdminClass.php:439
+#: class-lib/CLP_AdminClass.php:281 class-lib/CLP_AdminClass.php:345
+#: class-lib/CLP_AdminClass.php:401 class-lib/CLP_AdminClass.php:441
 #: class-lib/CLP_AdminClassWidget.php:206
 #: class-lib/CLP_AdminClassWidget.php:242
 #: class-lib/CLP_AdminClassWidget.php:282
@@ -397,119 +401,119 @@ msgstr "Schattenfarbe"
 msgid "Inner Shadow"
 msgstr "Innerer Schatten"
 
-#: class-lib/CLP_AdminClass.php:285
+#: class-lib/CLP_AdminClass.php:287
 msgid "Video URL"
 msgstr "URL des Videos"
 
-#: class-lib/CLP_AdminClass.php:287
+#: class-lib/CLP_AdminClass.php:289
 msgid "Width of the Video"
 msgstr "Breite des Videos"
 
-#: class-lib/CLP_AdminClass.php:289
+#: class-lib/CLP_AdminClass.php:291
 msgid "Height of the Video"
 msgstr "Höhe des Videos"
 
-#: class-lib/CLP_AdminClass.php:291 class-lib/CLP_AdminClass.php:1793
+#: class-lib/CLP_AdminClass.php:293 class-lib/CLP_AdminClass.php:1799
 msgid "Additional Parameters"
 msgstr "Zusätzliche Parameter"
 
-#: class-lib/CLP_AdminClass.php:293 class-lib/CLP_AdminClass.php:295
+#: class-lib/CLP_AdminClass.php:295 class-lib/CLP_AdminClass.php:297
 msgid "Video Poster"
 msgstr "Video Poster"
 
-#: class-lib/CLP_AdminClass.php:297
+#: class-lib/CLP_AdminClass.php:299
 msgid "Loop Video"
 msgstr "Video als Loop anzeigen"
 
-#: class-lib/CLP_AdminClass.php:299
+#: class-lib/CLP_AdminClass.php:301
 msgid "Autoplay Video"
 msgstr "Video Autoplay"
 
-#: class-lib/CLP_AdminClass.php:301
+#: class-lib/CLP_AdminClass.php:303
 msgid "Video Preload"
 msgstr "Video Preload"
 
-#: class-lib/CLP_AdminClass.php:303
+#: class-lib/CLP_AdminClass.php:305
 msgid "Class for the Video Container"
 msgstr "Klasse des Video-Containers"
 
-#: class-lib/CLP_AdminClass.php:305
+#: class-lib/CLP_AdminClass.php:307
 msgid "ID of the Video Container"
 msgstr "ID des Video-Containers"
 
-#: class-lib/CLP_AdminClass.php:325 class-lib/CLP_AdminClass.php:377
-#: class-lib/CLP_AdminClass.php:411 class-lib/CLP_AdminClass.php:421
+#: class-lib/CLP_AdminClass.php:327 class-lib/CLP_AdminClass.php:379
+#: class-lib/CLP_AdminClass.php:413 class-lib/CLP_AdminClass.php:423
 #: class-lib/CLP_AdminClassWidget.php:188
 #: class-lib/CLP_AdminClassWidget.php:260
 msgid "Transparency (in percent)"
 msgstr "Transparenz (in Prozent)"
 
-#: class-lib/CLP_AdminClass.php:327 class-lib/CLP_AdminClass.php:379
+#: class-lib/CLP_AdminClass.php:329 class-lib/CLP_AdminClass.php:381
 #: class-lib/CLP_AdminClassWidget.php:190
 #: class-lib/CLP_AdminClassWidget.php:262
 msgid "Border Style"
 msgstr "Stil des Rahmens"
 
-#: class-lib/CLP_AdminClass.php:329 class-lib/CLP_AdminClass.php:381
+#: class-lib/CLP_AdminClass.php:331 class-lib/CLP_AdminClass.php:383
 #: class-lib/CLP_AdminClassWidget.php:192
 #: class-lib/CLP_AdminClassWidget.php:264
 msgid "Border Width (in px)"
 msgstr "Rahmenbreite (in px)"
 
-#: class-lib/CLP_AdminClass.php:347
+#: class-lib/CLP_AdminClass.php:349
 msgid "Position (x-direction in px)"
 msgstr "Position (x-Richtung in px)"
 
-#: class-lib/CLP_AdminClass.php:349
+#: class-lib/CLP_AdminClass.php:351
 msgid "Position (y-direction in px)"
 msgstr "Position (y-Richtung in px)"
 
-#: class-lib/CLP_AdminClass.php:351
+#: class-lib/CLP_AdminClass.php:353
 msgid "Width (in px)"
 msgstr "Breite (in px)"
 
-#: class-lib/CLP_AdminClass.php:353
+#: class-lib/CLP_AdminClass.php:355
 msgid "Height (in px)"
 msgstr "Höhe (in px)"
 
-#: class-lib/CLP_AdminClass.php:355 class-lib/CLP_AdminClass.php:387
+#: class-lib/CLP_AdminClass.php:357 class-lib/CLP_AdminClass.php:389
 #: class-lib/CLP_AdminClassWidget.php:210
 #: class-lib/CLP_AdminClassWidget.php:270
 msgid "Padding"
 msgstr "Padding"
 
-#: class-lib/CLP_AdminClass.php:357 class-lib/CLP_AdminClass.php:389
+#: class-lib/CLP_AdminClass.php:359 class-lib/CLP_AdminClass.php:391
 #: class-lib/CLP_AdminClassWidget.php:212
 #: class-lib/CLP_AdminClassWidget.php:272
 msgid "Margin"
 msgstr "Margin"
 
-#: class-lib/CLP_AdminClass.php:445 class-lib/CLP_AdminClassWidget.php:328
+#: class-lib/CLP_AdminClass.php:447 class-lib/CLP_AdminClassWidget.php:328
 msgid "Font Size"
 msgstr "Schriftgröße"
 
-#: class-lib/CLP_AdminClass.php:449 class-lib/CLP_AdminClass.php:463
+#: class-lib/CLP_AdminClass.php:451 class-lib/CLP_AdminClass.php:465
 #: class-lib/CLP_AdminClassWidget.php:332
 #: class-lib/CLP_AdminClassWidget.php:346
 msgid "Text Decoration"
 msgstr "Textdekoration"
 
-#: class-lib/CLP_AdminClass.php:475 class-lib/CLP_AdminClass.php:1687
+#: class-lib/CLP_AdminClass.php:477 class-lib/CLP_AdminClass.php:1693
 #: class-lib/CLP_AdminClassWidget.php:358
 #: class-lib/CLP_AdminClassWidget.php:1273
 #: class-lib/CLP_AdminClassWidget.php:1363
 msgid "CSS"
 msgstr "CSS"
 
-#: class-lib/CLP_AdminClass.php:477 class-lib/CLP_AdminClassWidget.php:360
+#: class-lib/CLP_AdminClass.php:479 class-lib/CLP_AdminClassWidget.php:360
 msgid "Own CSS"
 msgstr "Eigenes CSS"
 
-#: class-lib/CLP_AdminClass.php:479 class-lib/CLP_AdminClassWidget.php:362
+#: class-lib/CLP_AdminClass.php:481 class-lib/CLP_AdminClassWidget.php:362
 msgid "Override other styles"
 msgstr "Überschreibe andere Stile"
 
-#: class-lib/CLP_AdminClass.php:479 class-lib/CLP_AdminClassWidget.php:362
+#: class-lib/CLP_AdminClass.php:481 class-lib/CLP_AdminClassWidget.php:362
 msgid ""
 "By checking this, all other styles will be replaced by your CSS. Otherwise, "
 "your CSS is additional."
@@ -517,31 +521,31 @@ msgstr ""
 "Wenn du das anklickst, werden alle Stile durch dein CSS ersetzt. Andernfalls "
 "kommt dein CSS zusätzlich zum vorhandenen."
 
-#: class-lib/CLP_AdminClass.php:483
+#: class-lib/CLP_AdminClass.php:485
 msgid "SVG"
 msgstr "SVG"
 
-#: class-lib/CLP_AdminClass.php:485
+#: class-lib/CLP_AdminClass.php:487
 msgid "Some SVG"
 msgstr "Etwas SVG"
 
-#: class-lib/CLP_AdminClass.php:489
+#: class-lib/CLP_AdminClass.php:491
 msgid "Aditional html snippets"
 msgstr "Zusätzliche HTML-Schnipsel"
 
-#: class-lib/CLP_AdminClass.php:491 class-lib/CLP_AdminClassWidget.php:370
+#: class-lib/CLP_AdminClass.php:493 class-lib/CLP_AdminClassWidget.php:370
 msgid "Above Form"
 msgstr "Über dem Formular"
 
-#: class-lib/CLP_AdminClass.php:493
+#: class-lib/CLP_AdminClass.php:495
 msgid "Inside Form"
 msgstr "Im Formular"
 
-#: class-lib/CLP_AdminClass.php:495 class-lib/CLP_AdminClassWidget.php:372
+#: class-lib/CLP_AdminClass.php:497 class-lib/CLP_AdminClassWidget.php:372
 msgid "Beneath Form"
 msgstr "Unter dem Formular"
 
-#: class-lib/CLP_AdminClass.php:505
+#: class-lib/CLP_AdminClass.php:507
 msgid ""
 "You can enter your own logout message here. You can make your blog a bit "
 "more personal like that."
@@ -549,7 +553,7 @@ msgstr ""
 "Du kannst hier deine Eigene Meldung für die Abmeldung eingeben. So kannst du "
 "dein Blog ein wenig persönlicher machen."
 
-#: class-lib/CLP_AdminClass.php:506
+#: class-lib/CLP_AdminClass.php:508
 msgid ""
 "Furthermore, you can enter your own error message. By default, Wordpress "
 "says that either the username or the password is wrong, which is perhaps a "
@@ -559,7 +563,7 @@ msgstr ""
 "teilt Wordpress mit, dass entweder der Benutzername oder das Passwort falsch "
 "ist, eine Information, die du vielleicht nicht preisgeben willst."
 
-#: class-lib/CLP_AdminClass.php:507
+#: class-lib/CLP_AdminClass.php:509
 msgid ""
 "If you don&#39;t want to style your login page item by item, you can as well "
 "move on to enter a whole style sheet in the css tab."
@@ -567,10 +571,10 @@ msgstr ""
 "Wenn du nicht jedes einzelne Element auf deiner Login Seite stylen willst, "
 "kannst du auch ein ganzes Stylesheet im CSS Reiter eingeben."
 
-#: class-lib/CLP_AdminClass.php:508 class-lib/CLP_AdminClass.php:660
-#: class-lib/CLP_AdminClass.php:778 class-lib/CLP_AdminClass.php:913
-#: class-lib/CLP_AdminClass.php:1031 class-lib/CLP_AdminClass.php:1209
-#: class-lib/CLP_AdminClass.php:1352 class-lib/CLP_AdminClass.php:1470
+#: class-lib/CLP_AdminClass.php:510 class-lib/CLP_AdminClass.php:668
+#: class-lib/CLP_AdminClass.php:786 class-lib/CLP_AdminClass.php:921
+#: class-lib/CLP_AdminClass.php:1037 class-lib/CLP_AdminClass.php:1215
+#: class-lib/CLP_AdminClass.php:1358 class-lib/CLP_AdminClass.php:1476
 #: class-lib/CLP_AdminClassWidget.php:780
 #: class-lib/CLP_AdminClassWidget.php:1045
 msgid ""
@@ -579,7 +583,7 @@ msgid ""
 msgstr ""
 "Du kannst jedes Feld leer lassen, um das WP Standardlayout zu verwenden."
 
-#: class-lib/CLP_AdminClass.php:526
+#: class-lib/CLP_AdminClass.php:528
 msgid ""
 "Export the current A5 Custom Login Page settings and download them as a text "
 "file. The content of this text file can be imported into this or another A5 "
@@ -589,7 +593,7 @@ msgstr ""
 "Textdatei herunter. Der Inhalt dieser Datei kann später in diese oder jede "
 "andere Installation der A5 Custom Login Page importiert werden."
 
-#: class-lib/CLP_AdminClass.php:527 class-lib/CLP_AdminClassWidget.php:489
+#: class-lib/CLP_AdminClass.php:529 class-lib/CLP_AdminClassWidget.php:489
 #, php-format
 msgctxt "%s is the file name"
 msgid ""
@@ -599,15 +603,15 @@ msgstr ""
 "Die Datei wird den Namen %s bekommen. Du kannst (musst aber nicht) den Namen "
 "nach dem Herunterladen in etwas sinnvolleres ändern."
 
-#: class-lib/CLP_AdminClass.php:533 class-lib/CLP_AdminClassWidget.php:495
+#: class-lib/CLP_AdminClass.php:535 class-lib/CLP_AdminClassWidget.php:495
 msgid "Export &amp; Download"
 msgstr "Exportieren &amp; Herunterladen "
 
-#: class-lib/CLP_AdminClass.php:539 class-lib/CLP_AdminClassWidget.php:501
+#: class-lib/CLP_AdminClass.php:541 class-lib/CLP_AdminClassWidget.php:501
 msgid "Enter the content of your text file with the settings here."
 msgstr "Gib hier den Inhalt der Textdatei mit den Einstellungen hier ein."
 
-#: class-lib/CLP_AdminClass.php:559
+#: class-lib/CLP_AdminClass.php:561
 msgid ""
 "If you want, you can include the header and footer of your blog&#39;s "
 "frontend in your login page."
@@ -615,12 +619,12 @@ msgstr ""
 "Wenn du willst kannst du Header und Footer des Frontends in die Login Seite "
 "einbinden."
 
-#: class-lib/CLP_AdminClass.php:577
+#: class-lib/CLP_AdminClass.php:579
 msgid "You can hide the links under login form if wanting to."
 msgstr ""
 "Du kannst die Links unter dem Eingabeformular Verstecken, wenn du willst."
 
-#: class-lib/CLP_AdminClass.php:601
+#: class-lib/CLP_AdminClass.php:609
 msgid ""
 "There seem to be problems with the virtual stylesheet in some environments. "
 "By choosing to write the styles inline, those can be avoided.)."
@@ -629,22 +633,22 @@ msgstr ""
 "zu geben. Indem man den style inline schreibt, kann das Problem behoben "
 "werden."
 
-#: class-lib/CLP_AdminClass.php:625
+#: class-lib/CLP_AdminClass.php:633
 msgid "You can enter redirections for each user role of the blog."
 msgstr "Du kannst Umleitungen für jede Nutzerrolle des Blogs einrichten."
 
-#: class-lib/CLP_AdminClass.php:626
+#: class-lib/CLP_AdminClass.php:634
 msgid ""
 "If you leave a field empty, the plugin will redirect to the default page."
 msgstr ""
 "Wenn du ein Feld leer lässt, wird das Plugin zur Standardseite umleiten."
 
-#: class-lib/CLP_AdminClass.php:644
+#: class-lib/CLP_AdminClass.php:652
 #, php-format
 msgid "Hide backend for %s."
 msgstr "Backend für %s verstecken."
 
-#: class-lib/CLP_AdminClass.php:658 class-lib/CLP_AdminClass.php:1204
+#: class-lib/CLP_AdminClass.php:666 class-lib/CLP_AdminClass.php:1210
 msgid ""
 "Just upload any picture via the uploader. Leave it empty, if you don&#39;t "
 "want a picture. Background images are tiled by default. You can select the "
@@ -658,7 +662,7 @@ msgstr ""
 "kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px "
 "50%&#39; oder &#39center top&#39;."
 
-#: class-lib/CLP_AdminClass.php:659
+#: class-lib/CLP_AdminClass.php:667
 msgid ""
 "In the last section, you choose the background colour and the colour of the "
 "text in the html body element. If you give two background colours, you can "
@@ -668,57 +672,57 @@ msgstr ""
 "html body Element. Wenn du zwei Farben angibst, kannst du einen Verlauf "
 "kreieren. Farbe Nr. 1 wird dabei immer oben sein."
 
-#: class-lib/CLP_AdminClass.php:666 class-lib/CLP_AdminClass.php:790
-#: class-lib/CLP_AdminClass.php:919 class-lib/CLP_AdminClass.php:965
-#: class-lib/CLP_AdminClass.php:1037 class-lib/CLP_AdminClass.php:1215
+#: class-lib/CLP_AdminClass.php:674 class-lib/CLP_AdminClass.php:798
+#: class-lib/CLP_AdminClass.php:927 class-lib/CLP_AdminClass.php:973
+#: class-lib/CLP_AdminClass.php:1043 class-lib/CLP_AdminClass.php:1221
 #: class-lib/CLP_AdminClassWidget.php:531
 #: class-lib/CLP_AdminClassWidget.php:679
 #: class-lib/CLP_AdminClassWidget.php:789
 msgid "Enter a URL"
 msgstr "Gib eine URL an"
 
-#: class-lib/CLP_AdminClass.php:670 class-lib/CLP_AdminClass.php:794
-#: class-lib/CLP_AdminClass.php:969 class-lib/CLP_AdminClass.php:1041
-#: class-lib/CLP_AdminClass.php:1219 class-lib/CLP_AdminClassWidget.php:535
+#: class-lib/CLP_AdminClass.php:678 class-lib/CLP_AdminClass.php:802
+#: class-lib/CLP_AdminClass.php:977 class-lib/CLP_AdminClass.php:1047
+#: class-lib/CLP_AdminClass.php:1225 class-lib/CLP_AdminClassWidget.php:535
 #: class-lib/CLP_AdminClassWidget.php:683
 #: class-lib/CLP_AdminClassWidget.php:793
 msgid "Select Image"
 msgstr "Bild wählen"
 
-#: class-lib/CLP_AdminClass.php:672 class-lib/CLP_AdminClass.php:796
-#: class-lib/CLP_AdminClass.php:971 class-lib/CLP_AdminClass.php:1043
-#: class-lib/CLP_AdminClass.php:1221 class-lib/CLP_AdminClass.php:1689
-#: class-lib/CLP_AdminClass.php:1934 class-lib/CLP_AdminClassWidget.php:537
+#: class-lib/CLP_AdminClass.php:680 class-lib/CLP_AdminClass.php:804
+#: class-lib/CLP_AdminClass.php:979 class-lib/CLP_AdminClass.php:1049
+#: class-lib/CLP_AdminClass.php:1227 class-lib/CLP_AdminClass.php:1695
+#: class-lib/CLP_AdminClass.php:1940 class-lib/CLP_AdminClassWidget.php:537
 #: class-lib/CLP_AdminClassWidget.php:685
 #: class-lib/CLP_AdminClassWidget.php:795
 #: class-lib/CLP_AdminClassWidget.php:1689
 msgid "Preview"
 msgstr "Vorschau"
 
-#: class-lib/CLP_AdminClass.php:674 class-lib/CLP_AdminClass.php:798
-#: class-lib/CLP_AdminClass.php:973 class-lib/CLP_AdminClass.php:1045
-#: class-lib/CLP_AdminClass.php:1223 class-lib/CLP_AdminClassWidget.php:539
+#: class-lib/CLP_AdminClass.php:682 class-lib/CLP_AdminClass.php:806
+#: class-lib/CLP_AdminClass.php:981 class-lib/CLP_AdminClass.php:1051
+#: class-lib/CLP_AdminClass.php:1229 class-lib/CLP_AdminClassWidget.php:539
 #: class-lib/CLP_AdminClassWidget.php:687
 #: class-lib/CLP_AdminClassWidget.php:797
 msgid "Remove Image"
 msgstr "Bild entfernen"
 
-#: class-lib/CLP_AdminClass.php:676 class-lib/CLP_AdminClass.php:800
-#: class-lib/CLP_AdminClass.php:933 class-lib/CLP_AdminClass.php:975
-#: class-lib/CLP_AdminClass.php:1047 class-lib/CLP_AdminClass.php:1225
+#: class-lib/CLP_AdminClass.php:684 class-lib/CLP_AdminClass.php:808
+#: class-lib/CLP_AdminClass.php:941 class-lib/CLP_AdminClass.php:983
+#: class-lib/CLP_AdminClass.php:1053 class-lib/CLP_AdminClass.php:1231
 #: class-lib/CLP_AdminClassWidget.php:541
 #: class-lib/CLP_AdminClassWidget.php:689
 #: class-lib/CLP_AdminClassWidget.php:799
 msgid "Or enter a URL"
 msgstr "Oder gib eine URL ein"
 
-#: class-lib/CLP_AdminClass.php:690 class-lib/CLP_AdminClass.php:1061
-#: class-lib/CLP_AdminClass.php:1239 class-lib/CLP_AdminClassWidget.php:555
+#: class-lib/CLP_AdminClass.php:698 class-lib/CLP_AdminClass.php:1067
+#: class-lib/CLP_AdminClass.php:1245 class-lib/CLP_AdminClassWidget.php:555
 #: class-lib/CLP_AdminClassWidget.php:813
 msgid "default"
 msgstr "standard"
 
-#: class-lib/CLP_AdminClass.php:720 class-lib/CLP_AdminClassWidget.php:984
+#: class-lib/CLP_AdminClass.php:728 class-lib/CLP_AdminClassWidget.php:984
 msgid ""
 "Enter the background, text and border colour of the submit button here. The "
 "button will look static if you don&#39;t give values for the hover state of "
@@ -730,7 +734,7 @@ msgstr ""
 "Hovereffekt eingibst. Wenn du einen Verlauf haben möchtest, gib zwei "
 "Hintergrundfarben ein. Die erste wird dann oben sein."
 
-#: class-lib/CLP_AdminClass.php:776
+#: class-lib/CLP_AdminClass.php:784
 msgid ""
 "Just upload any picture (best is a png or gif with transparent background) "
 "via the uploader."
@@ -738,13 +742,13 @@ msgstr ""
 "Lade einfach ein Bild (am besten ein png oder gif mit transparentem "
 "Hintergrund) im Uploader hoch."
 
-#: class-lib/CLP_AdminClass.php:777 class-lib/CLP_AdminClassWidget.php:669
+#: class-lib/CLP_AdminClass.php:785 class-lib/CLP_AdminClassWidget.php:669
 msgid "In the URL field, you enter the URL to which the logo should link."
 msgstr ""
 "Im URL Feld gibst du die URL an, auf die verlinkt werden soll, wenn man auf "
 "das Logo klickt."
 
-#: class-lib/CLP_AdminClass.php:824
+#: class-lib/CLP_AdminClass.php:832
 msgid ""
 "If your logo is larger than the default WP-logo (84px by 84px), you can "
 "enter the width and the height of it here."
@@ -752,7 +756,7 @@ msgstr ""
 "Falls dein Logo größer als das WP-Standard-Logo ist (84px x 84px), kannst du "
 "Breite und Höhe hier angeben."
 
-#: class-lib/CLP_AdminClass.php:825
+#: class-lib/CLP_AdminClass.php:833
 msgid ""
 "The width and height of the logo-container are by default 84px and 84px. "
 "They are used to move the Logo around, since the background-position is "
@@ -762,7 +766,7 @@ msgstr ""
 "werden benutzt, um das Logo zu positionieren, da die background-position "
 "immer &#39;center top&#39; ist."
 
-#: class-lib/CLP_AdminClass.php:867 class-lib/CLP_AdminClassWidget.php:731
+#: class-lib/CLP_AdminClass.php:875 class-lib/CLP_AdminClassWidget.php:731
 msgid ""
 "Here you can style the logo a bit. Give it a shadow or round corners if you "
 "like."
@@ -770,11 +774,11 @@ msgstr ""
 "Hier kannst du dein Logo ein wenig stylen. Gib ihm einen Schatten oder "
 "abgerundete Ecken."
 
-#: class-lib/CLP_AdminClass.php:911
+#: class-lib/CLP_AdminClass.php:919
 msgid "Just upload any video via the uploader."
 msgstr "Lade einfach ein Video mit dem Uploader hoch"
 
-#: class-lib/CLP_AdminClass.php:912
+#: class-lib/CLP_AdminClass.php:920
 msgid ""
 "Give it a width and height if you don&#39;t want to use the default settings "
 "of WP."
@@ -782,19 +786,19 @@ msgstr ""
 "Gib Breite und Höhe des Videos an, falls du nicht die Standardwerte von WP "
 "verwenden willst."
 
-#: class-lib/CLP_AdminClass.php:927
+#: class-lib/CLP_AdminClass.php:935
 msgid "Select Video"
 msgstr "Video auswählen"
 
-#: class-lib/CLP_AdminClass.php:931
+#: class-lib/CLP_AdminClass.php:939
 msgid "Remove Video"
 msgstr "Video Entfernen"
 
-#: class-lib/CLP_AdminClass.php:957
+#: class-lib/CLP_AdminClass.php:965
 msgid "You can enter a couple of parameters for the video here."
 msgstr "Du kannst ein paar Parameter für das Video hier eingeben."
 
-#: class-lib/CLP_AdminClass.php:958
+#: class-lib/CLP_AdminClass.php:966
 msgid ""
 "However, this is absolute in beta stage and I don&#39;t really know what the "
 "parameters do."
@@ -802,13 +806,13 @@ msgstr ""
 "Allerdings ist das Ganze im absoluten Beta-Stadium und einige Parameter "
 "werden nicht übernommen."
 
-#: class-lib/CLP_AdminClass.php:959
+#: class-lib/CLP_AdminClass.php:967
 msgid "Leave everything empty to fall back to the default values of WordPress."
 msgstr ""
 "Du kannst jedes Feld leer lassen, um die Standardwerte von WP Standardlayout "
 "verwenden."
 
-#: class-lib/CLP_AdminClass.php:1027
+#: class-lib/CLP_AdminClass.php:1033
 msgid ""
 "Just upload any picture via the uploader. Leave it empty, if you don&#39;t "
 "want a picture. Background images are tiled by default. You can select the "
@@ -822,7 +826,7 @@ msgstr ""
 "kann Werte haben, die nach folgendem Muster aufgebaut werden: &#39;100px "
 "50%&#39; oder &#39center top&#39;."
 
-#: class-lib/CLP_AdminClass.php:1028
+#: class-lib/CLP_AdminClass.php:1034
 msgid ""
 "In the next section, you choose the background colour and the colour of the "
 "text in the login container. If you give two background colours, you can "
@@ -832,7 +836,7 @@ msgstr ""
 "den Login Container wählen. Wenn du zwei Farben angibst, kannst du einen "
 "Verlauf kreieren. Farbe Nr. 1 wird immer oben sein."
 
-#: class-lib/CLP_AdminClass.php:1029 class-lib/CLP_AdminClass.php:1206
+#: class-lib/CLP_AdminClass.php:1035 class-lib/CLP_AdminClass.php:1212
 #: class-lib/CLP_AdminClassWidget.php:523
 #: class-lib/CLP_AdminClassWidget.php:777
 msgid ""
@@ -843,20 +847,20 @@ msgstr ""
 "und ob du abgerundete Ecken haben willst (wird nicht von allen Browsern "
 "erkannt)."
 
-#: class-lib/CLP_AdminClass.php:1030 class-lib/CLP_AdminClassWidget.php:524
+#: class-lib/CLP_AdminClass.php:1036 class-lib/CLP_AdminClassWidget.php:524
 msgid ""
 "At last, give the container a shadow (is not supported by all browsers)."
 msgstr ""
 "Zum Schluss gib dem Container einen Schatten (wird nicht von allen Browsern "
 "erkannt)."
 
-#: class-lib/CLP_AdminClass.php:1105 class-lib/CLP_AdminClass.php:1283
+#: class-lib/CLP_AdminClass.php:1111 class-lib/CLP_AdminClass.php:1289
 #: class-lib/CLP_AdminClassWidget.php:593
 #: class-lib/CLP_AdminClassWidget.php:851
 msgid "choose a border style"
 msgstr "Wähle einen Stil für den Rahmen"
 
-#: class-lib/CLP_AdminClass.php:1159
+#: class-lib/CLP_AdminClass.php:1165
 msgid ""
 "Here you can give the whole login container a position. If you enter "
 "&#39;0&#39; in both of the fields, it will be in the top left corner of the "
@@ -865,7 +869,7 @@ msgstr ""
 "Hier kannst du den Login Container positionieren. Wenn du &#39;0&#39; in "
 "beide Felder eingibst, wird er in der linken oberen Ecke sein."
 
-#: class-lib/CLP_AdminClass.php:1160
+#: class-lib/CLP_AdminClass.php:1166
 msgid ""
 "The Padding and Margin are given as css value. I.e. &#39;144px 0 0&#39; "
 "(which is the default padding of the login container)."
@@ -874,7 +878,7 @@ msgstr ""
 "(was der Standardwert für die Padding von Wordpress für den Login Container "
 "ist)."
 
-#: class-lib/CLP_AdminClass.php:1205 class-lib/CLP_AdminClassWidget.php:776
+#: class-lib/CLP_AdminClass.php:1211 class-lib/CLP_AdminClassWidget.php:776
 msgid ""
 "In the next section, you choose the background colour and the colour of the "
 "text in the login form. If you give two background colours, you can create a "
@@ -884,7 +888,7 @@ msgstr ""
 "das Login Formular wählen. Wenn du zwei Farben angibst, kannst du einen "
 "Verlauf kreieren. Farbe Nr. 1 wird immer oben sein."
 
-#: class-lib/CLP_AdminClass.php:1207
+#: class-lib/CLP_AdminClass.php:1213
 msgid ""
 "Margin and Padding are given as css values. The form has a left margin of "
 "8px by default and a padding of 26px 24px 46px. By changing the top and the "
@@ -894,20 +898,20 @@ msgstr ""
 "margin-left: 8px&#39; als Standardwert und Padding 26px 24px 46px. Durch "
 "Änderung der oberen und unteren Padding kann das Formular gedehnt werden."
 
-#: class-lib/CLP_AdminClass.php:1208 class-lib/CLP_AdminClassWidget.php:779
+#: class-lib/CLP_AdminClass.php:1214 class-lib/CLP_AdminClassWidget.php:779
 msgid "At last, give the form a shadow (is not supported by all browsers)."
 msgstr ""
 "Zum Schluss gib dem Formular einen Schatten (wird nicht von allen Browsern "
 "erkannt)."
 
-#: class-lib/CLP_AdminClass.php:1351
+#: class-lib/CLP_AdminClass.php:1357
 msgid ""
 "This changes the the text container, that appears, when you have "
 "successfully logged out."
 msgstr ""
 "Hier änderst du den Textcontainer, der beim erfolgreichen Abmelden erscheint."
 
-#: class-lib/CLP_AdminClass.php:1382
+#: class-lib/CLP_AdminClass.php:1388
 msgid ""
 "This changes the text container, that appears, when you get an error logging "
 "in."
@@ -915,13 +919,13 @@ msgstr ""
 "Hier änderst du den Textcontainer, der bei einem Fehler beim Anmelden "
 "erscheint."
 
-#: class-lib/CLP_AdminClass.php:1412 class-lib/CLP_AdminClassWidget.php:919
+#: class-lib/CLP_AdminClass.php:1418 class-lib/CLP_AdminClassWidget.php:919
 msgid ""
 "This changes the colours of the name and password fields of the log in form."
 msgstr ""
 "Hier änderst du die Farben der Eingabefelder für Benutzername und Passwort."
 
-#: class-lib/CLP_AdminClass.php:1468 class-lib/CLP_AdminClassWidget.php:1043
+#: class-lib/CLP_AdminClass.php:1474 class-lib/CLP_AdminClassWidget.php:1043
 msgid ""
 "Style the links by giving a text colour, text decoration and shadow for the "
 "link and the hover style."
@@ -929,16 +933,16 @@ msgstr ""
 "Style die Links und Hovereffekte durch eine Textfarbe und -dekoration. "
 "Außerdem kannst du einen Schatten wählen."
 
-#: class-lib/CLP_AdminClass.php:1469 class-lib/CLP_AdminClassWidget.php:1044
+#: class-lib/CLP_AdminClass.php:1475 class-lib/CLP_AdminClassWidget.php:1044
 #, php-format
 msgid "For the font size, give a css value, such as %1$s or %2$s."
 msgstr "Gib einen CSS-Wert für die Schriftgröße ein, z.B %1$s oder %2$s."
 
-#: class-lib/CLP_AdminClass.php:1520 class-lib/CLP_AdminClassWidget.php:1098
+#: class-lib/CLP_AdminClass.php:1526 class-lib/CLP_AdminClassWidget.php:1098
 msgid "The same for the hover state."
 msgstr "Dasselbe für den hover Stil."
 
-#: class-lib/CLP_AdminClass.php:1566 class-lib/CLP_AdminClassWidget.php:1144
+#: class-lib/CLP_AdminClass.php:1572 class-lib/CLP_AdminClassWidget.php:1144
 msgid ""
 "Here you can enter some css. You either can enter an entire style sheet or "
 "just some additional css."
@@ -946,7 +950,7 @@ msgstr ""
 "Hier kannst du CSS Code eintragen. Entweder kannst du ein ganzes Style Sheet "
 "eintragen oder einfach zusätzlichen CSS Code."
 
-#: class-lib/CLP_AdminClass.php:1567 class-lib/CLP_AdminClassWidget.php:1145
+#: class-lib/CLP_AdminClass.php:1573 class-lib/CLP_AdminClassWidget.php:1145
 msgid ""
 "This gives you much more freedom with styling your login widget than the "
 "rather foolproof but very limited options ."
@@ -954,7 +958,7 @@ msgstr ""
 "Das gibt dir eine Menge mehr Möglichkeiten als die ziemlich idiotensicheren "
 "aber sehr eingeschränkten Optionen."
 
-#: class-lib/CLP_AdminClass.php:1568 class-lib/CLP_AdminClassWidget.php:1146
+#: class-lib/CLP_AdminClass.php:1574 class-lib/CLP_AdminClassWidget.php:1146
 msgid ""
 "You can of course copy the style sheet written by the plugin, paste it here "
 "and start finetuning."
@@ -962,11 +966,11 @@ msgstr ""
 "Du kannst natürlich das Style Sheet des plugins hierhin kopieren und dann "
 "feintunen."
 
-#: class-lib/CLP_AdminClass.php:1570 class-lib/CLP_AdminClassWidget.php:1148
+#: class-lib/CLP_AdminClass.php:1576 class-lib/CLP_AdminClassWidget.php:1148
 msgid "Copy"
 msgstr "Kopieren"
 
-#: class-lib/CLP_AdminClass.php:1588
+#: class-lib/CLP_AdminClass.php:1594
 msgid ""
 "Here you can enter some svg, i.e. filter rules to use in Firefox. In case "
 "you wish to use the svg as an image, it will be just above the login form."
@@ -974,7 +978,7 @@ msgstr ""
 "Hier kannst du SVG Code eingeben, wie filter rules für Firefox. Falls du das "
 "SVG als Grafik benutzen willst, kommt diese direkt über das Login Formular."
 
-#: class-lib/CLP_AdminClass.php:1608
+#: class-lib/CLP_AdminClass.php:1614
 msgid ""
 "If you want to have some additional html in your login page, there are three "
 "places to put it. Above the form, in the form and under it."
@@ -983,7 +987,7 @@ msgstr ""
 "Stellen, an denen es auftaucht. Über dem Login-Formular, im Formular und "
 "darunter."
 
-#: class-lib/CLP_AdminClass.php:1609 class-lib/CLP_AdminClassWidget.php:1175
+#: class-lib/CLP_AdminClass.php:1615 class-lib/CLP_AdminClassWidget.php:1175
 #: class-lib/CLP_AdminClassWidget.php:1197
 msgid ""
 "You can use the additional css to style the html snippets that you enter "
@@ -992,127 +996,127 @@ msgstr ""
 "Du kannst das zusätzliche css nutzen, um die HTML-Schnipsel, die du hier "
 "einträgst, zu stylen."
 
-#: class-lib/CLP_AdminClass.php:1674 class-lib/CLP_AdminClassWidget.php:1263
+#: class-lib/CLP_AdminClass.php:1680 class-lib/CLP_AdminClassWidget.php:1263
 msgid ""
 "http://wasistlos.waldemarstoffel.com/plugins-fur-wordpress/a5-custom-login-"
 "page"
 msgstr "http://blog.atelier-fuenf.de/wordpressplugins/a5-custom-login-page"
 
-#: class-lib/CLP_AdminClass.php:1678 class-lib/CLP_AdminClassWidget.php:1267
+#: class-lib/CLP_AdminClass.php:1684 class-lib/CLP_AdminClassWidget.php:1267
 msgid "General Options"
 msgstr "Allgemein"
 
-#: class-lib/CLP_AdminClass.php:1679
+#: class-lib/CLP_AdminClass.php:1685
 msgid "Advanced Options"
 msgstr "Fortgeschritten"
 
-#: class-lib/CLP_AdminClass.php:1680
+#: class-lib/CLP_AdminClass.php:1686
 msgid "Body & Submit Button"
 msgstr "Body & Anmelden Knopf"
 
-#: class-lib/CLP_AdminClass.php:1682
+#: class-lib/CLP_AdminClass.php:1688
 msgid "Video"
 msgstr "Video"
 
-#: class-lib/CLP_AdminClass.php:1683 class-lib/CLP_AdminClass.php:1807
+#: class-lib/CLP_AdminClass.php:1689 class-lib/CLP_AdminClass.php:1813
 msgid "Login Container"
 msgstr "Login Container"
 
-#: class-lib/CLP_AdminClass.php:1684 class-lib/CLP_AdminClass.php:1823
+#: class-lib/CLP_AdminClass.php:1690 class-lib/CLP_AdminClass.php:1829
 #: class-lib/CLP_AdminClassWidget.php:1270
 #: class-lib/CLP_AdminClassWidget.php:1336
 msgid "Login Form"
 msgstr "Login Formular"
 
-#: class-lib/CLP_AdminClass.php:1685
+#: class-lib/CLP_AdminClass.php:1691
 msgid "Messages & Input Fields"
 msgstr "Berichte & Eingabefelder"
 
-#: class-lib/CLP_AdminClass.php:1686 class-lib/CLP_AdminClass.php:1855
+#: class-lib/CLP_AdminClass.php:1692 class-lib/CLP_AdminClass.php:1861
 #: class-lib/CLP_AdminClassWidget.php:1272
 #: class-lib/CLP_AdminClassWidget.php:1353
 msgid "Links"
 msgstr "Links"
 
-#: class-lib/CLP_AdminClass.php:1688 class-lib/CLP_AdminClassWidget.php:1274
+#: class-lib/CLP_AdminClass.php:1694 class-lib/CLP_AdminClassWidget.php:1274
 msgid "Additional HTML"
 msgstr "Zusätzliches HTML"
 
-#: class-lib/CLP_AdminClass.php:1719
+#: class-lib/CLP_AdminClass.php:1725
 msgid "Logged Out and Error Messages"
 msgstr "Meldung beim Ausloggen und Fehlermeldungen"
 
-#: class-lib/CLP_AdminClass.php:1721 class-lib/CLP_AdminClassWidget.php:1306
+#: class-lib/CLP_AdminClass.php:1727 class-lib/CLP_AdminClassWidget.php:1306
 msgid "Import / Export"
 msgstr "Import / Export"
 
-#: class-lib/CLP_AdminClass.php:1723 class-lib/CLP_AdminClass.php:1743
-#: class-lib/CLP_AdminClass.php:1759 class-lib/CLP_AdminClass.php:1777
-#: class-lib/CLP_AdminClass.php:1795 class-lib/CLP_AdminClass.php:1811
-#: class-lib/CLP_AdminClass.php:1825 class-lib/CLP_AdminClass.php:1843
-#: class-lib/CLP_AdminClass.php:1859 class-lib/CLP_AdminClass.php:1873
-#: class-lib/CLP_AdminClass.php:1920 class-lib/CLP_AdminClass.php:1940
+#: class-lib/CLP_AdminClass.php:1729 class-lib/CLP_AdminClass.php:1749
+#: class-lib/CLP_AdminClass.php:1765 class-lib/CLP_AdminClass.php:1783
+#: class-lib/CLP_AdminClass.php:1801 class-lib/CLP_AdminClass.php:1817
+#: class-lib/CLP_AdminClass.php:1831 class-lib/CLP_AdminClass.php:1849
+#: class-lib/CLP_AdminClass.php:1865 class-lib/CLP_AdminClass.php:1879
+#: class-lib/CLP_AdminClass.php:1926 class-lib/CLP_AdminClass.php:1946
 #: class-lib/CLP_AdminClassWidget.php:1401
 msgid "Debug Info"
 msgstr "Info zur Fehlersuche"
 
-#: class-lib/CLP_AdminClass.php:1735
+#: class-lib/CLP_AdminClass.php:1741
 msgid "Include Header & Footer from Frontend"
 msgstr "Header & Footer aus dem Frontend importieren"
 
-#: class-lib/CLP_AdminClass.php:1737
+#: class-lib/CLP_AdminClass.php:1743
 msgid "Hide Links"
 msgstr "Links Verstecken"
 
-#: class-lib/CLP_AdminClass.php:1739
+#: class-lib/CLP_AdminClass.php:1745
 msgid "Debug dynamical CSS"
 msgstr "Dynamisches CSS debuggen"
 
-#: class-lib/CLP_AdminClass.php:1741
+#: class-lib/CLP_AdminClass.php:1747
 msgid "Custom Redirects"
 msgstr "Eigene Umleitungen"
 
-#: class-lib/CLP_AdminClass.php:1755
+#: class-lib/CLP_AdminClass.php:1761
 msgid "Body"
 msgstr "Body"
 
-#: class-lib/CLP_AdminClass.php:1757 class-lib/CLP_AdminClassWidget.php:1346
+#: class-lib/CLP_AdminClass.php:1763 class-lib/CLP_AdminClassWidget.php:1346
 msgid "Submit Button"
 msgstr "Anmelden Knopf"
 
-#: class-lib/CLP_AdminClass.php:1771 class-lib/CLP_AdminClassWidget.php:1324
+#: class-lib/CLP_AdminClass.php:1777 class-lib/CLP_AdminClassWidget.php:1324
 msgid "Logo of the Login Screen"
 msgstr "Logo des Login Bildschirms"
 
-#: class-lib/CLP_AdminClass.php:1773
+#: class-lib/CLP_AdminClass.php:1779
 msgid "Position and Size of the Logo"
 msgstr "Position und Größe des Logos"
 
-#: class-lib/CLP_AdminClass.php:1775 class-lib/CLP_AdminClassWidget.php:1328
+#: class-lib/CLP_AdminClass.php:1781 class-lib/CLP_AdminClassWidget.php:1328
 msgid "Styling of the Logo"
 msgstr "Styling des Logos"
 
-#: class-lib/CLP_AdminClass.php:1791
+#: class-lib/CLP_AdminClass.php:1797
 msgid "Video above the Login Lorm"
 msgstr "Video über dem Login Formular"
 
-#: class-lib/CLP_AdminClass.php:1809
+#: class-lib/CLP_AdminClass.php:1815
 msgid "Position and Size of the Login Container"
 msgstr "Position und Größe des Login Containers"
 
-#: class-lib/CLP_AdminClass.php:1841 class-lib/CLP_AdminClassWidget.php:1344
+#: class-lib/CLP_AdminClass.php:1847 class-lib/CLP_AdminClassWidget.php:1344
 msgid "Input Fields"
 msgstr "Eingabefelder"
 
-#: class-lib/CLP_AdminClass.php:1857 class-lib/CLP_AdminClassWidget.php:1355
+#: class-lib/CLP_AdminClass.php:1863 class-lib/CLP_AdminClassWidget.php:1355
 msgid "Links Hover"
 msgstr "Links Hover"
 
-#: class-lib/CLP_AdminClass.php:1871
+#: class-lib/CLP_AdminClass.php:1877
 msgid "CSS and SVG"
 msgstr "CSS und SVG"
 
-#: class-lib/CLP_AdminClass.php:1896
+#: class-lib/CLP_AdminClass.php:1902
 msgid ""
 "To be able to use your own css it is important to know, what elements you "
 "actually can style on the login page. In the list below you find all "
@@ -1122,7 +1126,7 @@ msgstr ""
 "Login-Seite eigentlich angepasst werden können. In der Liste unten findest "
 "du alle nötigen Selektoren für dein Stylesheet. "
 
-#: class-lib/CLP_AdminClass.php:1900
+#: class-lib/CLP_AdminClass.php:1906
 msgid ""
 "In order to override the original styles, your selectors have to be more "
 "precise than the original ones. By using the ones in the list exactly how "
@@ -1132,11 +1136,11 @@ msgstr ""
 "sein als die von WP. Wenn du die Selektoren der Liste exakt so benutzt, "
 "sollte alles klar sein."
 
-#: class-lib/CLP_AdminClass.php:1904 class-lib/CLP_AdminClassWidget.php:1387
+#: class-lib/CLP_AdminClass.php:1910 class-lib/CLP_AdminClassWidget.php:1387
 msgid "CSS Help"
 msgstr "CSS Hilfe"
 
-#: class-lib/CLP_AdminClass.php:1906 class-lib/CLP_AdminClassWidget.php:1411
+#: class-lib/CLP_AdminClass.php:1912 class-lib/CLP_AdminClassWidget.php:1411
 msgid ""
 "If you like the plugin and find it useful, you might think of rewarding the "
 "dozens of hours of work that were spent creating it."
@@ -1144,24 +1148,24 @@ msgstr ""
 "Wenn dir das Plugin gefällt und du es nützlich findest, kannst du darüber "
 "nachdenken, die vielen Stunden Arbeit, die darin stecken, zu entlohnen."
 
-#: class-lib/CLP_AdminClass.php:1908 class-lib/CLP_AdminClassWidget.php:1413
+#: class-lib/CLP_AdminClass.php:1914 class-lib/CLP_AdminClassWidget.php:1413
 msgid "Donations"
 msgstr "Spenden"
 
-#: class-lib/CLP_AdminClass.php:1918 class-lib/CLP_AdminClassWidget.php:1395
+#: class-lib/CLP_AdminClass.php:1924 class-lib/CLP_AdminClassWidget.php:1395
 #: class-lib/CLP_AdminClassWidget.php:1397
 msgid "HTML additions"
 msgstr "HTML Zusätze"
 
-#: class-lib/CLP_AdminClass.php:1966 class-lib/CLP_AdminClassWidget.php:1437
+#: class-lib/CLP_AdminClass.php:1972 class-lib/CLP_AdminClassWidget.php:1437
 msgid "This doesn&#39;t seem to be a valid settings file."
 msgstr "Das scheint keine gültige Datei zu sein."
 
-#: class-lib/CLP_AdminClass.php:1979 class-lib/CLP_AdminClassWidget.php:1447
+#: class-lib/CLP_AdminClass.php:1985 class-lib/CLP_AdminClassWidget.php:1447
 msgid "Settings successfully imported."
 msgstr "Einstellungen erfolgreich importiert."
 
-#: class-lib/CLP_AdminClass.php:2187 class-lib/CLP_AdminClassWidget.php:1670
+#: class-lib/CLP_AdminClass.php:2194 class-lib/CLP_AdminClassWidget.php:1670
 msgid "Settings saved."
 msgstr "Einstellungen gespeichert."
 
@@ -1297,22 +1301,22 @@ msgstr ""
 "Du kannst jedes Feld leer lassen, um das Standard-Loginformular zu verwenden."
 
 #: class-lib/CLP_AdminClassWidget.php:396
-#: class-lib/CLP_AdminClassWidget.php:1697 class-lib/CLP_WidgetClass.php:178
+#: class-lib/CLP_AdminClassWidget.php:1697 class-lib/CLP_WidgetClass.php:191
 msgid "Username"
 msgstr "Benutzername"
 
 #: class-lib/CLP_AdminClassWidget.php:402
-#: class-lib/CLP_AdminClassWidget.php:1698 class-lib/CLP_WidgetClass.php:179
+#: class-lib/CLP_AdminClassWidget.php:1698 class-lib/CLP_WidgetClass.php:192
 msgid "Password"
 msgstr "Passwort"
 
 #: class-lib/CLP_AdminClassWidget.php:408
-#: class-lib/CLP_AdminClassWidget.php:1699 class-lib/CLP_WidgetClass.php:180
+#: class-lib/CLP_AdminClassWidget.php:1699 class-lib/CLP_WidgetClass.php:193
 msgid "Remember Me"
 msgstr "Angemeldet bleiben"
 
 #: class-lib/CLP_AdminClassWidget.php:414
-#: class-lib/CLP_AdminClassWidget.php:1700 class-lib/CLP_WidgetClass.php:181
+#: class-lib/CLP_AdminClassWidget.php:1700 class-lib/CLP_WidgetClass.php:194
 msgid "Log In"
 msgstr "Anmelden"
 
@@ -1552,67 +1556,71 @@ msgstr ""
 "Mit diesem Widget kannst du deiner Sidebar ein individuelles Login-Formular "
 "zufügen."
 
-#: class-lib/CLP_WidgetClass.php:93
+#: class-lib/CLP_WidgetClass.php:95
 msgid "Homepage"
 msgstr "Homepage"
 
-#: class-lib/CLP_WidgetClass.php:94
+#: class-lib/CLP_WidgetClass.php:96
 msgid "Frontpage (e.g. a static page as homepage)"
 msgstr "Frontpage (z.B. eine statische Seite als Homepage)"
 
-#: class-lib/CLP_WidgetClass.php:95
+#: class-lib/CLP_WidgetClass.php:97
 msgid "&#34;Page&#34; pages"
 msgstr "&#34;Seite&#34; Seiten"
 
-#: class-lib/CLP_WidgetClass.php:96
+#: class-lib/CLP_WidgetClass.php:98
 msgid "Category pages"
 msgstr "Kategorieseiten"
 
-#: class-lib/CLP_WidgetClass.php:97
+#: class-lib/CLP_WidgetClass.php:99
 msgid "Single post pages"
 msgstr "Artikelseiten"
 
-#: class-lib/CLP_WidgetClass.php:98
+#: class-lib/CLP_WidgetClass.php:100
 msgid "Archive pages"
 msgstr "Archivseiten"
 
-#: class-lib/CLP_WidgetClass.php:99
+#: class-lib/CLP_WidgetClass.php:101
 msgid "Tag pages"
 msgstr "Schlagwortseiten"
 
-#: class-lib/CLP_WidgetClass.php:100
+#: class-lib/CLP_WidgetClass.php:102
 msgid "Attachments"
 msgstr "Attachments"
 
-#: class-lib/CLP_WidgetClass.php:101
+#: class-lib/CLP_WidgetClass.php:103
 msgid "Custom Taxonomy pages (only available, if having a plugin)"
 msgstr "Custom Taxonomy Seiten (gibt es nur mit entspr. Plugin)"
 
-#: class-lib/CLP_WidgetClass.php:102
+#: class-lib/CLP_WidgetClass.php:104
 msgid "Author pages"
 msgstr "Autorenseiten"
 
-#: class-lib/CLP_WidgetClass.php:103
+#: class-lib/CLP_WidgetClass.php:105
 msgid "Search Results"
 msgstr "Suchergebnisseiten"
 
-#: class-lib/CLP_WidgetClass.php:104
+#: class-lib/CLP_WidgetClass.php:106
 msgid "&#34;Not Found&#34;"
 msgstr "&#34;Nicht gefunden&#34;"
 
-#: class-lib/CLP_WidgetClass.php:107
+#: class-lib/CLP_WidgetClass.php:109
 msgid "Check all"
 msgstr "Alle auswählen"
 
-#: class-lib/CLP_WidgetClass.php:109
+#: class-lib/CLP_WidgetClass.php:111
 msgid "Title:"
 msgstr "Titel:"
 
-#: class-lib/CLP_WidgetClass.php:110
+#: class-lib/CLP_WidgetClass.php:112
+msgid "Redirect:"
+msgstr "Umleitung:"
+
+#: class-lib/CLP_WidgetClass.php:113
 msgid "Don&#39;t show widget to logged in users."
 msgstr "Angemeldeten Benutzern das Widget nicht anzeigen."
 
-#: class-lib/CLP_WidgetClass.php:111
+#: class-lib/CLP_WidgetClass.php:114
 msgid ""
 "Check, where you want to show the widget. By default, it is showing on the "
 "homepage and the category pages:"
@@ -1620,11 +1628,11 @@ msgstr ""
 "Klicke an, wo das Widget gezeigt werden soll. Standardmäßig erscheint es auf "
 "der Homepage und in den Kategorien."
 
-#: custom-login-page.php:180
+#: custom-login-page.php:181
 msgid "Lost your password?"
 msgstr "Passwort vergessen?"
 
-#: custom-login-page.php:181
+#: custom-login-page.php:182
 #, php-format
 msgid ""
 "<strong>ERROR</strong>: Invalid username. <a href=\"%s\">Lost your password</"
@@ -1633,11 +1641,11 @@ msgstr ""
 "<strong>FEHLER</strong>: Ungültiger Benutzername. <a href=\"%s\">Hast du "
 "dein Passwortvergessen</a>?"
 
-#: custom-login-page.php:181
+#: custom-login-page.php:182
 msgid "<strong>ERROR</strong>: Invalid username."
 msgstr "<strong>FEHLER</strong>: Ungültiger Benutzername."
 
-#: custom-login-page.php:182
+#: custom-login-page.php:183
 #, php-format
 msgid ""
 "<strong>ERROR</strong>: The password you entered for the username <strong>"
@@ -1647,7 +1655,7 @@ msgstr ""
 "%1$s</strong> eingegeben hast, ist falsch. <a href=\"%2$s\">Hast du dein "
 "Passwort vergessen</a>?"
 
-#: custom-login-page.php:182
+#: custom-login-page.php:183
 #, php-format
 msgid ""
 "<strong>ERROR</strong>: The password you entered for the username <strong>"
@@ -1656,13 +1664,17 @@ msgstr ""
 "<strong>FEHLER</strong>: Das Passwort, das du für den Benutzernamen <strong>"
 "%1$s</strong> eingegeben hast, ist falsch."
 
-#: custom-login-page.php:211
+#: custom-login-page.php:212
 msgid "FAQ"
 msgstr "FAQ"
 
-#: custom-login-page.php:212
+#: custom-login-page.php:213
 msgid "Donate"
 msgstr "Spenden"
+
+#: custom-login-page.php:520
+msgid "Logout Link"
+msgstr "Logout Link"
 
 #~ msgid "Hide register and lost password links."
 #~ msgstr "Verstecke die Links zum Registrieren und vergessenes Passwort"

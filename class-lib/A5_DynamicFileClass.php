@@ -5,7 +5,7 @@
  * Class A5 Dynamic Files
  *
  * @ A5 Plugin Framework
- * Version: 1.0 beta 20150113
+ * Version: 1.0 beta 20150131
  *
  * Handels styles or javascript in either dynamical files or inline
  * 

@@ -517,13 +517,15 @@ class A5_CustomLoginPage {
 		
 		#add_meta_box( 'add-custom-links', __( 'Links' ), 'wp_nav_menu_item_link_meta_box', 'nav-menus', 'side', 'default' );
 	
-		add_meta_box('add-clp-logout-link', __('Logout Link', self::language_file), array($this, 'print_meta_box'), 'nav_menus', 'side', 'default');
+		add_meta_box('add-clp-logout-link', __('Logout Link', self::language_file), array($this, 'print_meta_box'), 'nav-menus', 'side', 'default');
 	
 	}
 	
 	function print_meta_box() {
 		
-		echo 'Reuzenlul';
+		global $wp_meta_boxes;
+	
+		echo'<pre>';var_dump($wp_meta_boxes);echo'</pre>';
 		
 	}
 	
@@ -538,14 +540,14 @@ class A5_CustomLoginPage {
 		
 		$options_new = ($multisite) ? get_site_option('clp_options') : get_option('clp_options');
 		
-		unset($options_new['hide_nav']);
-		
 		if (isset($options_old['hide_nav']) && !empty($options_old['hide_nav'])) :
 					
 			$options_new['disable_reg'] = true;
 			$options_new['disable_pass'] = true;	
 			
 		endif;
+		
+		unset($options_new['hide_nav']);
 		
 		$options_new['version'] = self::version;
 		
