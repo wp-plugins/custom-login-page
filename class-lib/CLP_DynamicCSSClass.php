@@ -33,6 +33,15 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 		$eol = (self::$options['compress']) ? '' : "\r\n";
 		$tab = (self::$options['compress']) ? '' : "\t";
 		
+		if (!isset(self::$options['h1_shadow_inset'])) self::$options['h1_shadow_inset'] = '';
+		if (!isset(self::$options['logindiv_shadow_inset'])) self::$options['logindiv_shadow_inset'] = '';
+		if (!isset(self::$options['loginform_shadow_inset'])) self::$options['loginform_shadow_inset'] = '';
+		if (!isset(self::$options['input_shadow_inset'])) self::$options['input_shadow_inset'] = '';
+		if (!isset(self::$widget['container_shadow_inset'])) self::$widget['container_shadow_inset'] = '';
+		if (!isset(self::$widget['h1_shadow_inset'])) self::$widget['h1_shadow_inset'] = '';
+		if (!isset(self::$widget['loginform_shadow_inset'])) self::$widget['loginform_shadow_inset'] = '';
+		if (!isset(self::$widget['input_shadow_inset'])) self::$widget['input_shadow_inset'] = '';
+		
 		// part of the Custom Login Page
 		
 		parent::A5_DynamicFiles('login', 'css', 'all', false, self::$options['inline'], self::$options['priority']);
@@ -63,7 +72,12 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			endif;
 			
-			if (!empty(self::$options['body_bg_color1'])) $body_style .= $eol.$tab.'background-color: '.self::$options['body_bg_color1'].';';	
+			if (!empty(self::$options['body_bg_color1'])) : 
+			
+				$body_style .= $eol.$tab.'background-color: '.self::$options['body_bg_color1'].';';
+				
+			endif;
+				
 			if (!empty(self::$options['body_bg_color2'])) :
 				
 				$body_style .= $eol.$tab.'background-image: -webkit-gradient(linear, left top, left bottom, from('.self::$options['body_bg_color1'].'), to('.self::$options['body_bg_color2'].'));';
@@ -72,6 +86,11 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				$body_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
 				$body_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
 				$body_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
+				
+				$body_style .= $eol.$tab.'-webkit-background-size: cover;';
+				$body_style .= $eol.$tab.'-moz-background-size: cover;';
+				$body_style .= $eol.$tab.'-o-background-size: cover;';
+				$body_style .= $eol.$tab.'background-size: cover;';
 				
 			endif;
 			
@@ -83,10 +102,10 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 			if (!empty(self::$options['logo'])) :
 			
-				$bg_width = (!empty(self::$options['logo_width'])) ? self::$options['logo_width'] : '84';
-				$bg_height = (!empty(self::$options['logo_height'])) ? self::$options['logo_height'] : 'auto';
-				$h1_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '84';
-				$h1_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'] : '84';
+				$bg_width = (!empty(self::$options['h1_width'])) ? self::$options['h1_width'] : '84';
+				$bg_height = (!empty(self::$options['h1_height'])) ? self::$options['h1_height'].'px' : 'auto';
+				$h1_width = (!empty(self::$options['logo_width'])) ? self::$options['logo_width'] : '84';
+				$h1_height = (!empty(self::$options['logo_height'])) ? self::$options['logo_height'] : '84';
 			
 				$h1_style .= $eol.$tab.'background-image: url('.self::$options['logo'].');';
 				$h1_style .= $eol.$tab.'background-position: center top;';
@@ -261,6 +280,10 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				
 			endif;
 			
+			# .forgetmenot
+			
+			if (!empty(self::$options['hide_rememberme'])) $rememberme_style = $eol.$tab.'display: none;'.$eol;
+			
 			# p.message
 			
 			$loggedout_style = '';
@@ -350,12 +373,6 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			if (!empty(self::$options['hover_textdecoration'])) $hover_style .= $eol.$tab.'text-decoration: '.self::$options['hover_textdecoration'].' !important;';
 			if (isset(self::$options['hover_shadow_x']) && (!empty(self::$options['hover_shadow_x']) || self::$options['hover_shadow_x'] == '0')) $hover_style .= $eol.$tab.'text-shadow: '.self::$options['hover_shadow_x'].'px '.self::$options['hover_shadow_y'].'px '.self::$options['hover_shadow_softness'].'px '.self::$options['hover_shadow_color'].' !important;';
 			
-			# #nav
-			
-			$nav_style = '';
-			
-			if (!empty(self::$options['hide_nav'])) $nav_style .= $eol.$tab.'display: none;';
-			
 			# #backtoblog
 			
 			$backtoblog_style = '';
@@ -417,7 +434,7 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			if(!empty($loggedout_style)) self::$custom_css .= 'p.message {'.$loggedout_style.$eol.'}'.$eol;
 			if(!empty($error_style)) self::$custom_css .= '#login_error {'.$error_style.$eol.'}'.$eol;
 			if(!empty($input_style)) self::$custom_css .= '.input {'.$input_style.$eol.'}'.$eol;
-			if(!empty($nav_style)) self::$custom_css .= '#nav {'.$nav_style.$eol.'}'.$eol;
+			if(!empty($rememberme_style)) self::$custom_css .= '.forgetmenot {'.$rememberme_style.$eol.'}'.$eol;
 			if(!empty($backtoblog_style)) self::$custom_css .= '#backtoblog {'.$backtoblog_style.$eol.'}'.$eol;
 			if(!empty($link_style)) :
 			
