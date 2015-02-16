@@ -5,7 +5,7 @@
  * Class A5 FormField
  *
  * @ A5 Plugin Framework
- * Version: 1.0 beta 20150113
+ * Version: 1.0 beta 20150131
  *
  * Gets all sort of input fields for plugins by Atelier 5 
  *
@@ -15,7 +15,7 @@
 
 class A5_FormField {
 	
-	const version = '1.0 beta 20150113 CLP';
+	const version = '1.0 beta 20150131 CLP';
 	
 	public $formfield;
 	
@@ -43,7 +43,7 @@ class A5_FormField {
 		
 		// getting all extra attributes to the fields (there is no sanitizing at the moment)
 		
-		if (isset($attributes)) foreach ($attributes as $attribute => $attr_value) $atts .= ' '.$attribute.'="'.$attr_value.'"';
+		if (!empty($attributes)) foreach ($attributes as $attribute => $attr_value) $atts .= ' '.$attribute.'="'.$attr_value.'"';
 		
 		// getting different types of input elements	
 		
@@ -196,9 +196,7 @@ class A5_FormField {
  *
  */
  
-function a5_textarea($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_textarea($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'textarea',
 					'field_id' => $field_id,
@@ -222,7 +220,7 @@ function a5_textarea($field_id, $field_name, $value = false, $label = false, $at
  *
  */
  
-function a5_checkbox($field_id, $field_name, $value = false, $label = false, $attributes = false, $checked = false, $echo = true) {
+function a5_checkbox($field_id, $field_name, $value = false, $label = false, $attributes = array(), $checked = false, $echo = true) {
 	
 	if (false === $checked) :
 		
@@ -231,8 +229,6 @@ function a5_checkbox($field_id, $field_name, $value = false, $label = false, $at
 		$value = true;
 		
 	endif;
-	
-	if (false === $attributes) $attributes = array();
 	
 	if ($checked == $value) $attributes['checked'] = 'checked';
 	
@@ -258,7 +254,7 @@ function a5_checkbox($field_id, $field_name, $value = false, $label = false, $at
  *
  */
  
-function a5_radio($field_id, $field_name, $value = false, $label = false, $attributes = false, $checked = false, $echo = true) {
+function a5_radio($field_id, $field_name, $value = false, $label = false, $attributes = array(), $checked = false, $echo = true) {
 	
 	if (false == $checked) :
 		
@@ -267,8 +263,6 @@ function a5_radio($field_id, $field_name, $value = false, $label = false, $attri
 		$value = true;
 		
 	endif;
-	
-	if (false === $attributes) $attributes = array();
 	
 	if ($checked == $value) $attributes['checked'] = 'checked';
 	
@@ -294,13 +288,11 @@ function a5_radio($field_id, $field_name, $value = false, $label = false, $attri
  *
  */
  
-function a5_select($field_id, $field_name, $options, $value = false, $label = false, $default = false, $attributes = false, $echo = true) {
+function a5_select($field_id, $field_name, $options, $value = false, $label = false, $default = false, $attributes = array(), $echo = true) {
 	
-	if (!is_array($options)) $options = array($options);
+	if (!is_array($options)) $options = (array) $options;
 	
-	if (false === $value) $value = array();
-	
-	if (false === $attributes) $attributes = array();
+	if (!is_array($value)) $value = (array) $value;
 	
 	$args = array ( 'type' => 'select',
 					'field_id' => $field_id,
@@ -348,9 +340,7 @@ function a5_hidden_field($field_id, $field_name, $value = false, $echo = true) {
  *
  */
  
-function a5_text_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_text_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'text',
 					'field_id' => $field_id,
@@ -374,9 +364,7 @@ function a5_text_field($field_id, $field_name, $value = false, $label = false, $
  *
  */
  
-function a5_file_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_file_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'file',
 					'field_id' => $field_id,
@@ -400,9 +388,7 @@ function a5_file_field($field_id, $field_name, $value = false, $label = false, $
  *
  */
  
-function a5_image_field($field_id, $field_name, $scr, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_image_field($field_id, $field_name, $scr, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$attributes['scr'] = $scr;
 	
@@ -428,9 +414,7 @@ function a5_image_field($field_id, $field_name, $scr, $value = false, $label = f
  *
  */
  
-function a5_button($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_button($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'button',
 					'field_id' => $field_id,
@@ -454,9 +438,7 @@ function a5_button($field_id, $field_name, $value = false, $label = false, $attr
  *
  */
  
-function a5_submit($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_submit($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'submit',
 					'field_id' => $field_id,
@@ -480,9 +462,7 @@ function a5_submit($field_id, $field_name, $value = false, $label = false, $attr
  *
  */
  
-function a5_reset($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_reset($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'reset',
 					'field_id' => $field_id,
@@ -510,9 +490,7 @@ function a5_reset($field_id, $field_name, $value = false, $label = false, $attri
  *
  */
  
-function a5_color_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_color_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'color',
 					'field_id' => $field_id,
@@ -536,9 +514,7 @@ function a5_color_field($field_id, $field_name, $value = false, $label = false, 
  *
  */
  
-function a5_date_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_date_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'date',
 					'field_id' => $field_id,
@@ -562,9 +538,7 @@ function a5_date_field($field_id, $field_name, $value = false, $label = false, $
  *
  */
  
-function a5_datetime_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_datetime_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'datetime',
 					'field_id' => $field_id,
@@ -588,9 +562,7 @@ function a5_datetime_field($field_id, $field_name, $value = false, $label = fals
  *
  */
  
-function a5_datetime_local_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_datetime_local_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'datetime-local',
 					'field_id' => $field_id,
@@ -614,9 +586,7 @@ function a5_datetime_local_field($field_id, $field_name, $value = false, $label 
  *
  */
  
-function a5_email_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_email_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'email',
 					'field_id' => $field_id,
@@ -641,9 +611,7 @@ function a5_email_field($field_id, $field_name, $value = false, $label = false, 
  *
  */
  
-function a5_month_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_month_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'month',
 					'field_id' => $field_id,
@@ -667,9 +635,7 @@ function a5_month_field($field_id, $field_name, $value = false, $label = false, 
  *
  */
  
-function a5_number_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_number_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'number',
 					'field_id' => $field_id,
@@ -693,10 +659,8 @@ function a5_number_field($field_id, $field_name, $value = false, $label = false,
  *
  */
  
-function a5_range_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = false, $echo = true) {
+function a5_range_field($field_id, $field_name, $min, $max, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
-	if (false === $attributes) $attributes = array();
-	 
 	$attributes['min'] = $min;
 	
 	$attributes['max'] = $max;
@@ -723,9 +687,7 @@ function a5_range_field($field_id, $field_name, $min, $max, $value = false, $lab
  *
  */
  
-function a5_search_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_search_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'search',
 					'field_id' => $field_id,
@@ -749,9 +711,7 @@ function a5_search_field($field_id, $field_name, $value = false, $label = false,
  *
  */
  
-function a5_tel_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_tel_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'tel',
 					'field_id' => $field_id,
@@ -775,9 +735,7 @@ function a5_tel_field($field_id, $field_name, $value = false, $label = false, $a
  *
  */
  
-function a5_time_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_time_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'time',
 					'field_id' => $field_id,
@@ -801,9 +759,7 @@ function a5_time_field($field_id, $field_name, $value = false, $label = false, $
  *
  */
  
-function a5_url_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_url_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'url',
 					'field_id' => $field_id,
@@ -827,9 +783,7 @@ function a5_url_field($field_id, $field_name, $value = false, $label = false, $a
  *
  */
  
-function a5_week_field($field_id, $field_name, $value = false, $label = false, $attributes = false, $echo = true) {
-	
-	if (false === $attributes) $attributes = array();
+function a5_week_field($field_id, $field_name, $value = false, $label = false, $attributes = array(), $echo = true) {
 	
 	$args = array ( 'type' => 'week',
 					'field_id' => $field_id,
@@ -865,7 +819,7 @@ function a5_week_field($field_id, $field_name, $value = false, $label = false, $
  *
  */
  
-function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = false, $checkall = false, $attributes = false, $echo = true) {
+function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = false, $checkall = false, $attributes = array(), $echo = true) {
 	
 	$eol = "\r\n";
 	
@@ -939,7 +893,7 @@ function a5_checkgroup($fieldset_id, $fieldset_name, $item_options, $legend = fa
  *
  */
  
-function a5_radiogroup($fieldset_id, $fieldset_name, $item_options, $legend = false, $attributes = false, $echo = true) {
+function a5_radiogroup($fieldset_id, $fieldset_name, $item_options, $legend = false, $attributes = array(), $echo = true) {
 	
 	$eol = "\r\n";
 	
