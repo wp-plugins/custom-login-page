@@ -186,6 +186,8 @@ class CLP_Admin extends A5_OptionPage {
 		
 		add_settings_section('clp_options', false, array($this, 'clp_hide_section'), 'clp_hide');
 		
+		add_settings_field('clp_hide_rememberme', __('Hide &#39;remember me&#39; checkbox.', self::language_file), array($this, 'hide_rememberme_input'), 'clp_hide', 'clp_options');
+		
 		add_settings_field('clp_disable_reg', __('Hide register link.', self::language_file), array($this, 'disable_reg_input'), 'clp_hide', 'clp_options');
 		
 		add_settings_field('clp_disable_pass', __('Hide lost password link.', self::language_file), array($this, 'disable_pass_input'), 'clp_hide', 'clp_options');
@@ -575,6 +577,12 @@ class CLP_Admin extends A5_OptionPage {
 	function clp_hide_section() {
 	
 		self::tag_it(__('You can hide the links under login form if wanting to.', self::language_file), 'p', 1, false, true);
+		
+	}
+	
+	function hide_rememberme_input() {
+		
+		a5_checkbox('hide_rememberme', 'clp_options[hide_rememberme]', @self::$options['hide_rememberme']);
 		
 	}
 	
@@ -1999,6 +2007,7 @@ class CLP_Admin extends A5_OptionPage {
 				
 					self::$options['blog_header'] = (@$input['blog_header']) ? true : false;
 					self::$options['blog_footer'] = (@$input['blog_footer']) ? true : false;
+					self::$options['hide_rememberme'] = (@$input['hide_rememberme']) ? true : false;
 					self::$options['disable_reg'] = (@$input['disable_reg']) ? true : false;
 					self::$options['disable_pass'] = (@$input['disable_pass']) ? true : false;
 					self::$options['hide_backlink'] = (@$input['hide_backlink']) ? true : false;

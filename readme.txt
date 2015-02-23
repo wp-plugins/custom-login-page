@@ -5,7 +5,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_i
 Tags: custom login, brand login, customize, brand, login, login page, own look, multisite, foolproof, login redirect, login widget, own css, additional html, inject css 
 Requires at least: 3.9
 Tested up to: 4.2
-Stable tag: 2.5
+Stable tag: 2.5.3
 
 Style your login page differently.
 
@@ -37,6 +37,19 @@ In the case your login screen is not changing after saving the settings, go to t
 4. Not the most pretty, but a possibility
 
 == Changelog ==
+
+= 2.5.3 =
+
+* small bugix
+
+= 2.5.2 =
+
+* broken registration in some environments fixed
+
+= 2.5.1 =
+
+* some bugs fixed
+* individual intances of the widget can now be redirected
 
 = 2.5 =
 
@@ -288,3 +301,15 @@ small bug in CSS fixed
 = 2.5 =
 
 you can add now a video to the login screen
+
+= 2.5.1 =
+
+some bugs fixed; individual intances of the widget can now be redirected
+
+= 2.5.2 =
+
+broken registration in some environments fixed
+
+= 2.5.3 =
+
+small bugfix

@@ -54,6 +54,7 @@ class Custom_Login_Widget extends WP_Widget {
 		
 		$defaults = array(
 			'title' => NULL,
+			'redirect' => false,
 			'homepage' => 1,
 			'frontpage' => false,
 			'page' => false,
@@ -72,6 +73,7 @@ class Custom_Login_Widget extends WP_Widget {
 		$instance = wp_parse_args( (array) $instance, $defaults );
 		
 		$title = esc_attr($instance['title']);
+		$redirect = esc_attr($instance['redirect']);
 		$homepage = $instance['homepage'];
 		$frontpage = $instance['frontpage'];
 		$page = $instance['page'];
@@ -107,6 +109,7 @@ class Custom_Login_Widget extends WP_Widget {
 		$checkall = array($base_id.'checkall', $base_name.'[checkall]', __('Check all', self::language_file));
 		
 		a5_text_field($base_id.'title', $base_name.'[title]', $title, __('Title:', self::language_file), array('space' => true, 'class' => 'widefat'));
+		a5_url_field($base_id.'redirect', $base_name.'[redirect]', $redirect, __('Redirect:', self::language_file), array('space' => true, 'class' => 'widefat', 'placeholder' => home_url('/')));
 		a5_checkbox($base_id.'not_show_logged_in', $base_name.'[not_show_logged_in]', $not_show_logged_in, __('Don&#39;t show widget to logged in users.', self::language_file), array('space' => true));
 		a5_checkgroup(false, false, $options, __('Check, where you want to show the widget. By default, it is showing on the homepage and the category pages:', self::language_file), $checkall);
 		
@@ -117,6 +120,7 @@ class Custom_Login_Widget extends WP_Widget {
 		 $instance = $old_instance;
 		 
 		 $instance['title'] = strip_tags($new_instance['title']);
+		 $instance['redirect'] = strip_tags($new_instance['redirect']);
 		 $instance['homepage'] = $new_instance['homepage'];
 		 $instance['frontpage'] = $new_instance['frontpage'];
 		 $instance['page'] = $new_instance['page'];
@@ -172,8 +176,17 @@ class Custom_Login_Widget extends WP_Widget {
 				if ( $title ) echo $before_title . $title . $after_title;
 				
 				if (!is_user_logged_in()) :
+				
+					if ($instance['redirect']) :
 					
-					$formargs['redirect'] = (isset(self::$options['redirect']) && !empty(self::$options['redirect'])) ? self::$options['redirect'] : home_url($_SERVER['REQUEST_URI']);
+						$formargs['redirect'] = $instance['redirect'];
+						
+					else :
+					
+						$formargs['redirect'] = (isset(self::$options['redirect']) && !empty(self::$options['redirect'])) ? self::$options['redirect'] : home_url($_SERVER['REQUEST_URI']);
+						
+					endif;
+					
 					$formargs['form_id'] = (isset(self::$options['form_id']) && !empty(self::$options['form_id'])) ? self::$options['form_id'] : 'loginform';
 					$formargs['label_username'] = (isset(self::$options['label_username']) && !empty(self::$options['label_username'])) ? self::$options['label_username'] : __('Username');
 					$formargs['label_password'] = (isset(self::$options['label_password']) && !empty(self::$options['label_password'])) ? self::$options['label_password'] : __('Password');

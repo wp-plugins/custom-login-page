@@ -76,8 +76,6 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			
 				$body_style .= $eol.$tab.'background-color: '.self::$options['body_bg_color1'].';';
 				
-				$body_style .= $eol.$tab.'height: auto;';
-				
 			endif;
 				
 			if (!empty(self::$options['body_bg_color2'])) :
@@ -88,6 +86,11 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				$body_style .= $eol.$tab.'background-image: -ms-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
 				$body_style .= $eol.$tab.'background-image: -o-linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
 				$body_style .= $eol.$tab.'background-image: -linear-gradient(top, '.self::$options['body_bg_color1'].', '.self::$options['body_bg_color2'].');';
+				
+				$body_style .= $eol.$tab.'-webkit-background-size: cover;';
+				$body_style .= $eol.$tab.'-moz-background-size: cover;';
+				$body_style .= $eol.$tab.'-o-background-size: cover;';
+				$body_style .= $eol.$tab.'background-size: cover;';
 				
 			endif;
 			
@@ -277,6 +280,10 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 				
 			endif;
 			
+			# .forgetmenot
+			
+			if (!empty(self::$options['hide_rememberme'])) $rememberme_style = $eol.$tab.'display: none;'.$eol;
+			
 			# p.message
 			
 			$loggedout_style = '';
@@ -366,12 +373,6 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			if (!empty(self::$options['hover_textdecoration'])) $hover_style .= $eol.$tab.'text-decoration: '.self::$options['hover_textdecoration'].' !important;';
 			if (isset(self::$options['hover_shadow_x']) && (!empty(self::$options['hover_shadow_x']) || self::$options['hover_shadow_x'] == '0')) $hover_style .= $eol.$tab.'text-shadow: '.self::$options['hover_shadow_x'].'px '.self::$options['hover_shadow_y'].'px '.self::$options['hover_shadow_softness'].'px '.self::$options['hover_shadow_color'].' !important;';
 			
-			# #nav
-			
-			$nav_style = '';
-			
-			if (!empty(self::$options['hide_nav'])) $nav_style .= $eol.$tab.'display: none;';
-			
 			# #backtoblog
 			
 			$backtoblog_style = '';
@@ -433,7 +434,7 @@ class CLP_DynamicCSS extends A5_DynamicFiles {
 			if(!empty($loggedout_style)) self::$custom_css .= 'p.message {'.$loggedout_style.$eol.'}'.$eol;
 			if(!empty($error_style)) self::$custom_css .= '#login_error {'.$error_style.$eol.'}'.$eol;
 			if(!empty($input_style)) self::$custom_css .= '.input {'.$input_style.$eol.'}'.$eol;
-			if(!empty($nav_style)) self::$custom_css .= '#nav {'.$nav_style.$eol.'}'.$eol;
+			if(!empty($rememberme_style)) self::$custom_css .= '.forgetmenot {'.$rememberme_style.$eol.'}'.$eol;
 			if(!empty($backtoblog_style)) self::$custom_css .= '#backtoblog {'.$backtoblog_style.$eol.'}'.$eol;
 			if(!empty($link_style)) :
 			
